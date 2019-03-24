@@ -27,6 +27,9 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
 
         transactions = new ArrayList<Transaction>();
+        Currency buy = new Currency("nem", "NEM", "xem");
+        Currency sell = new Currency("btc", "Bitcoin", "xbt");
+        transactions.add(new Transaction(buy, 1000, sell, 0.1, 0.001, 0.01));
 
         final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
         bagsListView.setOnItemClickListener((parent, view, position, id) -> {
