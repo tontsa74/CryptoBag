@@ -14,4 +14,13 @@ public class TransactionActivity extends BaseActivity {
         Debug.print(TAG, "onCreate()", "TransactionActivity", 1);
     }
 
+    @Override
+    public void onBackPressed() {
+        Debug.print(TAG, "onBackPressed()", "TransactionActivity", 1);
+
+        EditText buyAmount = (EditText) findViewById(R.id.buyAmountEditText);
+        Debug.print(TAG, "onBackPressed()", "buyAmount: " + buyAmount.getText(), 1);
+
+        super.onBackPressed();
+    }
 }
