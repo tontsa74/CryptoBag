@@ -26,4 +26,11 @@ public class Transaction {
             this.buyAmount = buyAmount;
         }
     }
+
+    @Override
+    public String toString() {
+        return buyCurrency + " - " + buyAmount
+//                + super.toString()
+                ;
+    }
 }
