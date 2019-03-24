@@ -5,12 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class TransactionActivity extends BaseActivity {
 
-    EditText buyCurrencyEditText;
-    EditText buyAmountEditText;
-
+    EditText buyCurrencyEditText, buyAmountEditText;
+    EditText sellCurrencyEditText, sellAmountEditText;
+    EditText coinBuyPriceEditText, coinCurrentPriceEditText, taxEditText;
+    TextView profitTextview;
     int position;
 
     @Override
@@ -21,8 +23,13 @@ public class TransactionActivity extends BaseActivity {
         Debug.print(TAG, "onCreate()", "TransactionActivity", 1);
 
         buyCurrencyEditText = (EditText) findViewById(R.id.buyCurrencyEditText);
-
         buyAmountEditText = (EditText) findViewById(R.id.buyAmountEditText);
+        sellCurrencyEditText = (EditText) findViewById(R.id.sellCurrencyEditText);
+        sellAmountEditText = (EditText) findViewById(R.id.sellAmountEditText);
+        coinBuyPriceEditText = (EditText) findViewById(R.id.coinBuyPriceEditText);
+        coinCurrentPriceEditText = (EditText) findViewById(R.id.coinCurrentPriceEditText);
+        taxEditText = (EditText) findViewById(R.id.taxEditText);
+        profitTextview = (TextView) findViewById(R.id.profitTextview);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -30,9 +37,15 @@ public class TransactionActivity extends BaseActivity {
             position = extras.getInt("position");
             Debug.print(TAG, "onCreate()", "getIntent: " + transaction + ", pos: " + position, 2);
 
-            buyCurrencyEditText.setText(transaction.getBuyCurrency());
+            buyCurrencyEditText.setText(transaction.getBuyCurrency().getName());
             buyAmountEditText.setText("" + transaction.getBuyAmount());
+            sellCurrencyEditText.setText(transaction.getSellCurrency().getName());
+            sellAmountEditText.setText("" + transaction.getSellAmount());
+            coinBuyPriceEditText.setText("" + transaction.getCoinBuyPrice());
+            coinCurrentPriceEditText.setText("" + transaction.getCoinCurrentPrice());
 
+            profitTextview.setText("" + transaction.getProfit()); //TODO: implement proper calculate
+            taxEditText.setText("" + (transaction.getProfit() * 0.34));
         }
     }
 
@@ -45,9 +58,20 @@ public class TransactionActivity extends BaseActivity {
 
     public void saveTransaction(View view) {
         Debug.print(TAG, "saveTransaction()", "save", 1);
+        String buyCurrencyName = buyCurrencyEditText.getText().toString();
+        Currency buyCurrency = new Currency("id", buyCurrencyName, "symbol");
 
-        Transaction transaction = new Transaction(buyCurrencyEditText.getText().toString()
-                , Double.parseDouble(buyAmountEditText.getText().toString()));
+        String sellCurrencyName = sellCurrencyEditText.getText().toString();
+        Currency sellCurrency = new Currency("id", sellCurrencyName, "symbol");
+
+        Transaction transaction = new Transaction(
+                buyCurrency
+                , Double.parseDouble(buyAmountEditText.getText().toString())
+                , sellCurrency
+                , Double.parseDouble(sellAmountEditText.getText().toString())
+                , Double.parseDouble(coinBuyPriceEditText.getText().toString())
+                , Double.parseDouble(coinCurrentPriceEditText.getText().toString())
+        );
 
         Intent intent = new Intent();
         intent.putExtra("transaction", transaction);

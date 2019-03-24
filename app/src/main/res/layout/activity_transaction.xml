@@ -27,26 +27,30 @@
         android:inputType="numberDecimal"/>
 
     <EditText
+        android:id="@+id/sellCurrencyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="currency buy with"/>
 
     <EditText
+        android:id="@+id/sellAmountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="amount"
         android:inputType="numberDecimal"/>
 
     <EditText
+        android:id="@+id/coinBuyPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="cost"
+        android:hint="coin buy price"
         android:inputType="numberDecimal"/>
 
     <EditText
+        android:id="@+id/coinCurrentPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="current"
+        android:hint="coin current price"
         android:inputType="numberDecimal"/>
 
     <TextView
@@ -56,6 +60,7 @@
         android:text="Profit"/>
 
     <EditText
+        android:id="@+id/taxEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="tax"
