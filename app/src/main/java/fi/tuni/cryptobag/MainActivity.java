@@ -16,7 +16,7 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD = 10;
     private static final int REQUEST_CODE_EDIT = 11;
 
-    List transactions;
+    List<Transaction> transactions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +26,11 @@ public class MainActivity extends BaseActivity {
         Debug.loadDebug(this);
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
 
-        transactions = new ArrayList();
+        transactions = new ArrayList<Transaction>();
 
         final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
         bagsListView.setOnItemClickListener((parent, view, position, id) -> {
+            Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
             Transaction transaction = (Transaction) bagsListView.getItemAtPosition(position);
             editTransaction(transaction, position);
         });
