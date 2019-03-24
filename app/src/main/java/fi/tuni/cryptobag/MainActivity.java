@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity {
         final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
         bagsListView.setOnItemClickListener((parent, view, position, id) -> {
             Transaction transaction = (Transaction) bagsListView.getItemAtPosition(position);
-            editTransaction(transaction);
+            editTransaction(transaction, position);
         });
         
 
@@ -39,10 +39,11 @@ public class MainActivity extends BaseActivity {
         bagsListView.setAdapter(arrayAdapter);
     }
 
-    public void editTransaction(Transaction transaction) {
-        Debug.print(TAG, "editTransaction()", "edit transaction: " + transaction, 1);
+    public void editTransaction(Transaction transaction, int position) {
+        Debug.print(TAG, "editTransaction()", "edit transaction: " + transaction + ", pos: " + position, 1);
         Intent intent = new Intent(this, TransactionActivity.class);
         intent.putExtra("transaction", transaction);
+        intent.putExtra("position", position);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
 
@@ -60,22 +61,17 @@ public class MainActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_ADD) {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
-                String buyCurrency = bundle.getString("buyCurrency");
-                Double buyAmount = bundle.getDouble("buyAmount");
-                Debug.print(TAG,"onActivityResult","buy: " + buyCurrency + " - " + buyAmount, 3);
-                Transaction transaction = new Transaction(buyCurrency, buyAmount);
-                transactions.add(transaction);
+                Debug.print(TAG,"onActivityResult","buy: " + bundle.get("transaction"), 3);
+                transactions.add((Transaction) bundle.get("transaction"));
             }
         }
         if (requestCode == REQUEST_CODE_EDIT) {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
-                String buyCurrency = bundle.getString("buyCurrency");
-                Double buyAmount = bundle.getDouble("buyAmount");
-                Debug.print(TAG,"onActivityResult","buy: " + buyCurrency + " - " + buyAmount, 3);
-                //TODO handle edited transaction
-                //Transaction transaction = new Transaction(buyCurrency, buyAmount);
-                //transactions.add(transaction);
+                Debug.print(TAG,"onActivityResult","buy: " + bundle.get("transaction") + bundle.get("position"), 3);
+                Transaction transaction = (Transaction) bundle.get("transaction");
+                int position = bundle.getInt("position");
+                transactions.set(position, transaction);
             }
         }
     }

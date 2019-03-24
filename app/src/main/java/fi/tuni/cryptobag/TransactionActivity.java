@@ -11,6 +11,8 @@ public class TransactionActivity extends BaseActivity {
     EditText buyCurrencyEditText;
     EditText buyAmountEditText;
 
+    int position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +27,8 @@ public class TransactionActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             Transaction transaction = (Transaction) extras.get("transaction");
-            Debug.print(TAG, "onCreate()", "getIntent: " + transaction, 2);
+            position = extras.getInt("position");
+            Debug.print(TAG, "onCreate()", "getIntent: " + transaction + ", pos: " + position, 2);
 
             buyCurrencyEditText.setText(transaction.getBuyCurrency());
             buyAmountEditText.setText("" + transaction.getBuyAmount());
@@ -43,10 +46,12 @@ public class TransactionActivity extends BaseActivity {
     public void saveTransaction(View view) {
         Debug.print(TAG, "saveTransaction()", "save", 1);
 
+        Transaction transaction = new Transaction(buyCurrencyEditText.getText().toString()
+                , Double.parseDouble(buyAmountEditText.getText().toString()));
 
         Intent intent = new Intent();
-        intent.putExtra("buyCurrency", buyCurrencyEditText.getText().toString());
-        intent.putExtra("buyAmount", Double.parseDouble(buyAmountEditText.getText().toString()));
+        intent.putExtra("transaction", transaction);
+        intent.putExtra("position", position);
         setResult(RESULT_OK, intent);
 
         onBackPressed();
