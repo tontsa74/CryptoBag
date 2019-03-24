@@ -8,12 +8,29 @@ import android.widget.EditText;
 
 public class TransactionActivity extends BaseActivity {
 
+    EditText buyCurrencyEditText;
+    EditText buyAmountEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
         Debug.print(TAG, "onCreate()", "TransactionActivity", 1);
+
+        buyCurrencyEditText = (EditText) findViewById(R.id.buyCurrencyEditText);
+
+        buyAmountEditText = (EditText) findViewById(R.id.buyAmountEditText);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Transaction transaction = (Transaction) extras.get("transaction");
+            Debug.print(TAG, "onCreate()", "getIntent: " + transaction, 2);
+
+            buyCurrencyEditText.setText(transaction.getBuyCurrency());
+            buyAmountEditText.setText("" + transaction.getBuyAmount());
+
+        }
     }
 
     @Override
@@ -26,8 +43,6 @@ public class TransactionActivity extends BaseActivity {
     public void saveTransaction(View view) {
         Debug.print(TAG, "saveTransaction()", "save", 1);
 
-        EditText buyCurrencyEditText = (EditText) findViewById(R.id.buyCurrencyEditText);
-        EditText buyAmountEditText = (EditText) findViewById(R.id.buyAmountEditText);
 
         Intent intent = new Intent();
         intent.putExtra("buyCurrency", buyCurrencyEditText.getText().toString());

@@ -1,6 +1,8 @@
 package fi.tuni.cryptobag;
 
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
     private String buyCurrency;
     private double buyAmount;
 
