@@ -16,6 +16,7 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD = 10;
     private static final int REQUEST_CODE_EDIT = 11;
 
+    ArrayAdapter arrayAdapter;
     List<Transaction> transactions;
 
     @Override
@@ -29,7 +30,7 @@ public class MainActivity extends BaseActivity {
         transactions = new ArrayList<Transaction>();
         Currency buy = new Currency("nem", "NEM", "xem");
         Currency sell = new Currency("btc", "Bitcoin", "xbt");
-        transactions.add(new Transaction(buy, 1000, sell, 0.1, 0.001, 0.01));
+        transactions.add(new Transaction(buy, "1000", sell, "0.1", "0.001", "0.01"));
 
         final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
         bagsListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -39,7 +40,7 @@ public class MainActivity extends BaseActivity {
         });
         
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.bag_item, R.id.bagItemTextView, transactions);
+        arrayAdapter = new ArrayAdapter(this, R.layout.bag_item, R.id.bagItemTextView, transactions);
         bagsListView.setAdapter(arrayAdapter);
     }
 
@@ -78,5 +79,6 @@ public class MainActivity extends BaseActivity {
                 transactions.set(position, transaction);
             }
         }
+        arrayAdapter.notifyDataSetChanged();
     }
 }

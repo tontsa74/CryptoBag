@@ -37,13 +37,13 @@ public class TransactionActivity extends BaseActivity {
             Debug.print(TAG, "onCreate()", "getIntent: " + transaction + ", pos: " + position, 2);
 
             buyCurrencyEditText.setText(transaction.getBuyCurrency().getName());
-            buyAmountEditText.setText("" + transaction.getBuyAmount());
+            buyAmountEditText.setText(transaction.getBuyAmount());
             sellCurrencyEditText.setText(transaction.getSellCurrency().getName());
-            sellAmountEditText.setText("" + transaction.getSellAmount());
-            coinBuyPriceEditText.setText("" + transaction.getCoinBuyPrice());
-            coinCurrentPriceEditText.setText("" + transaction.getCoinCurrentPrice());
+            sellAmountEditText.setText(transaction.getSellAmount());
+            coinBuyPriceEditText.setText(transaction.getCoinBuyPrice());
+            coinCurrentPriceEditText.setText(transaction.getCoinCurrentPrice());
 
-            profitTextview.setText("" + transaction.getProfit()); //TODO: implement proper calculate
+            profitTextview.setText(transaction.getProfit());
         }
     }
 
@@ -64,11 +64,11 @@ public class TransactionActivity extends BaseActivity {
 
         Transaction transaction = new Transaction(
                 buyCurrency
-                , Double.parseDouble(buyAmountEditText.getText().toString())
+                , buyAmountEditText.getText().toString()
                 , sellCurrency
-                , Double.parseDouble(sellAmountEditText.getText().toString())
-                , Double.parseDouble(coinBuyPriceEditText.getText().toString())
-                , Double.parseDouble(coinCurrentPriceEditText.getText().toString())
+                , sellAmountEditText.getText().toString()
+                , coinBuyPriceEditText.getText().toString()
+                , coinCurrentPriceEditText.getText().toString()
         );
 
         Intent intent = new Intent();

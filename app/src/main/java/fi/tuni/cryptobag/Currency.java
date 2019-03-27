@@ -8,7 +8,7 @@ public class Currency implements Serializable {
     private String symbol;
 
     private String type;
-    private double price;
+    private String price;
     private Bag[] bags;
 
     public Currency(String id, String name, String symbol) {
@@ -53,11 +53,11 @@ public class Currency implements Serializable {
         this.type = type;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

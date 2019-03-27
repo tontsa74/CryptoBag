@@ -1,21 +1,22 @@
 package fi.tuni.cryptobag;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Transaction implements Serializable {
     private Currency buyCurrency;
-    private double buyAmount;
+    private String buyAmount;
     private Currency sellCurrency;
-    private double sellAmount;
-    private double coinBuyPrice;
-    private double coinCurrentPrice;
+    private String sellAmount;
+    private String coinBuyPrice;
+    private String coinCurrentPrice;
 
-    public Transaction(Currency buyCurrency, double buyAmount) {
+    public Transaction(Currency buyCurrency, String buyAmount) {
         setBuyCurrency(buyCurrency);
         setBuyAmount(buyAmount);
     }
 
-    public Transaction(Currency buyCurrency, double buyAmount, Currency sellCurrency, double sellAmount, double coinBuyPrice, double coinCurrentPrice) {
+    public Transaction(Currency buyCurrency, String buyAmount, Currency sellCurrency, String sellAmount, String coinBuyPrice, String coinCurrentPrice) {
         setBuyCurrency(buyCurrency);
         setBuyAmount(buyAmount);
         setSellCurrency(sellCurrency);
@@ -32,12 +33,12 @@ public class Transaction implements Serializable {
         this.buyCurrency = buyCurrency;
     }
 
-    public double getBuyAmount() {
+    public String getBuyAmount() {
         return buyAmount;
     }
 
-    public void setBuyAmount(double buyAmount) {
-        if (buyAmount > 0) {
+    public void setBuyAmount(String buyAmount) {
+        if (Double.parseDouble(buyAmount) > 0) {
             this.buyAmount = buyAmount;
         }
     }
@@ -50,32 +51,35 @@ public class Transaction implements Serializable {
         this.sellCurrency = sellCurrency;
     }
 
-    public double getSellAmount() {
+    public String getSellAmount() {
         return sellAmount;
     }
 
-    public void setSellAmount(double sellAmount) {
+    public void setSellAmount(String sellAmount) {
         this.sellAmount = sellAmount;
     }
 
-    public double getCoinBuyPrice() {
+    public String getCoinBuyPrice() {
         return coinBuyPrice;
     }
 
-    public void setCoinBuyPrice(double coinBuyPrice) {
+    public void setCoinBuyPrice(String coinBuyPrice) {
         this.coinBuyPrice = coinBuyPrice;
     }
 
-    public double getCoinCurrentPrice() {
+    public String getCoinCurrentPrice() {
         return coinCurrentPrice;
     }
 
-    public void setCoinCurrentPrice(double coinCurrentPrice) {
+    public void setCoinCurrentPrice(String coinCurrentPrice) {
         this.coinCurrentPrice = coinCurrentPrice;
     }
 
-    public double getProfit() {
-        return (getCoinCurrentPrice() - getCoinBuyPrice()) * getBuyAmount();
+    public String getProfit() {
+        BigDecimal currentPrice = new BigDecimal(getCoinCurrentPrice());
+        BigDecimal buyPrice = new BigDecimal(getCoinBuyPrice());
+        BigDecimal buyAmount = new BigDecimal(getBuyAmount());
+        return (currentPrice.subtract(buyPrice)).multiply(buyAmount).toString();
     }
     @Override
     public String toString() {
