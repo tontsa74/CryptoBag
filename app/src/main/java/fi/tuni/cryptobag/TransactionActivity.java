@@ -11,7 +11,7 @@ public class TransactionActivity extends BaseActivity {
 
     EditText buyCurrencyEditText, buyAmountEditText;
     EditText sellCurrencyEditText, sellAmountEditText;
-    EditText coinBuyPriceEditText, coinCurrentPriceEditText, taxEditText;
+    EditText coinBuyPriceEditText, coinCurrentPriceEditText;
     TextView profitTextview;
     int position;
 
@@ -28,7 +28,6 @@ public class TransactionActivity extends BaseActivity {
         sellAmountEditText = (EditText) findViewById(R.id.sellAmountEditText);
         coinBuyPriceEditText = (EditText) findViewById(R.id.coinBuyPriceEditText);
         coinCurrentPriceEditText = (EditText) findViewById(R.id.coinCurrentPriceEditText);
-        taxEditText = (EditText) findViewById(R.id.taxEditText);
         profitTextview = (TextView) findViewById(R.id.profitTextview);
 
         Bundle extras = getIntent().getExtras();
@@ -45,7 +44,6 @@ public class TransactionActivity extends BaseActivity {
             coinCurrentPriceEditText.setText("" + transaction.getCoinCurrentPrice());
 
             profitTextview.setText("" + transaction.getProfit()); //TODO: implement proper calculate
-            taxEditText.setText("" + (transaction.getProfit() * 0.34));
         }
     }
 

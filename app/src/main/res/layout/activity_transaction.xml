@@ -11,13 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Transaction"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buy"
+        android:textAlignment="center"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="currency to buy"/>
 
     <EditText
         android:id="@+id/buyCurrencyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="currency to buy"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="buy amount"/>
 
     <EditText
         android:id="@+id/buyAmountEditText"
@@ -26,11 +44,40 @@
         android:hint="amount"
         android:inputType="numberDecimal"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="coin price"/>
+
+    <EditText
+        android:id="@+id/coinBuyPriceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="coin price"
+        android:inputType="numberDecimal"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sell"
+        android:textAlignment="center"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="currency buy with"/>
+
     <EditText
         android:id="@+id/sellCurrencyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="currency buy with"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sell amount"/>
 
     <EditText
         android:id="@+id/sellAmountEditText"
@@ -39,32 +86,35 @@
         android:hint="amount"
         android:inputType="numberDecimal"/>
 
-    <EditText
-        android:id="@+id/coinBuyPriceEditText"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="coin buy price"
-        android:inputType="numberDecimal"/>
+        android:text="coin price"/>
 
     <EditText
         android:id="@+id/coinCurrentPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="coin current price"
+        android:hint="coin price"
         android:inputType="numberDecimal"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profit"
+        android:textAlignment="center"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profit"/>
 
     <TextView
         android:id="@+id/profitTextview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Profit"/>
-
-    <EditText
-        android:id="@+id/taxEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="tax"
-        android:inputType="numberDecimal"/>
 
     <Button
         android:layout_width="match_parent"
