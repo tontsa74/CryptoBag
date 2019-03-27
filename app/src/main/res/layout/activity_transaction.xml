@@ -30,7 +30,8 @@
         android:id="@+id/buyCurrencyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="currency to buy"/>
+        android:hint="currency to buy"
+        android:singleLine="true"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -72,7 +73,8 @@
         android:id="@+id/sellCurrencyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="currency buy with"/>
+        android:hint="currency buy with"
+        android:singleLine="true"/>
 
     <TextView
         android:layout_width="match_parent"
