@@ -1,14 +1,11 @@
 package fi.tuni.cryptobag;
 
 import android.content.Intent;
-import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +13,8 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD = 10;
     private static final int REQUEST_CODE_EDIT = 11;
 
-    ArrayAdapter arrayAdapter;
-    List<Transaction> transactions;
+    ArrayAdapter bagArrayAdapter;
+    List<Bag> bags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,34 +24,33 @@ public class MainActivity extends BaseActivity {
         Debug.loadDebug(this);
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
 
-        transactions = new ArrayList<Transaction>();
+        bags = new ArrayList<Bag>();
         Currency buy = new Currency("nem", "NEM", "xem");
-        Currency sell = new Currency("btc", "Bitcoin", "xbt");
-        transactions.add(new Transaction(buy, "1000", sell, "0.1", "0.001", "0.01"));
+        bags.add(new Bag(buy, "1000", "0.1", "0.001", "0.01"));
 
         final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
         bagsListView.setOnItemClickListener((parent, view, position, id) -> {
             Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
-            Transaction transaction = (Transaction) bagsListView.getItemAtPosition(position);
-            editTransaction(transaction, position);
+            Bag bag = (Bag) bagsListView.getItemAtPosition(position);
+            editBag(bag, position);
         });
         
 
-        arrayAdapter = new ArrayAdapter(this, R.layout.bag_item, R.id.bagItemTextView, transactions);
-        bagsListView.setAdapter(arrayAdapter);
+        bagArrayAdapter = new ArrayAdapter(this, R.layout.bag_item, R.id.bagItemTextView, bags);
+        bagsListView.setAdapter(bagArrayAdapter);
     }
 
-    public void editTransaction(Transaction transaction, int position) {
-        Debug.print(TAG, "editTransaction()", "edit transaction: " + transaction + ", pos: " + position, 1);
-        Intent intent = new Intent(this, TransactionActivity.class);
-        intent.putExtra("transaction", transaction);
+    public void editBag(Bag bag, int position) {
+        Debug.print(TAG, "editBag()", "edit bag: " + bag + ", pos: " + position, 1);
+        Intent intent = new Intent(this, BagActivity.class);
+        intent.putExtra("bag", bag);
         intent.putExtra("position", position);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
 
-    public void addTransaction(View view) {
-        Debug.print(TAG, "addTransaction()", "add new transaction", 1);
-        Intent intent = new Intent(this, TransactionActivity.class);
+    public void addBag(View view) {
+        Debug.print(TAG, "addBag()", "add new bag", 1);
+        Intent intent = new Intent(this, BagActivity.class);
         startActivityForResult(intent, REQUEST_CODE_ADD);
     }
 
@@ -66,19 +62,19 @@ public class MainActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_ADD) {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
-                Debug.print(TAG,"onActivityResult","buy: " + bundle.get("transaction"), 3);
-                transactions.add((Transaction) bundle.get("transaction"));
+                Debug.print(TAG,"onActivityResult","buy: " + bundle.get("bag"), 3);
+                bags.add((Bag) bundle.get("bag"));
             }
         }
         if (requestCode == REQUEST_CODE_EDIT) {
             if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
-                Debug.print(TAG,"onActivityResult","buy: " + bundle.get("transaction") + bundle.get("position"), 3);
-                Transaction transaction = (Transaction) bundle.get("transaction");
+                Debug.print(TAG,"onActivityResult","buy: " + bundle.get("bag") + bundle.get("position"), 3);
+                Bag bag = (Bag) bundle.get("bag");
                 int position = bundle.getInt("position");
-                transactions.set(position, transaction);
+                bags.set(position, bag);
             }
         }
-        arrayAdapter.notifyDataSetChanged();
+        bagArrayAdapter.notifyDataSetChanged();
     }
 }

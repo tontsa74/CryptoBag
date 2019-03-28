@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TransactionActivity"
+    tools:context=".BagActivity"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Transaction"
+        android:text="Bag"
         android:textAlignment="center"
         android:textSize="24sp"/>
 
@@ -24,13 +24,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="currency to buy"/>
+        android:text="currency"/>
 
     <EditText
-        android:id="@+id/buyCurrencyEditText"
+        android:id="@+id/currencyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="currency to buy"
+        android:hint="currency"
         android:singleLine="true"/>
 
     <TextView
@@ -63,18 +63,6 @@
         android:text="Sell"
         android:textAlignment="center"
         android:textSize="24sp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="currency buy with"/>
-
-    <EditText
-        android:id="@+id/sellCurrencyEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="currency buy with"
-        android:singleLine="true"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -121,7 +109,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save transaction"
-        android:onClick="saveTransaction"/>
+        android:text="Save bag"
+        android:onClick="saveBag"/>
 
 </LinearLayout>
