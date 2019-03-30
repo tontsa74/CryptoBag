@@ -7,11 +7,23 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Powered by CoinGecko API"
+        android:textAlignment="viewEnd"/>
+
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="add bag"
         android:onClick="addBag"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add currency"
+        android:onClick="addCurrency"/>
 
     <ListView
         android:id="@+id/bagsListView"
