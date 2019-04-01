@@ -18,7 +18,6 @@ public class BagActivity extends BaseActivity {
 
     EditText buyAmountEditText, sellAmountEditText;
     EditText coinBuyPriceEditText, coinCurrentPriceEditText;
-    //TextWatcher textWatcher;
 
     TextView profitTextview;
     Button currencyButton, saveBagButton;
@@ -49,18 +48,10 @@ public class BagActivity extends BaseActivity {
 
             buyCurrency = bag.getCurrency();
             currencyButton.setText(buyCurrency.getName());
-            if (bag.getBuyAmount().doubleValue() > 0) {
-                buyAmountEditText.setText(bag.getBuyAmount().toString());
-            }
-            if (bag.getSellAmount().doubleValue() > 0) {
-                sellAmountEditText.setText(bag.getSellAmount().toString());
-            }
-            if (bag.getCoinBuyPrice().doubleValue() > 0) {
-                coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
-            }
-            if (bag.getCoinCurrentPrice().doubleValue() > 0) {
-                coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
-            }
+            buyAmountEditText.setText(bag.getBuyAmount().toString());
+            sellAmountEditText.setText(bag.getSellAmount().toString());
+            coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
+            coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
 
             profitTextview.setText(bag.getProfit());
 
