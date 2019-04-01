@@ -16,14 +16,12 @@ public class BagActivity extends BaseActivity {
 
     EditText buyAmountEditText, sellAmountEditText;
     EditText coinBuyPriceEditText, coinCurrentPriceEditText;
-    TextWatcher textWatcher;
+    //TextWatcher textWatcher;
 
     TextView profitTextview;
     Button currencyButton, saveBagButton;
     int position;
     Currency buyCurrency;
-
-    boolean validEditText, validCurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +37,7 @@ public class BagActivity extends BaseActivity {
         profitTextview = (TextView) findViewById(R.id.profitTextview);
         currencyButton = (Button) findViewById(R.id.currencyButton);
         saveBagButton = (Button) findViewById(R.id.saveBagButton);
-        validCurrency = false;
-        validEditText = true;
-
-        textWatcher();
-
-        buyAmountEditText.addTextChangedListener(textWatcher);
-        sellAmountEditText.addTextChangedListener(textWatcher);
-        coinBuyPriceEditText.addTextChangedListener(textWatcher);
-        coinCurrentPriceEditText.addTextChangedListener(textWatcher);
+        saveBagButton.setEnabled(false);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -57,50 +47,15 @@ public class BagActivity extends BaseActivity {
 
             buyCurrency = bag.getCurrency();
             currencyButton.setText(buyCurrency.getName());
-            buyAmountEditText.setText(bag.getBuyAmount());
-            sellAmountEditText.setText(bag.getSellAmount());
-            coinBuyPriceEditText.setText(bag.getCoinBuyPrice());
-            coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice());
+            buyAmountEditText.setText(bag.getBuyAmount().toString());
+            sellAmountEditText.setText(bag.getSellAmount().toString());
+            coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
+            coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
 
             profitTextview.setText(bag.getProfit());
-            validCurrency = true;
-        }
 
-        validateSaveBagButton();
-    }
-
-    private void validateSaveBagButton() {
-        if (validCurrency && validEditText) {
             saveBagButton.setEnabled(true);
-        } else {
-            saveBagButton.setEnabled(false);
         }
-    }
-
-    private void textWatcher() {
-        textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Debug.print(TAG, "textWatcher()", "onTextChanged", 3);
-                if(count < 1) {
-                    validEditText = false;
-                } else {
-                    validEditText = true;
-                }
-
-                validateSaveBagButton();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Debug.print(TAG, "textWatcher()", "afterTextChanged", 3);
-            }
-        };
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -116,8 +71,7 @@ public class BagActivity extends BaseActivity {
                 Debug.print(TAG,"onActivityResult","selectedCurrency: " + buyCurrency.getName(), 3);
                 currencyButton.setText(buyCurrency.getName());
 
-                validCurrency = true;
-                validateSaveBagButton();
+                saveBagButton.setEnabled(true);
             }
         }
     }

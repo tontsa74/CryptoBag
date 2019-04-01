@@ -2,14 +2,13 @@ package fi.tuni.cryptobag;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.concurrent.ExecutionException;
 
 public class Bag implements Serializable {
     private Currency currency;
-    private String buyAmount;
-    private String sellAmount;
-    private String coinBuyPrice;
-    private String coinCurrentPrice;
+    private BigDecimal buyAmount;
+    private BigDecimal sellAmount;
+    private BigDecimal coinBuyPrice;
+    private BigDecimal coinCurrentPrice;
 
     public Bag(Currency currency) {
         setCurrency(currency);
@@ -41,11 +40,12 @@ public class Bag implements Serializable {
         this.currency = currency;
     }
 
-    public String validateDouble(String oldValue, String newValue) {
-        String result = oldValue;
+    public BigDecimal validateDouble(BigDecimal oldValue, String newValue) {
+        BigDecimal result = oldValue;
         try {
-            if (Double.parseDouble(newValue) >= 0) {
-                result = newValue;
+            BigDecimal newBDValue = new BigDecimal(newValue);
+            if (newBDValue.doubleValue() >= 0) {
+                result = newBDValue;
             }
         } catch (Exception e) {
             Debug.print("tsilve", "Bag", "validateDouble.error: " + e, 1);
@@ -53,7 +53,7 @@ public class Bag implements Serializable {
         return result;
     }
 
-    public String getBuyAmount() {
+    public BigDecimal getBuyAmount() {
         return buyAmount;
     }
 
@@ -62,7 +62,7 @@ public class Bag implements Serializable {
         this.buyAmount = validateDouble(getBuyAmount(), buyAmount);
     }
 
-    public String getSellAmount() {
+    public BigDecimal getSellAmount() {
         return sellAmount;
     }
 
@@ -70,7 +70,7 @@ public class Bag implements Serializable {
         this.sellAmount = validateDouble(getSellAmount(), sellAmount);
     }
 
-    public String getCoinBuyPrice() {
+    public BigDecimal getCoinBuyPrice() {
         return coinBuyPrice;
     }
 
@@ -79,7 +79,7 @@ public class Bag implements Serializable {
         this.coinBuyPrice = validateDouble(getCoinBuyPrice(), coinBuyPrice);
     }
 
-    public String getCoinCurrentPrice() {
+    public BigDecimal getCoinCurrentPrice() {
         return coinCurrentPrice;
     }
 
@@ -90,11 +90,11 @@ public class Bag implements Serializable {
     }
 
     public String getProfit() {
-        BigDecimal currentPrice = new BigDecimal(getCoinCurrentPrice());
-        BigDecimal buyPrice = new BigDecimal(getCoinBuyPrice());
-        BigDecimal buyAmount = new BigDecimal(getBuyAmount());
-        BigDecimal sellAmount = new BigDecimal(getSellAmount());
-        return (currentPrice.subtract(buyPrice)).multiply(sellAmount).toString();
+//        BigDecimal currentPrice = new BigDecimal(getCoinCurrentPrice());
+//        BigDecimal buyPrice = new BigDecimal(getCoinBuyPrice());
+//        BigDecimal buyAmount = new BigDecimal(getBuyAmount());
+//        BigDecimal sellAmount = new BigDecimal(getSellAmount());
+        return (getCoinCurrentPrice().subtract(getCoinBuyPrice())).multiply(getSellAmount()).toString();
     }
     @Override
     public String toString() {

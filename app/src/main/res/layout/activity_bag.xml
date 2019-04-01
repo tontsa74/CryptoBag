@@ -43,7 +43,6 @@
         android:id="@+id/buyAmountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
         android:hint="amount"
         android:inputType="numberDecimal"/>
 
@@ -56,7 +55,6 @@
         android:id="@+id/coinBuyPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
         android:hint="coin price"
         android:inputType="numberDecimal"/>
 
@@ -76,7 +74,6 @@
         android:id="@+id/sellAmountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
         android:hint="amount"
         android:inputType="numberDecimal"/>
 
@@ -89,7 +86,6 @@
         android:id="@+id/coinCurrentPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0"
         android:hint="coin price"
         android:inputType="numberDecimal"/>
 
