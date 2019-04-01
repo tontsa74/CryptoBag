@@ -2,6 +2,7 @@ package fi.tuni.cryptobag;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.concurrent.ExecutionException;
 
 public class Bag implements Serializable {
     private Currency currency;
@@ -40,14 +41,25 @@ public class Bag implements Serializable {
         this.currency = currency;
     }
 
+    public String validateDouble(String oldValue, String newValue) {
+        String result = oldValue;
+        try {
+            if (Double.parseDouble(newValue) >= 0) {
+                result = newValue;
+            }
+        } catch (Exception e) {
+            Debug.print("tsilve", "Bag", "validateDouble.error: " + e, 1);
+        }
+        return result;
+    }
+
     public String getBuyAmount() {
         return buyAmount;
     }
 
     public void setBuyAmount(String buyAmount) {
-        if (Double.parseDouble(buyAmount) >= 0) {
-            this.buyAmount = buyAmount;
-        }
+        Debug.print("tsilve", "Bag", "setBuyAmount: " + buyAmount, 1);
+        this.buyAmount = validateDouble(getBuyAmount(), buyAmount);
     }
 
     public String getSellAmount() {
@@ -55,9 +67,7 @@ public class Bag implements Serializable {
     }
 
     public void setSellAmount(String sellAmount) {
-        if (Double.parseDouble(sellAmount) >= 0) {
-            this.sellAmount = sellAmount;
-        }
+        this.sellAmount = validateDouble(getSellAmount(), sellAmount);
     }
 
     public String getCoinBuyPrice() {
@@ -65,9 +75,8 @@ public class Bag implements Serializable {
     }
 
     public void setCoinBuyPrice(String coinBuyPrice) {
-        if (Double.parseDouble(coinBuyPrice) >= 0) {
-            this.coinBuyPrice = coinBuyPrice;
-        }
+
+        this.coinBuyPrice = validateDouble(getCoinBuyPrice(), coinBuyPrice);
     }
 
     public String getCoinCurrentPrice() {
@@ -75,9 +84,8 @@ public class Bag implements Serializable {
     }
 
     public void setCoinCurrentPrice(String coinCurrentPrice) {
-        if (Double.parseDouble(coinCurrentPrice) >= 0) {
-            this.coinCurrentPrice = coinCurrentPrice;
-        }
+
+        this.coinCurrentPrice = validateDouble(getCoinCurrentPrice(), coinCurrentPrice);
 
     }
 

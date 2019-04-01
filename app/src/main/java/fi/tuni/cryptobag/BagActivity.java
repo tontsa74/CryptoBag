@@ -1,7 +1,6 @@
 package fi.tuni.cryptobag;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,13 +12,18 @@ import android.widget.TextView;
 public class BagActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_CURRENCY = 20;
 
+    Bag bag;
+
     EditText buyAmountEditText, sellAmountEditText;
     EditText coinBuyPriceEditText, coinCurrentPriceEditText;
     TextWatcher textWatcher;
+
     TextView profitTextview;
     Button currencyButton, saveBagButton;
     int position;
     Currency buyCurrency;
+
+    boolean validEditText, validCurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,8 @@ public class BagActivity extends BaseActivity {
         profitTextview = (TextView) findViewById(R.id.profitTextview);
         currencyButton = (Button) findViewById(R.id.currencyButton);
         saveBagButton = (Button) findViewById(R.id.saveBagButton);
-        saveBagButton.setEnabled(false);
+        validCurrency = false;
+        validEditText = true;
 
         textWatcher();
 
@@ -46,20 +51,29 @@ public class BagActivity extends BaseActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            Bag bag = (Bag) extras.get("bag");
+            bag = (Bag) extras.get("bag");
             position = extras.getInt("position");
             Debug.print(TAG, "onCreate()", "getIntent: " + bag + ", pos: " + position, 2);
 
             buyCurrency = bag.getCurrency();
-            currencyButton.setText(buyCurrency.getName() + " - " + buyCurrency.getSymbol());
+            currencyButton.setText(buyCurrency.getName());
             buyAmountEditText.setText(bag.getBuyAmount());
             sellAmountEditText.setText(bag.getSellAmount());
             coinBuyPriceEditText.setText(bag.getCoinBuyPrice());
             coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice());
 
             profitTextview.setText(bag.getProfit());
+            validCurrency = true;
+        }
 
+        validateSaveBagButton();
+    }
+
+    private void validateSaveBagButton() {
+        if (validCurrency && validEditText) {
             saveBagButton.setEnabled(true);
+        } else {
+            saveBagButton.setEnabled(false);
         }
     }
 
@@ -74,15 +88,17 @@ public class BagActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Debug.print(TAG, "textWatcher()", "onTextChanged", 3);
                 if(count < 1) {
-                    saveBagButton.setEnabled(false);
+                    validEditText = false;
                 } else {
-                    saveBagButton.setEnabled(true);
+                    validEditText = true;
                 }
+
+                validateSaveBagButton();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                Debug.print(TAG, "textWatcher()", "afterTextChanged", 3);
             }
         };
     }
@@ -100,7 +116,8 @@ public class BagActivity extends BaseActivity {
                 Debug.print(TAG,"onActivityResult","selectedCurrency: " + buyCurrency.getName(), 3);
                 currencyButton.setText(buyCurrency.getName());
 
-                saveBagButton.setEnabled(true);
+                validCurrency = true;
+                validateSaveBagButton();
             }
         }
     }
@@ -115,7 +132,12 @@ public class BagActivity extends BaseActivity {
     public void saveBag(View view) {
         Debug.print(TAG, "saveBag()", "save", 1);
 
-        Bag bag = new Bag(buyCurrency);
+        if (bag == null) {
+            bag = new Bag(buyCurrency);
+        } else {
+            bag.setCurrency(buyCurrency);
+        }
+
         bag.setBuyAmount(buyAmountEditText.getText().toString());
         bag.setCoinBuyPrice(coinBuyPriceEditText.getText().toString());
         bag.setSellAmount(sellAmountEditText.getText().toString());
