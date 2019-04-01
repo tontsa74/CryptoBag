@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class MainActivity extends BaseActivity {
 
         bags = new ArrayList<Bag>();
         Currency buy = new Currency("nem", "NEM", "xem");
-        bags.add(new Bag(buy, "1000", "0.1", "0.001", "0.01"));
+        bags.add(new Bag(buy, new BigDecimal("1000"), new BigDecimal("0.1"), new BigDecimal("0.001"), new BigDecimal("0.01")));
 
         final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
         bagsListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -75,6 +76,7 @@ public class MainActivity extends BaseActivity {
                 bags.set(position, bag);
             }
         }
+        Debug.print(TAG,"onActivityResult","bagArrayAdapter.notifyDataSetChanged", 1);
         bagArrayAdapter.notifyDataSetChanged();
     }
 }

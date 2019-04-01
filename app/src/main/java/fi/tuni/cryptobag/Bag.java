@@ -12,19 +12,19 @@ public class Bag implements Serializable {
 
     public Bag(Currency currency) {
         setCurrency(currency);
-        setBuyAmount("0");
-        setSellAmount("0");
-        setCoinBuyPrice("0");
-        setCoinCurrentPrice("0");
+        setBuyAmount(new BigDecimal(0));
+        setSellAmount(new BigDecimal(0));
+        setCoinBuyPrice(new BigDecimal(0));
+        setCoinCurrentPrice(new BigDecimal(0));
 
     }
 
-    public Bag(Currency currency, String buyAmount) {
+    public Bag(Currency currency, BigDecimal buyAmount) {
         setCurrency(currency);
         setBuyAmount(buyAmount);
     }
 
-    public Bag(Currency currency, String buyAmount, String sellAmount, String coinBuyPrice, String coinCurrentPrice) {
+    public Bag(Currency currency, BigDecimal buyAmount, BigDecimal sellAmount, BigDecimal coinBuyPrice, BigDecimal coinCurrentPrice) {
         setCurrency(currency);
         setBuyAmount(buyAmount);
         setSellAmount(sellAmount);
@@ -40,52 +40,39 @@ public class Bag implements Serializable {
         this.currency = currency;
     }
 
-    public BigDecimal validateDouble(BigDecimal oldValue, String newValue) {
-        BigDecimal result = oldValue;
-        try {
-            BigDecimal newBDValue = new BigDecimal(newValue);
-            if (newBDValue.doubleValue() >= 0) {
-                result = newBDValue;
-            }
-        } catch (Exception e) {
-            Debug.print("tsilve", "Bag", "validateDouble.error: " + e, 1);
-        }
-        return result;
-    }
-
     public BigDecimal getBuyAmount() {
         return buyAmount;
     }
 
-    public void setBuyAmount(String buyAmount) {
+    public void setBuyAmount(BigDecimal buyAmount) {
         Debug.print("tsilve", "Bag", "setBuyAmount: " + buyAmount, 1);
-        this.buyAmount = validateDouble(getBuyAmount(), buyAmount);
+        this.buyAmount = buyAmount;
     }
 
     public BigDecimal getSellAmount() {
         return sellAmount;
     }
 
-    public void setSellAmount(String sellAmount) {
-        this.sellAmount = validateDouble(getSellAmount(), sellAmount);
+    public void setSellAmount(BigDecimal sellAmount) {
+        this.sellAmount = sellAmount;
     }
 
     public BigDecimal getCoinBuyPrice() {
         return coinBuyPrice;
     }
 
-    public void setCoinBuyPrice(String coinBuyPrice) {
+    public void setCoinBuyPrice(BigDecimal coinBuyPrice) {
 
-        this.coinBuyPrice = validateDouble(getCoinBuyPrice(), coinBuyPrice);
+        this.coinBuyPrice = coinBuyPrice;
     }
 
     public BigDecimal getCoinCurrentPrice() {
         return coinCurrentPrice;
     }
 
-    public void setCoinCurrentPrice(String coinCurrentPrice) {
+    public void setCoinCurrentPrice(BigDecimal coinCurrentPrice) {
 
-        this.coinCurrentPrice = validateDouble(getCoinCurrentPrice(), coinCurrentPrice);
+        this.coinCurrentPrice = coinCurrentPrice;
 
     }
 

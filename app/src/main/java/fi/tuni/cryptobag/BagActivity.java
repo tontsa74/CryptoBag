@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+
 public class BagActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_CURRENCY = 20;
 
@@ -47,10 +49,18 @@ public class BagActivity extends BaseActivity {
 
             buyCurrency = bag.getCurrency();
             currencyButton.setText(buyCurrency.getName());
-            buyAmountEditText.setText(bag.getBuyAmount().toString());
-            sellAmountEditText.setText(bag.getSellAmount().toString());
-            coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
-            coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
+            if (bag.getBuyAmount().doubleValue() > 0) {
+                buyAmountEditText.setText(bag.getBuyAmount().toString());
+            }
+            if (bag.getSellAmount().doubleValue() > 0) {
+                sellAmountEditText.setText(bag.getSellAmount().toString());
+            }
+            if (bag.getCoinBuyPrice().doubleValue() > 0) {
+                coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
+            }
+            if (bag.getCoinCurrentPrice().doubleValue() > 0) {
+                coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
+            }
 
             profitTextview.setText(bag.getProfit());
 
@@ -92,10 +102,19 @@ public class BagActivity extends BaseActivity {
             bag.setCurrency(buyCurrency);
         }
 
-        bag.setBuyAmount(buyAmountEditText.getText().toString());
-        bag.setCoinBuyPrice(coinBuyPriceEditText.getText().toString());
-        bag.setSellAmount(sellAmountEditText.getText().toString());
-        bag.setCoinCurrentPrice(coinCurrentPriceEditText.getText().toString());
+        if (!buyAmountEditText.getText().toString().isEmpty()) {
+            Debug.print(TAG, "saveBag()", "isEmpty" + buyAmountEditText.getText().toString(), 2);
+            bag.setBuyAmount(new BigDecimal(buyAmountEditText.getText().toString()));
+        }
+        if (!coinBuyPriceEditText.getText().toString().isEmpty()) {
+            bag.setCoinBuyPrice(new BigDecimal(coinBuyPriceEditText.getText().toString()));
+        }
+        if (!sellAmountEditText.getText().toString().isEmpty()) {
+            bag.setSellAmount(new BigDecimal(sellAmountEditText.getText().toString()));
+        }
+        if (!coinCurrentPriceEditText.getText().toString().isEmpty()) {
+            bag.setCoinCurrentPrice(new BigDecimal(coinCurrentPriceEditText.getText().toString()));
+        }
 
         Intent intent = new Intent();
         intent.putExtra("bag", bag);
