@@ -12,7 +12,6 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_BAG = 10;
     private static final int REQUEST_CODE_EDIT = 11;
-    private static final int REQUEST_CODE_ADD_CURRENCY = 20;
 
     ArrayAdapter bagArrayAdapter;
     List<Bag> bags;
@@ -76,19 +75,6 @@ public class MainActivity extends BaseActivity {
                 bags.set(position, bag);
             }
         }
-        if (requestCode == REQUEST_CODE_ADD_CURRENCY) {
-            if (resultCode == RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                Debug.print(TAG,"onActivityResult","selectedCurrency: " + bundle.get("selectedCurrency"), 3);
-                //bags.add((Bag) bundle.get("selectedCurrency"));
-            }
-        }
         bagArrayAdapter.notifyDataSetChanged();
-    }
-
-    public void addCurrency(View view) {
-        Debug.print(TAG, "addCurrency()", "add new currency", 1);
-        Intent intent = new Intent(this, AddCurrency.class);
-        startActivityForResult(intent, REQUEST_CODE_ADD_CURRENCY);
     }
 }

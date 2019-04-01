@@ -26,12 +26,13 @@
         android:layout_height="wrap_content"
         android:text="currency"/>
 
-    <EditText
-        android:id="@+id/currencyEditText"
+    <Button
+        android:id="@+id/currencyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="currency"
-        android:singleLine="true"/>
+        android:text="select currency"
+        android:onClick="addCurrency"/>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -42,6 +43,7 @@
         android:id="@+id/buyAmountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="0"
         android:hint="amount"
         android:inputType="numberDecimal"/>
 
@@ -54,6 +56,7 @@
         android:id="@+id/coinBuyPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="0"
         android:hint="coin price"
         android:inputType="numberDecimal"/>
 
@@ -73,6 +76,7 @@
         android:id="@+id/sellAmountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="0"
         android:hint="amount"
         android:inputType="numberDecimal"/>
 
@@ -85,6 +89,7 @@
         android:id="@+id/coinCurrentPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="0"
         android:hint="coin price"
         android:inputType="numberDecimal"/>
 
@@ -107,6 +112,7 @@
         android:text="Profit"/>
 
     <Button
+        android:id="@+id/saveBagButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save bag"

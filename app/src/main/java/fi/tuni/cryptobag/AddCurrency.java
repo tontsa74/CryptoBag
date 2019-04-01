@@ -122,10 +122,8 @@ public class AddCurrency extends BaseActivity {
                 for(int i = 0 ;i < jsonArray.length(); i++){
                     JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
-                    //if (jsonObject.get("id").toString().contains(CurrenciesActivity.search)) {
                     Currency currency = new Currency(jsonObject.get("id").toString(), jsonObject.get("symbol").toString(),jsonObject.get("name").toString());
                     currencies.add(currency);
-                    //}
                 }
 
             } catch (MalformedURLException e) {

@@ -19,12 +19,6 @@
         android:text="add bag"
         android:onClick="addBag"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="add currency"
-        android:onClick="addCurrency"/>
-
     <ListView
         android:id="@+id/bagsListView"
         android:layout_width="match_parent"

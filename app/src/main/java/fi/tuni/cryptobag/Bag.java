@@ -10,6 +10,15 @@ public class Bag implements Serializable {
     private String coinBuyPrice;
     private String coinCurrentPrice;
 
+    public Bag(Currency currency) {
+        setCurrency(currency);
+        setBuyAmount("0");
+        setSellAmount("0");
+        setCoinBuyPrice("0");
+        setCoinCurrentPrice("0");
+
+    }
+
     public Bag(Currency currency, String buyAmount) {
         setCurrency(currency);
         setBuyAmount(buyAmount);
@@ -36,7 +45,7 @@ public class Bag implements Serializable {
     }
 
     public void setBuyAmount(String buyAmount) {
-        if (Double.parseDouble(buyAmount) > 0) {
+        if (Double.parseDouble(buyAmount) >= 0) {
             this.buyAmount = buyAmount;
         }
     }
@@ -46,7 +55,9 @@ public class Bag implements Serializable {
     }
 
     public void setSellAmount(String sellAmount) {
-        this.sellAmount = sellAmount;
+        if (Double.parseDouble(sellAmount) >= 0) {
+            this.sellAmount = sellAmount;
+        }
     }
 
     public String getCoinBuyPrice() {
@@ -54,7 +65,9 @@ public class Bag implements Serializable {
     }
 
     public void setCoinBuyPrice(String coinBuyPrice) {
-        this.coinBuyPrice = coinBuyPrice;
+        if (Double.parseDouble(coinBuyPrice) >= 0) {
+            this.coinBuyPrice = coinBuyPrice;
+        }
     }
 
     public String getCoinCurrentPrice() {
@@ -62,18 +75,22 @@ public class Bag implements Serializable {
     }
 
     public void setCoinCurrentPrice(String coinCurrentPrice) {
-        this.coinCurrentPrice = coinCurrentPrice;
+        if (Double.parseDouble(coinCurrentPrice) >= 0) {
+            this.coinCurrentPrice = coinCurrentPrice;
+        }
+
     }
 
     public String getProfit() {
         BigDecimal currentPrice = new BigDecimal(getCoinCurrentPrice());
         BigDecimal buyPrice = new BigDecimal(getCoinBuyPrice());
         BigDecimal buyAmount = new BigDecimal(getBuyAmount());
-        return (currentPrice.subtract(buyPrice)).multiply(buyAmount).toString();
+        BigDecimal sellAmount = new BigDecimal(getSellAmount());
+        return (currentPrice.subtract(buyPrice)).multiply(sellAmount).toString();
     }
     @Override
     public String toString() {
-        return currency + " - " + buyAmount + " Profit: " + getProfit()
+        return getCurrency().getName() + " - " + getBuyAmount() + " Profit: " + getProfit()
 //                + super.toString()
                 ;
     }
