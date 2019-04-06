@@ -1,11 +1,18 @@
 package fi.tuni.cryptobag;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +20,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_BAG = 10;
     private static final int REQUEST_CODE_EDIT = 11;
+    private static final String BAGS_FILE = "bags";
 
     ArrayAdapter bagArrayAdapter;
     List<Bag> bags;
@@ -25,9 +33,31 @@ public class MainActivity extends BaseActivity {
         Debug.loadDebug(this);
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
 
-        bags = new ArrayList<Bag>();
-        Currency buy = new Currency("nem", "NEM", "xem");
-        bags.add(new Bag(buy, new BigDecimal("1000"), new BigDecimal("0.1"), new BigDecimal("0.001"), new BigDecimal("0.01")));
+        FileInputStream fileInputStream;
+        ObjectInputStream objectInputStream = null;
+        try {
+            fileInputStream = openFileInput(BAGS_FILE);
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            bags = (ArrayList<Bag>) objectInputStream.readObject();
+        } catch (ClassNotFoundException e) {
+            Debug.print(TAG, "add bags", "serialization problem: " + e, 2);
+        } catch (IOException e) {
+            Debug.print(TAG, "add bags", "No bags file: " + e, 2);
+        } finally {
+            try {
+                if (objectInputStream != null) {
+                    objectInputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (bags == null)
+            bags = new ArrayList<Bag>();
+
+        //Currency buy = new Currency("nem", "NEM", "xem");
+        //bags.add(new Bag(buy, new BigDecimal("1000"), new BigDecimal("0.1"), new BigDecimal("0.001"), new BigDecimal("0.01")));
 
         final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
         bagsListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -39,6 +69,28 @@ public class MainActivity extends BaseActivity {
 
         bagArrayAdapter = new ArrayAdapter(this, R.layout.bag_item, R.id.bagItemTextView, bags);
         bagsListView.setAdapter(bagArrayAdapter);
+    }
+
+    @Override
+    protected void onPause() {
+        Debug.print(TAG, "onPause()", "onPause", 1);
+        super.onPause();
+        FileOutputStream fileOutputStream;
+        ObjectOutputStream objectOutputStream = null;
+
+        try {
+            fileOutputStream = openFileOutput(BAGS_FILE, Activity.MODE_PRIVATE);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(bags);
+        } catch (IOException e) {
+            Debug.print(TAG,"save bags", "error: " + e,2);
+        } finally {
+            try {
+                objectOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void editBag(Bag bag, int position) {
