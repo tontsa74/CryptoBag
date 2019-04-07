@@ -89,23 +89,7 @@
         android:hint="coin price"
         android:inputType="numberDecimal"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Profit"
-        android:textAlignment="center"
-        android:textSize="24sp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Profit"/>
-
-    <TextView
-        android:id="@+id/profitTextview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Profit"/>
 
     <Button
         android:id="@+id/saveBagButton"

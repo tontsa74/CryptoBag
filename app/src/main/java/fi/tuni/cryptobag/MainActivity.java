@@ -32,6 +32,14 @@ public class MainActivity extends BaseActivity {
             selectedCurrencies = new ArrayList<Currency>();
         }
 
+        for (int i=0; i < currencies.size(); i++) {
+            for (Currency selCur : selectedCurrencies) {
+                if (selCur.getId().equals(currencies.get(i).getId())) {
+                    currencies.set(i, selCur);
+                }
+            }
+        }
+
         final ListView selectedCurrenciesListView = (ListView) findViewById(R.id.selectedCurrenciesListView);
         selectedCurrenciesListView.setOnItemClickListener((parent, view, position, id) -> {
             Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
@@ -56,7 +64,6 @@ public class MainActivity extends BaseActivity {
     public void editCurrency(Currency currency, int position) {
         Debug.print(TAG, "editCurrency()", "edit currency: " + currency + ", pos: " + position, 1);
         Intent intent = new Intent(this, BagActivity.class);
-        //intent.putExtra("bag", bag);
         intent.putExtra("position", position);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }

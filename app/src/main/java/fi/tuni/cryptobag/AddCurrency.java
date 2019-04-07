@@ -91,7 +91,7 @@ public class AddCurrency extends BaseActivity {
         Debug.print(TAG, "search()", "currencies " + currencies.size(), 1);
         searchCurrencies.clear();
         for (Currency currency : currencies) {
-            if (currency.getId().contains(search)){
+            if (currency.getId().contains(search) || currency.getSymbol().contains(search) || currency.getName().contains(search)){
                 searchCurrencies.add(currency);
             }
         }
@@ -103,7 +103,6 @@ public class AddCurrency extends BaseActivity {
         Debug.print(TAG, "onBackPressed()", "selectedCurrency " + selectedCurrency, 1);
 
         Intent intent = new Intent();
-        //intent.putExtra("selectedCurrency", selectedCurrency);
         int selectedCurrencyIndex = currencies.indexOf(selectedCurrency);
         Debug.print(TAG, "onBackPressed()", "selectedCurrency id: " + selectedCurrencyIndex, 1);
         intent.putExtra("selCurIndex", selectedCurrencyIndex);

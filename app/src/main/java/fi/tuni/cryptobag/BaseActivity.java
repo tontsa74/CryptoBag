@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity {
     protected final String TAG = "tsilve." + this.getClass().getName();
@@ -20,7 +21,6 @@ public class BaseActivity extends AppCompatActivity {
     static final String SELECTED_CURRENCIES_FILE = "selected_currencies";
     static List<Currency> currencies;
     static List<Currency> selectedCurrencies;
-    static List<Bag> bags;
 
     void loadCurrenciesFile() {
 

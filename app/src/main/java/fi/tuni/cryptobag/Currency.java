@@ -52,13 +52,25 @@ public class Currency implements Serializable {
         return bag;
     }
 
+    public String getBagString() {
+        String result = "";
+        try {
+            result += bag.toString() + "\n";
+        } catch (Exception e) {
+            System.out.println("tsilve." + e);
+        }
+
+        return result;
+    }
+
     public void setBag(Bag bag) {
         this.bag = bag;
     }
 
     @Override
     public String toString() {
-        return name + ": "
+        return name + " - " + getSymbol() + ": \n"
+                + getBagString()
                 + super.toString()
                 ;
     }

@@ -28,6 +28,7 @@ public class Bag implements Serializable {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+        currency.setBag(this);
     }
 
     public BigDecimal getBuyAmount() {
@@ -75,8 +76,8 @@ public class Bag implements Serializable {
     }
     @Override
     public String toString() {
-        return getCurrency().getId() + " - " + getBuyAmount() + " Profit: " + getProfit()
-                + getCurrency()
+        return "Amount: " + getBuyAmount() + " Profit: " + getProfit()
+                + "\n"
                 + super.toString()
                 ;
     }
