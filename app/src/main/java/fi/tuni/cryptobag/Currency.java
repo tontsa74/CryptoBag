@@ -70,9 +70,9 @@ public class Currency implements Serializable {
     @Override
     public String toString() {
         return name + " - " + getSymbol() + ", price: " + getPrice()
-                + "\n"
-                + getBagString()
-                + super.toString()
+//                + "\n"
+//                + getBagString()
+//                + super.toString()
                 ;
     }
 }

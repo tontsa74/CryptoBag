@@ -77,8 +77,8 @@ public class Bag implements Serializable {
     @Override
     public String toString() {
         return "Amount: " + getBuyAmount() + " Profit: " + getProfit() + " Price: " + getCoinCurrentPrice()
-                + "\n"
-                + super.toString()
+//                + "\n"
+//                + super.toString()
                 ;
     }
 }

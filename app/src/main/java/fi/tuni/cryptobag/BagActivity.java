@@ -28,6 +28,9 @@ public class BagActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bag);
 
+        Intent intent = new Intent(this, FetchService.class);
+        startService(intent);
+
         Debug.print(TAG, "onCreate()", "BagActivity", 1);
 
         buyAmountEditText = (EditText) findViewById(R.id.buyAmountEditText);
@@ -52,7 +55,8 @@ public class BagActivity extends BaseActivity {
                 buyAmountEditText.setText(bag.getBuyAmount().toString());
                 sellAmountEditText.setText(bag.getSellAmount().toString());
                 coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
-                coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
+                //coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
+                coinCurrentPriceEditText.setText(buyCurrency.getPrice());
 
                 saveBagButton.setEnabled(true);
             }
