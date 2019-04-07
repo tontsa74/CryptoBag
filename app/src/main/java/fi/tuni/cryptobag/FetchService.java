@@ -100,16 +100,16 @@ public class FetchService extends IntentService {
                 try {
                     JSONObject jsonO = new JSONObject(data);
                     Double price = jsonO.getJSONObject("market_data").getJSONObject("current_price").getDouble("eur");
-                    System.out.println("tsilve. " + price);
+                    Debug.print("tsilve","FetchCurrencyTask", c.getSymbol() + ", price: " + price ,4);
                     c.setPrice(price.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Debug.print("tsilve","FetchCurrencyTask", "price: " + e ,3);
+                    Debug.print("tsilve","FetchCurrencyTask", "price: " + e ,4);
                 }
-
+                Thread.sleep(1000);
             }
         } catch (Exception e) {
-            Debug.print("tsilve", "FetchCurrencyTask()", "Exception " + e, 1);
+            Debug.print("tsilve", "FetchCurrencyTask()", "Exception " + e, 2);
         }
 
 

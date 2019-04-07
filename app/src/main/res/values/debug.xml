@@ -2,5 +2,5 @@
 <resources>
     <integer name="debug_level">99</integer>
     <bool name="debug_console">true</bool>
-    <bool name="debug_toast">true</bool>
+    <bool name="debug_toast">false</bool>
 </resources>
