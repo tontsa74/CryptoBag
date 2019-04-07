@@ -38,15 +38,12 @@ public class AddCurrency extends BaseActivity {
         setContentView(R.layout.activity_add_currency);
         Debug.print(TAG, "AddCurrencyActivity()", "onCreate", 1);
 
-        if (currencies == null) {
+        if (currencies == null || currencies.size() <= 0) {
             Debug.print(TAG, "AddCurrencyActivity()", "currencies == null", 1);
             currencies = new ArrayList<Currency>();
             FetchDataTask process = new FetchDataTask();
             process.execute();
         }
-
-        //currenciesAdapter.addAll(currencies);
-        //currenciesAdapter.notifyDataSetChanged();
 
         searchCurrencies = new ArrayList<Currency>();
 

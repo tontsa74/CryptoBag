@@ -32,9 +32,6 @@ public class MainActivity extends BaseActivity {
             selectedCurrencies = new ArrayList<Currency>();
         }
 
-        //Currency buy = new Currency("nem", "NEM", "xem");
-        //bags.add(new Bag(buy, new BigDecimal("1000"), new BigDecimal("0.1"), new BigDecimal("0.001"), new BigDecimal("0.01")));
-
         final ListView selectedCurrenciesListView = (ListView) findViewById(R.id.selectedCurrenciesListView);
         selectedCurrenciesListView.setOnItemClickListener((parent, view, position, id) -> {
             Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
