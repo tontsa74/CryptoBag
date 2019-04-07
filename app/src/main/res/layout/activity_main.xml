@@ -17,10 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="add bag"
-        android:onClick="addBag"/>
+        android:onClick="addCurrency"/>
 
     <ListView
-        android:id="@+id/bagsListView"
+        android:id="@+id/selectedCurrenciesListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>

@@ -14,7 +14,7 @@
     </ImageView>
 
     <TextView
-        android:id="@+id/bagItemTextView"
+        android:id="@+id/currencyItemTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="bagItemTextView"

@@ -6,6 +6,7 @@ public class Currency implements Serializable {
     private String id;
     private String name;
     private String symbol;
+    private Bag bag;
 
     private String price;
 
@@ -47,6 +48,13 @@ public class Currency implements Serializable {
         this.price = price;
     }
 
+    public Bag getBag() {
+        return bag;
+    }
+
+    public void setBag(Bag bag) {
+        this.bag = bag;
+    }
 
     @Override
     public String toString() {

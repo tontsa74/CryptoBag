@@ -1,27 +1,18 @@
 package fi.tuni.cryptobag;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_BAG = 10;
     private static final int REQUEST_CODE_EDIT = 11;
 
-    ArrayAdapter bagArrayAdapter;
+    ArrayAdapter selectedCurrencyArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,44 +23,49 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
 
         loadCurrenciesFile();
-        loadBagsFile();
+        loadSelectedCurrenciesFile();
 
-        if (bags == null) {
-            bags = new ArrayList<Bag>();
+        if (currencies == null) {
+            currencies = new ArrayList<Currency>();
+        }
+        if (selectedCurrencies == null) {
+            selectedCurrencies = new ArrayList<Currency>();
         }
 
         //Currency buy = new Currency("nem", "NEM", "xem");
         //bags.add(new Bag(buy, new BigDecimal("1000"), new BigDecimal("0.1"), new BigDecimal("0.001"), new BigDecimal("0.01")));
 
-        final ListView bagsListView = (ListView) findViewById(R.id.bagsListView);
-        bagsListView.setOnItemClickListener((parent, view, position, id) -> {
+        final ListView selectedCurrenciesListView = (ListView) findViewById(R.id.selectedCurrenciesListView);
+        selectedCurrenciesListView.setOnItemClickListener((parent, view, position, id) -> {
             Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
-            Bag bag = (Bag) bagsListView.getItemAtPosition(position);
-            editBag(bag, position);
+            Currency currency = (Currency) selectedCurrenciesListView.getItemAtPosition(position);
+            editCurrency(currency, position);
         });
-        
 
-        bagArrayAdapter = new ArrayAdapter(this, R.layout.bag_item, R.id.bagItemTextView, bags);
-        bagsListView.setAdapter(bagArrayAdapter);
+
+        Debug.print(TAG, "hmm: ", "hmm: ", 1);
+        selectedCurrencyArrayAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, selectedCurrencies);
+        selectedCurrenciesListView.setAdapter(selectedCurrencyArrayAdapter);
     }
 
     @Override
     protected void onPause() {
         Debug.print(TAG, "onPause()", "onPause", 1);
         super.onPause();
-        saveBagsFile();
+        saveCurrenciesFile();
+        saveSelectedCurrenciesFile();
     }
 
-    public void editBag(Bag bag, int position) {
-        Debug.print(TAG, "editBag()", "edit bag: " + bag + ", pos: " + position, 1);
+    public void editCurrency(Currency currency, int position) {
+        Debug.print(TAG, "editCurrency()", "edit currency: " + currency + ", pos: " + position, 1);
         Intent intent = new Intent(this, BagActivity.class);
-        intent.putExtra("bag", bag);
+        //intent.putExtra("bag", bag);
         intent.putExtra("position", position);
         startActivityForResult(intent, REQUEST_CODE_EDIT);
     }
 
-    public void addBag(View view) {
-        Debug.print(TAG, "addBag()", "add new bag", 1);
+    public void addCurrency(View view) {
+        Debug.print(TAG, "MainActivity()", "addCurrency", 1);
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", -1);
         startActivityForResult(intent, REQUEST_CODE_ADD_BAG);
@@ -100,7 +96,7 @@ public class MainActivity extends BaseActivity {
                 //bags.set(position, bags.get(bagIndex));
             }
         }
-        Debug.print(TAG,"onActivityResult","bagArrayAdapter.notifyDataSetChanged", 1);
-        bagArrayAdapter.notifyDataSetChanged();
+        Debug.print(TAG,"onActivityResult","selectedCurrencyArrayAdapter.notifyDataSetChanged", 1);
+        selectedCurrencyArrayAdapter.notifyDataSetChanged();
     }
 }

@@ -16,9 +16,10 @@ import java.util.List;
 public class BaseActivity extends AppCompatActivity {
     protected final String TAG = "tsilve." + this.getClass().getName();
 
-    static final String BAGS_FILE = "bags";
     static final String CURRENCIES_FILE = "currencies";
+    static final String SELECTED_CURRENCIES_FILE = "selected_currencies";
     static List<Currency> currencies;
+    static List<Currency> selectedCurrencies;
     static List<Bag> bags;
 
     void loadCurrenciesFile() {
@@ -65,19 +66,19 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    void loadBagsFile() {
+    void loadSelectedCurrenciesFile() {
 
         FileInputStream fileInputStream;
         ObjectInputStream objectInputStream = null;
         try {
-            fileInputStream = openFileInput(BAGS_FILE);
+            fileInputStream = openFileInput(SELECTED_CURRENCIES_FILE);
             objectInputStream = new ObjectInputStream(fileInputStream);
-            bags = (ArrayList<Bag>) objectInputStream.readObject();
-            Debug.print(TAG, "BaseActivity", "loadBagsFile: " + bags.size(), 2);
+            selectedCurrencies = (ArrayList<Currency>) objectInputStream.readObject();
+            Debug.print(TAG, "BaseActivity", "loadSelectedCurrencies: " + selectedCurrencies.size(), 2);
         } catch (ClassNotFoundException e) {
-            Debug.print(TAG, "add bags", "serialization problem: " + e, 2);
+            Debug.print(TAG, "add SelectedCurrencies", "serialization problem: " + e, 2);
         } catch (IOException e) {
-            Debug.print(TAG, "add bags", "No bags file: " + e, 2);
+            Debug.print(TAG, "add SelectedCurrencies", "No bags file: " + e, 2);
         } finally {
             try {
                 if (objectInputStream != null) {
@@ -89,17 +90,17 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    void saveBagsFile() {
-        Debug.print(TAG, "BaseActivity", "saveBagsFile: " + bags.size(), 1);
+    void saveSelectedCurrenciesFile() {
+        Debug.print(TAG, "BaseActivity", "saveSelectedCurrenciesFile: " + selectedCurrencies.size(), 1);
         FileOutputStream fileOutputStream;
         ObjectOutputStream objectOutputStream = null;
 
         try {
-            fileOutputStream = openFileOutput(BAGS_FILE, Activity.MODE_PRIVATE);
+            fileOutputStream = openFileOutput(SELECTED_CURRENCIES_FILE, Activity.MODE_PRIVATE);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(bags);
+            objectOutputStream.writeObject(selectedCurrencies);
         } catch (IOException e) {
-            Debug.print(TAG,"save bags", "error: " + e,2);
+            Debug.print(TAG,"save selectedCurrencies", "error: " + e,2);
         } finally {
             try {
                 objectOutputStream.close();

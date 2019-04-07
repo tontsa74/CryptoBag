@@ -2,7 +2,6 @@ package fi.tuni.cryptobag;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -79,7 +78,7 @@ public class AddCurrency extends BaseActivity {
             }
         });
 
-        currenciesAdapter = new ArrayAdapter<>(this, R.layout.bag_item, R.id.bagItemTextView, searchCurrencies);
+        currenciesAdapter = new ArrayAdapter<>(this, R.layout.currency_item, R.id.currencyItemTextView, searchCurrencies);
         currenciesListView.setAdapter(currenciesAdapter);
 
         search("");

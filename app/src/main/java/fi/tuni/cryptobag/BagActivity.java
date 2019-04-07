@@ -47,10 +47,12 @@ public class BagActivity extends BaseActivity {
             position = extras.getInt("position");
 
             if (position > -1) {
-                bag = bags.get(position);
-                Debug.print(TAG, "onCreate()", "getIntent: " + bag + ", pos: " + position, 2);
+                buyCurrency = selectedCurrencies.get(position);
+                bag = buyCurrency.getBag();
+                //bag = bags.get(position);
+                Debug.print(TAG, "onCreate()", "getIntent, bag: " + bag + ", buyCurrency: " + buyCurrency, 2);
 
-                buyCurrency = bag.getCurrency();
+                //buyCurrency = bag.getCurrency();
                 currencyButton.setText(buyCurrency.getName());
                 buyAmountEditText.setText(bag.getBuyAmount().toString());
                 sellAmountEditText.setText(bag.getSellAmount().toString());
@@ -96,6 +98,7 @@ public class BagActivity extends BaseActivity {
 
         if (bag == null) {
             bag = new Bag(buyCurrency);
+            //buyCurrency.setBag(new Bag(buyCurrency));
         } else {
             bag.setCurrency(buyCurrency);
         }
@@ -117,14 +120,18 @@ public class BagActivity extends BaseActivity {
         Intent intent = new Intent();
         intent.putExtra("bag", bag);
 
+        buyCurrency.setBag(bag);
+
 //        int bagIndex = bags.indexOf(bag);
 //        intent.putExtra("bagIndex", bagIndex);
 
-        Debug.print(TAG, "saveBag()", position + " bag: " + bag, 1);
+        Debug.print(TAG, "saveBag()", position + " currency: " + buyCurrency, 1);
         if (position == -1) {
-            bags.add(bag);
+            //bags.add(bag);
+            selectedCurrencies.add(buyCurrency);
         } else {
-            bags.set(position, bag);
+            //bags.set(position, bag);
+            selectedCurrencies.set(position, buyCurrency);
         }
 
         intent.putExtra("position", position);
