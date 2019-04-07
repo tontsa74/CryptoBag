@@ -1,12 +1,26 @@
 package fi.tuni.cryptobag;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_BAG = 10;
@@ -14,10 +28,14 @@ public class MainActivity extends BaseActivity {
 
     ArrayAdapter selectedCurrencyArrayAdapter;
 
+    TextView totalProfit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        totalProfit = (TextView) findViewById(R.id.totalProfit);
 
         Debug.loadDebug(this);
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
@@ -34,11 +52,17 @@ public class MainActivity extends BaseActivity {
 
         for (int i=0; i < currencies.size(); i++) {
             for (Currency selCur : selectedCurrencies) {
+
                 if (selCur.getId().equals(currencies.get(i).getId())) {
                     currencies.set(i, selCur);
                 }
             }
         }
+        int total = 0;
+        for (Currency selCur : selectedCurrencies) {
+            total += Integer.parseInt(selCur.getBag().getProfit());
+        }
+        totalProfit.setText("Total profit: " + total);
 
         final ListView selectedCurrenciesListView = (ListView) findViewById(R.id.selectedCurrenciesListView);
         selectedCurrenciesListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -47,8 +71,6 @@ public class MainActivity extends BaseActivity {
             editCurrency(currency, position);
         });
 
-
-        Debug.print(TAG, "hmm: ", "hmm: ", 1);
         selectedCurrencyArrayAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, selectedCurrencies);
         selectedCurrenciesListView.setAdapter(selectedCurrencyArrayAdapter);
     }

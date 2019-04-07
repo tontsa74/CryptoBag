@@ -19,6 +19,11 @@
         android:text="add bag"
         android:onClick="addCurrency"/>
 
+    <TextView
+        android:id="@+id/totalProfit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ListView
         android:id="@+id/selectedCurrenciesListView"
         android:layout_width="match_parent"
