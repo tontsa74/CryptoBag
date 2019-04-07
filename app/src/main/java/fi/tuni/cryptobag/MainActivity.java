@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +19,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -56,6 +54,10 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }
+
+        Intent intent = new Intent(this, FetchService.class);
+        startService(intent);
+
         int total = 0;
         for (Currency selCur : selectedCurrencies) {
             total += Integer.parseInt(selCur.getBag().getProfit());
@@ -71,6 +73,7 @@ public class MainActivity extends BaseActivity {
 
         selectedCurrencyArrayAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, selectedCurrencies);
         selectedCurrenciesListView.setAdapter(selectedCurrencyArrayAdapter);
+
     }
 
     @Override
@@ -95,9 +98,9 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Debug.print(TAG, "MainActivity()", "onActivityResult", 1);
-
-        selectedCurrencyArrayAdapter.notifyDataSetChanged();
-    }
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Debug.print(TAG, "MainActivity()", "onActivityResult", 1);
+//
+//        selectedCurrencyArrayAdapter.notifyDataSetChanged();
+//    }
 }
