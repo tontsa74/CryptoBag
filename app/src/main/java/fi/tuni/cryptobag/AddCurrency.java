@@ -30,7 +30,6 @@ public class AddCurrency extends BaseActivity {
     EditText addCurrencyEditText;
     ListView currenciesListView;
     ArrayAdapter currenciesAdapter;
-    List<Currency> currencies;
     List<Currency> searchCurrencies;
     Currency selectedCurrency;
 

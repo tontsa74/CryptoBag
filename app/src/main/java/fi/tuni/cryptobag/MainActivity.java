@@ -23,7 +23,6 @@ public class MainActivity extends BaseActivity {
     private static final String BAGS_FILE = "bags";
 
     ArrayAdapter bagArrayAdapter;
-    List<Bag> bags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
