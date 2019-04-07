@@ -37,9 +37,18 @@ public class AddCurrency extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_currency);
-        Debug.print(TAG, "onCreate()", "AddCurrencyActivity", 1);
+        Debug.print(TAG, "AddCurrencyActivity()", "onCreate", 1);
 
-        currencies = new ArrayList<Currency>();
+        if (currencies == null) {
+            Debug.print(TAG, "AddCurrencyActivity()", "currencies == null", 1);
+            currencies = new ArrayList<Currency>();
+            FetchDataTask process = new FetchDataTask();
+            process.execute();
+        }
+
+        //currenciesAdapter.addAll(currencies);
+        //currenciesAdapter.notifyDataSetChanged();
+
         searchCurrencies = new ArrayList<Currency>();
 
         addCurrencyEditText = (EditText) findViewById(R.id.addCurrencyEditText);
@@ -51,7 +60,7 @@ public class AddCurrency extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Debug.print(TAG, "addCurrencyEditText.addTextChangedListener", "onTextChanged", 3);
 
-                String search = addCurrencyEditText.getText().toString().toLowerCase();
+                String search = addCurrencyEditText.getText().toString().toLowerCase().trim();
                 search(search);
             }
 
@@ -65,6 +74,7 @@ public class AddCurrency extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Debug.print(TAG, "setOnItemClickListener", "" + currenciesListView.getItemAtPosition(position), 3);
                 selectedCurrency = (Currency) currenciesListView.getItemAtPosition(position);
+                Debug.print(TAG, "setOnItemClickListener", "selectedCurrency" + selectedCurrency, 3);
                 onBackPressed();
             }
         });
@@ -72,8 +82,13 @@ public class AddCurrency extends BaseActivity {
         currenciesAdapter = new ArrayAdapter<>(this, R.layout.bag_item, R.id.bagItemTextView, searchCurrencies);
         currenciesListView.setAdapter(currenciesAdapter);
 
-        FetchDataTask process = new FetchDataTask();
-        process.execute();
+        search("");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveCurrenciesFile();
     }
 
     public void search(String search) {
@@ -92,7 +107,10 @@ public class AddCurrency extends BaseActivity {
         Debug.print(TAG, "onBackPressed()", "selectedCurrency " + selectedCurrency, 1);
 
         Intent intent = new Intent();
-        intent.putExtra("selectedCurrency", selectedCurrency);
+        //intent.putExtra("selectedCurrency", selectedCurrency);
+        int selectedCurrencyIndex = currencies.indexOf(selectedCurrency);
+        Debug.print(TAG, "onBackPressed()", "selectedCurrency id: " + selectedCurrencyIndex, 1);
+        intent.putExtra("selCurIndex", selectedCurrencyIndex);
         if (selectedCurrency != null) {
             setResult(RESULT_OK, intent);
         } else {
