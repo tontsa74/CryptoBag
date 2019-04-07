@@ -86,16 +86,16 @@ public class BagActivity extends BaseActivity {
     }
 
     public void saveBag(View view) {
-        Debug.print(TAG, "saveBag()", "save", 1);
+        Debug.print(TAG, "saveBag()",  "bag: " + bag +"buyCurrency: " + buyCurrency, 1);
 
         if (bag == null) {
             bag = new Bag(buyCurrency);
         } else {
             bag.setCurrency(buyCurrency);
+
         }
 
         if (!buyAmountEditText.getText().toString().isEmpty()) {
-            Debug.print(TAG, "saveBag()", "isEmpty" + buyAmountEditText.getText().toString(), 2);
             bag.setBuyAmount(new BigDecimal(buyAmountEditText.getText().toString()));
         }
         if (!coinBuyPriceEditText.getText().toString().isEmpty()) {
@@ -108,20 +108,14 @@ public class BagActivity extends BaseActivity {
             bag.setCoinCurrentPrice(new BigDecimal(coinCurrentPriceEditText.getText().toString()));
         }
 
-        Intent intent = new Intent();
-        intent.putExtra("bag", bag);
 
         buyCurrency.setBag(bag);
 
-        Debug.print(TAG, "saveBag()", position + " currency: " + buyCurrency, 1);
         if (position == -1) {
             selectedCurrencies.add(buyCurrency);
         } else {
             selectedCurrencies.set(position, buyCurrency);
         }
-
-        intent.putExtra("position", position);
-        setResult(RESULT_OK, intent);
 
         saveSelectedCurrenciesFile();
 
