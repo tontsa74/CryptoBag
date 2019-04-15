@@ -50,7 +50,7 @@ public class BagActivity extends BaseActivity {
                 sellAmountEditText.setText(bag.getSellAmount().toString());
                 coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
                 //coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
-                coinCurrentPriceEditText.setText(buyCurrency.getPrice());
+                coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
 
                 saveBagButton.setEnabled(true);
             }

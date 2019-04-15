@@ -1,6 +1,7 @@
 package fi.tuni.cryptobag;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Currency implements Serializable {
     private String id;
@@ -8,7 +9,7 @@ public class Currency implements Serializable {
     private String symbol;
     private Bag bag;
 
-    private String price;
+    private BigDecimal price;
 
     public Currency(String id, String name, String symbol) {
         setId(id);
@@ -40,11 +41,11 @@ public class Currency implements Serializable {
         this.symbol = symbol;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -72,7 +73,7 @@ public class Currency implements Serializable {
         return name + " - " + getSymbol() + ", price: " + getPrice()
 //                + "\n"
 //                + getBagString()
-//                + super.toString()
+                + super.toString()
                 ;
     }
 }

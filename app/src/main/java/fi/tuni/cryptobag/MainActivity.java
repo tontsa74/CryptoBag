@@ -14,11 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
-    private ServiceConnection connectionToService;
-    private boolean isBounded = false;
-    private APIService apiService;
 
-    ArrayAdapter selectedCurrencyArrayAdapter;
 
     TextView totalProfit;
 
@@ -53,9 +49,14 @@ public class MainActivity extends BaseActivity {
 
         connectionToService = new ApiServiceConnection();
 
-        int total = 0;
+        double total = 0;
         for (Currency selCur : selectedCurrencies) {
-            total += Integer.parseInt(selCur.getBag().getProfit());
+            try {
+                total += Double.parseDouble(selCur.getBag().getProfit());
+            } catch(Exception e) {
+                Debug.print(TAG, "onCreate",  "total ex: " + selCur + "_" + e, 3);
+            }
+
         }
         totalProfit.setText("Total profit: " + total);
 
@@ -102,10 +103,11 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", position);
         startActivity(intent);
-        if (isBounded) {
+        //if (isBounded) {
             Debug.print(TAG, "onCreate()", "isBounded", 2);
-            apiService.fetch();
-        }
+            //Currency[] curr = selectedCurrencies.toArray(new Currency[selectedCurrencies.size()]);
+            apiService.fetch(currency, HIGH_PRIORITY);
+        //}
     }
 
     public void addCurrency(View view) {
@@ -113,6 +115,7 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", -1);
         startActivity(intent);
+        apiService.fetch(selectedCurrencies, MEDIUM_PRIORITY);
     }
 
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -121,18 +124,5 @@ public class MainActivity extends BaseActivity {
 //        selectedCurrencyArrayAdapter.notifyDataSetChanged();
 //    }
 
-    class ApiServiceConnection implements ServiceConnection {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Debug.print(TAG, "ApiServiceConnection", "onServiceConnected", 2);
-            LocalBinder binder = (LocalBinder) service;
-            apiService = binder.getApiService();
-            isBounded = true;
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Debug.print(TAG, "ApiServiceConnection", "onServiceDisconnected", 2);
-            isBounded = false;
-        }
-    }
+
 }

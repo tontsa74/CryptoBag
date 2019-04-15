@@ -28,7 +28,6 @@ import java.util.List;
 public class AddCurrency extends BaseActivity {
     EditText addCurrencyEditText;
     ListView currenciesListView;
-    ArrayAdapter currenciesAdapter;
     List<Currency> searchCurrencies;
     Currency selectedCurrency;
 
@@ -94,6 +93,9 @@ public class AddCurrency extends BaseActivity {
             if (currency.getId().contains(search) || currency.getSymbol().contains(search) || currency.getName().contains(search)){
                 searchCurrencies.add(currency);
             }
+        }
+        if(searchCurrencies.size() < 5) {
+            apiService.fetch(searchCurrencies, HIGH_PRIORITY);
         }
         currenciesAdapter.notifyDataSetChanged();
     }
