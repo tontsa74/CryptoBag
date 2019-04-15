@@ -25,9 +25,6 @@ public class BagActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bag);
 
-//        Intent intent = new Intent(this, FetchService.class);
-//        startService(intent);
-
         Debug.print(TAG, "onCreate()", "BagActivity", 1);
 
         buyAmountEditText = (EditText) findViewById(R.id.buyAmountEditText);

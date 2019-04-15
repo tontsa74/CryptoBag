@@ -1,7 +1,11 @@
 package fi.tuni.cryptobag;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -10,6 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
+    private ServiceConnection connectionToService;
+    private boolean isBounded = false;
+    private APIService apiService;
 
     ArrayAdapter selectedCurrencyArrayAdapter;
 
@@ -44,8 +51,7 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        Intent intent = new Intent(this, FetchService.class);
-        startService(intent);
+        connectionToService = new ApiServiceConnection();
 
         int total = 0;
         for (Currency selCur : selectedCurrencies) {
@@ -66,6 +72,24 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        Debug.print(TAG, "onStart()", "onStart", 1);
+        super.onStart();
+        Intent intent = new Intent(this, APIService.class);
+        bindService(intent, connectionToService, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        Debug.print(TAG, "onStop()", "onStop", 1);
+        super.onStop();
+        if (isBounded) {
+            unbindService(connectionToService);
+            isBounded = false;
+        }
+    }
+
+    @Override
     protected void onPause() {
         Debug.print(TAG, "onPause()", "onPause", 1);
         super.onPause();
@@ -78,6 +102,10 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", position);
         startActivity(intent);
+        if (isBounded) {
+            Debug.print(TAG, "onCreate()", "isBounded", 2);
+            apiService.fetch();
+        }
     }
 
     public void addCurrency(View view) {
@@ -92,4 +120,19 @@ public class MainActivity extends BaseActivity {
 //
 //        selectedCurrencyArrayAdapter.notifyDataSetChanged();
 //    }
+
+    class ApiServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Debug.print(TAG, "ApiServiceConnection", "onServiceConnected", 2);
+            LocalBinder binder = (LocalBinder) service;
+            apiService = binder.getApiService();
+            isBounded = true;
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Debug.print(TAG, "ApiServiceConnection", "onServiceDisconnected", 2);
+            isBounded = false;
+        }
+    }
 }

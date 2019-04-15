@@ -11,9 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".FetchService"
-            android:exported="false"></service>
+        <service android:enabled="true" android:name=".APIService"></service>
 
         <activity
             android:name=".AddCurrency"
