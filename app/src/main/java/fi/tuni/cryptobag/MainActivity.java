@@ -4,9 +4,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,7 +70,27 @@ public class MainActivity extends BaseActivity {
             editCurrency(currency, position);
         });
 
-        selectedCurrencyArrayAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, selectedCurrencies);
+        selectedCurrencyArrayAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, selectedCurrencies) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View rowView = inflater.inflate(R.layout.currency_item, parent, false);
+                Currency currency = (Currency) getItem(position);// selectedCurrenciesListView.getItemAtPosition(position);
+                TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
+                TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
+                currencyItemTextView.setText(currency.getName());
+                Double profit = Double.parseDouble(currency.getBag().getProfit());
+                if(profit > 0) {
+                    profitItemTextView.setTextColor(Color.GREEN);
+                } else if(profit < 0) {
+                    profitItemTextView.setTextColor(Color.RED);
+                }
+                profitItemTextView.setText(currency.getBag().getProfit());
+                Debug.print(TAG, "selectedCurrencyArrayAdapter",  "position: " + position + currencyItemTextView.getText(), 3);
+                return rowView;//super.getView(position, convertView, parent);
+            }
+        };
         selectedCurrenciesListView.setAdapter(selectedCurrencyArrayAdapter);
 
     }
