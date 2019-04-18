@@ -30,6 +30,7 @@ public class AddCurrency extends BaseActivity {
     ListView currenciesListView;
     List<Currency> searchCurrencies;
     Currency selectedCurrency;
+    ArrayAdapter currenciesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

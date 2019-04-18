@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -25,13 +26,9 @@ import java.util.Set;
 import static fi.tuni.cryptobag.BaseActivity.HIGH_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.LOW_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.MEDIUM_PRIORITY;
-import static fi.tuni.cryptobag.BaseActivity.currenciesAdapter;
 import static fi.tuni.cryptobag.BaseActivity.fetchCount;
-import static fi.tuni.cryptobag.BaseActivity.highToFetch;
-import static fi.tuni.cryptobag.BaseActivity.lowToFetch;
-import static fi.tuni.cryptobag.BaseActivity.mediumToFetch;
+
 import static fi.tuni.cryptobag.BaseActivity.selectedCurrencies;
-import static fi.tuni.cryptobag.BaseActivity.selectedCurrencyArrayAdapter;
 
 public class APIService extends Service {
     private static final String TAG = "tsilve.APIService";
@@ -41,12 +38,16 @@ public class APIService extends Service {
     Set<Currency> currencyToFetch;
     boolean running;
 
+    static Set<Currency> lowToFetch;
+    static Set<Currency> mediumToFetch;
+    static Set<Currency> highToFetch;
 
+    LocalBroadcastManager manager;
+    Intent intent;
 
     @Override
     public IBinder onBind(Intent intent) {
         Debug.print(TAG, "APIService", "onBind", 1);
-        // Returns IBinder, which "wraps" APIService inside..
         return iBinder;
     }
     @Override
@@ -70,6 +71,9 @@ public class APIService extends Service {
         process = new FetchTask();
         fetchCount = 0;
         iBinder = new LocalBinder(this);
+
+        manager = LocalBroadcastManager.getInstance(this);
+        intent = new Intent("tsilve.api");
     }
 
     public void fetch(List<Currency> fetchList, int priority) {
@@ -89,11 +93,11 @@ public class APIService extends Service {
 
     public void fetch(Currency fetchCurrency, int priority) {
         Debug.print(TAG, "APIService", "fetch, priority: " + priority, 1);
-        if(priority == 1) {
+        if(priority == HIGH_PRIORITY) {
             highToFetch.add(fetchCurrency);
-        } else if(priority == 2) {
+        } else if(priority == MEDIUM_PRIORITY) {
             mediumToFetch.add(fetchCurrency);
-        } else if(priority == 3) {
+        } else if(priority == LOW_PRIORITY) {
             lowToFetch.add(fetchCurrency);
         }
         if(!running) {
@@ -103,7 +107,6 @@ public class APIService extends Service {
 
     public void prioritizeFetchTasks() {
         Debug.print(TAG, "APIService", "prioritizeFetchTasks", 1);
-        //if(highToFetch.size()+mediumToFetch.size()+lowToFetch.size() > 0) {
             if(fetchCount <= 0) {
                 Debug.print(TAG, "APIService", "while", 1);
                 Currency fetchNext = null;
@@ -116,11 +119,7 @@ public class APIService extends Service {
                     Debug.print(TAG, "APIService", "mediumToFetch", 3);
 
                     fetchNext = mediumToFetch.iterator().next();
-                    //process.execute(fetchNext);
                     mediumToFetch.remove(fetchNext);
-                    //Currency[] fetchCurrencies = mediumToFetch.toArray(new Currency[mediumToFetch.size()]);
-                    //process.execute(fetchCurrencies);
-                    //mediumToFetch.clear();
 
                 } else if(lowToFetch.size() > 0) {
                     Debug.print(TAG, "APIService", "lowToFetch", 3);
@@ -132,7 +131,6 @@ public class APIService extends Service {
                     new FetchTask().execute(fetchNext);
                 }
             }
-        //}
     }
 
     public class FetchTask extends AsyncTask<Currency,Void,Void> {
@@ -159,11 +157,13 @@ public class APIService extends Service {
                     try {
                         JSONObject jsonO = new JSONObject(data);
                         Double price = jsonO.getJSONObject("market_data").getJSONObject("current_price").getDouble("eur");
-                        Debug.print("tsilve","FetchCurrencyTask", c.getSymbol() + ", price: " + price + " sizes: " + highToFetch.size() + ", " + mediumToFetch.size() + ", " + lowToFetch.size(),4);
-                        c.setPrice(new BigDecimal(price.toString()));
+                        Debug.print("tsilve","FetchCurrencyTask", c + ", price: " + price + " sizes: " + highToFetch.size() + ", " + mediumToFetch.size() + ", " + lowToFetch.size(),4);
+                        //c.setPrice(new BigDecimal(price.toString()));
+                        intent.putExtra("currency", c);
+                        intent.putExtra("price", price);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Debug.print("tsilve","FetchCurrencyTask", "price: " + e ,4);
+                        Debug.print("tsilve","FetchCurrencyTask", "exception: " + e ,4);
                     }
                     fetchCount--;
                     Thread.sleep(1000);
@@ -185,15 +185,8 @@ public class APIService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Debug.print(TAG, "FetchTask", "onPostExecute: " + fetchCount, 2);
             super.onPostExecute(aVoid);
-            if(selectedCurrencyArrayAdapter != null) {
-                selectedCurrencyArrayAdapter.notifyDataSetChanged();
-            }
-
-            if(currenciesAdapter != null) {
-                currenciesAdapter.notifyDataSetChanged();
-            }
+            manager.sendBroadcast(intent);
         }
     }
 }

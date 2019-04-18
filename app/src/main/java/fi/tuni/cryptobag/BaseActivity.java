@@ -2,14 +2,9 @@ package fi.tuni.cryptobag;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity {
     protected final String TAG = "tsilve." + this.getClass().getName();
@@ -31,20 +25,14 @@ public class BaseActivity extends AppCompatActivity {
     static final String SELECTED_CURRENCIES_FILE = "selected_currencies";
     static List<Currency> currencies;
     static List<Currency> selectedCurrencies;
-    static ArrayAdapter selectedCurrencyArrayAdapter;
-    static ArrayAdapter currenciesAdapter;
-
 
     static final int HIGH_PRIORITY = 1;
     static final int MEDIUM_PRIORITY = 2;
     static final int LOW_PRIORITY = 3;
-    static Set<Currency> lowToFetch;
-    static Set<Currency> mediumToFetch;
-    static Set<Currency> highToFetch;
 
     static int fetchCount;
 
-    @Override
+/*    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connectionToService = new ApiServiceConnection();
@@ -55,7 +43,10 @@ public class BaseActivity extends AppCompatActivity {
         Debug.print(TAG, "onStart()", "onStart", 1);
         super.onStart();
         Intent intent = new Intent(this, APIService.class);
-        bindService(intent, connectionToService, Context.BIND_AUTO_CREATE);
+        if(!isBounded) {
+            bindService(intent, connectionToService, Context.BIND_AUTO_CREATE);
+        }
+
     }
 
     @Override
@@ -66,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
             unbindService(connectionToService);
             isBounded = false;
         }
-    }
+    }*/
 
     void loadCurrenciesFile() {
 

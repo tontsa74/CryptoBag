@@ -1,12 +1,12 @@
 package fi.tuni.cryptobag;
 
-import android.content.ComponentName;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +14,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
+    private static final int REQUEST_CODE_ADD_BAG = 15;
 
+    ArrayAdapter selectedCurrencyArrayAdapter;
 
     TextView totalProfit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +104,10 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "onStart()", "onStart", 1);
         super.onStart();
         Intent intent = new Intent(this, APIService.class);
-        bindService(intent, connectionToService, Context.BIND_AUTO_CREATE);
+        if(!isBounded) {
+            Debug.print(TAG, "onStart()", "!isBounded", 2);
+            bindService(intent, connectionToService, Context.BIND_AUTO_CREATE);
+        }
     }
 
     @Override
@@ -108,9 +115,31 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "onStop()", "onStop", 1);
         super.onStop();
         if (isBounded) {
+            Debug.print(TAG, "onStop()", "isBounded", 2);
             unbindService(connectionToService);
             isBounded = false;
         }
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Currency currency = (Currency) intent.getSerializableExtra("currency");
+            double price = intent.getDoubleExtra("price", 0);
+
+            Debug.print(TAG, "BroadcastReceiver()", "currency: " + currency, 2);
+            Debug.print(TAG, "BroadcastReceiver()", "intent: " + intent, 2);
+            currency.setPrice(new BigDecimal(""+price));
+            selectedCurrencyArrayAdapter.notifyDataSetChanged();
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        Debug.print(TAG, "onResume()", "onResume", 1);
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("tsilve.api"));
+
     }
 
     @Override
@@ -119,6 +148,7 @@ public class MainActivity extends BaseActivity {
         super.onPause();
         saveCurrenciesFile();
         saveSelectedCurrenciesFile();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     public void editCurrency(Currency currency, int position) {
@@ -127,7 +157,7 @@ public class MainActivity extends BaseActivity {
         intent.putExtra("position", position);
         startActivity(intent);
         //if (isBounded) {
-            Debug.print(TAG, "onCreate()", "isBounded", 2);
+            //Debug.print(TAG, "editCurrency()", "isBounded", 2);
             //Currency[] curr = selectedCurrencies.toArray(new Currency[selectedCurrencies.size()]);
             apiService.fetch(currency, HIGH_PRIORITY);
         //}
@@ -137,15 +167,19 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "MainActivity()", "addCurrency", 1);
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", -1);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_ADD_BAG);
         apiService.fetch(selectedCurrencies, MEDIUM_PRIORITY);
     }
 
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Debug.print(TAG, "MainActivity()", "onActivityResult", 1);
-//
-//        selectedCurrencyArrayAdapter.notifyDataSetChanged();
-//    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Debug.print(TAG, "MainActivity()", "onActivityResult", 1);
+
+        if (requestCode == REQUEST_CODE_ADD_BAG) {
+            Debug.print(TAG, "onActivityResult()", "REQUEST_CODE_ADD_BAG", 1);
+        }
+
+        selectedCurrencyArrayAdapter.notifyDataSetChanged();
+    }
 
 
 }

@@ -72,7 +72,7 @@ public class Currency implements Serializable {
     public String toString() {
         return name + " - " + getSymbol() + ", price: " + getPrice()
 //                + "\n"
-//                + getBagString()
+                + getBagString()
                 + super.toString()
                 ;
     }

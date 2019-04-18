@@ -46,10 +46,10 @@ public class BagActivity extends BaseActivity {
                 Debug.print(TAG, "onCreate()", "getIntent, bag: " + bag + ", buyCurrency: " + buyCurrency, 2);
 
                 currencyButton.setText(buyCurrency.getName());
+                currencyButton.setEnabled(false);
                 buyAmountEditText.setText(bag.getBuyAmount().toString());
                 sellAmountEditText.setText(bag.getSellAmount().toString());
                 coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
-                //coinCurrentPriceEditText.setText(bag.getCoinCurrentPrice().toString());
                 coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
 
                 saveBagButton.setEnabled(true);
@@ -116,6 +116,7 @@ public class BagActivity extends BaseActivity {
         }
 
         saveSelectedCurrenciesFile();
+        setResult(RESULT_OK);
 
         finish();
     }
