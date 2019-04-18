@@ -10,7 +10,8 @@
         android:layout_marginLeft="4px"
         android:layout_marginRight="10px"
         android:layout_marginTop="4px"
-        android:src="@drawable/bag" >
+        android:src="@drawable/bag"
+        android:layout_margin="10sp" >
     </ImageView>
 
     <TextView
@@ -18,19 +19,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="name"
-        android:textSize="22sp"/>
+        android:textSize="22sp"
+        android:layout_margin="10sp"/>
 
     <TextView
         android:id="@+id/profitItemTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="profit"/>
+        android:text="profit"
+        android:layout_margin="10sp"/>
 
     <TextView
         android:id="@+id/priceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="price"/>
+        android:text="price"
+        android:layout_margin="10sp"/>
 
 
 </LinearLayout>

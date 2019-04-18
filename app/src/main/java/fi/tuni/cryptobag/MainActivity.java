@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_BAG = 15;
 
-    ArrayAdapter selectedCurrencyArrayAdapter;
+    ArrayAdapter<Currency> selectedCurrencyArrayAdapter;
 
     TextView totalProfit;
 
