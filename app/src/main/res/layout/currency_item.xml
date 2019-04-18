@@ -26,5 +26,11 @@
         android:layout_height="wrap_content"
         android:text="profit"/>
 
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="price"/>
+
 
 </LinearLayout>
