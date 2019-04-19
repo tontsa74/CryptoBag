@@ -75,6 +75,11 @@ public class Bag implements Serializable {
         return (getCoinSellPrice().subtract(getCoinBuyPrice())).multiply(getSellAmount()).toString();
     }
 
+    public String getEstimated() {
+        BigDecimal result = (getCurrency().getPrice().subtract(getCoinBuyPrice())).multiply(getBuyAmount().subtract(getSellAmount()));
+        return result.toString();
+    }
+
     @Override
     public String toString() {
         return "Amount: " + getBuyAmount() + " Profit: " + getProfit() + " Price: " + getCoinSellPrice()

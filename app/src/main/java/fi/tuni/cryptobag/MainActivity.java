@@ -103,6 +103,8 @@ public class MainActivity extends BaseActivity {
                 TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
                 TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
                 TextView priceTextView = (TextView) rowView.findViewById(R.id.priceTextView);
+                TextView estimatedTextView = (TextView) rowView.findViewById(R.id.estimatedTextView);
+
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.iconImageView);
                 if(currency.getIcon() != null) {
                     //Bitmap bitmap = currency.getBitmap();
@@ -115,6 +117,19 @@ public class MainActivity extends BaseActivity {
                 } else if(profit < 0) {
                     profitItemTextView.setTextColor(Color.RED);
                 }
+
+                try {
+                    Double estimated = Double.parseDouble(currency.getBag().getEstimated());
+                    if (estimated > 0) {
+                        estimatedTextView.setTextColor(Color.GREEN);
+                    } else if (estimated < 0) {
+                        estimatedTextView.setTextColor(Color.RED);
+                    }
+                    estimatedTextView.setText(currency.getBag().getEstimated());
+                } catch (Exception e) {
+                    Debug.print(TAG, "selectedCurrencyArrayAdapter", "estimated e: " + e, 4);
+                }
+
                 profitItemTextView.setText(currency.getBag().getProfit());
                 priceTextView.setText("" + currency.getPrice());
                 //Debug.print(TAG, "selectedCurrencyArrayAdapter",  "position: " + position + currencyItemTextView.getText(), 3);
