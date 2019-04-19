@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.math.BigDecimal;
 
@@ -15,6 +17,9 @@ public class BagActivity extends BaseActivity {
 
     EditText buyAmountEditText, sellAmountEditText;
     EditText coinBuyPriceEditText, coinSellPriceEditText, coinCurrentPriceEditText;
+
+    TextView bagNameTextView;
+    ImageView bagIconView;
 
     Button currencyButton, saveBagButton;
     int position;
@@ -32,6 +37,10 @@ public class BagActivity extends BaseActivity {
         coinBuyPriceEditText = (EditText) findViewById(R.id.coinBuyPriceEditText);
         coinSellPriceEditText = (EditText) findViewById(R.id.coinSellPriceEditText);
         coinCurrentPriceEditText = (EditText) findViewById(R.id.coinCurrentPriceEditText);
+
+        bagNameTextView = (TextView) findViewById(R.id.bagNameTextView);
+        bagIconView = (ImageView) findViewById(R.id.bagIconView);
+
         currencyButton = (Button) findViewById(R.id.currencyButton);
         saveBagButton = (Button) findViewById(R.id.saveBagButton);
         saveBagButton.setEnabled(false);
@@ -46,8 +55,12 @@ public class BagActivity extends BaseActivity {
                 bag = buyCurrency.getBag();
                 Debug.print(TAG, "onCreate()", "getIntent, bag: " + bag + ", buyCurrency: " + buyCurrency, 2);
 
-                currencyButton.setText(buyCurrency.getName());
-                currencyButton.setEnabled(false);
+                if(buyCurrency.getIcon() != null) {
+                    bagIconView.setImageBitmap(buyCurrency.getBitmap());
+                }
+
+                bagNameTextView.setText(buyCurrency.toString());
+                currencyButton.setVisibility(View.GONE);
                 buyAmountEditText.setText(bag.getBuyAmount().toString());
                 sellAmountEditText.setText(bag.getSellAmount().toString());
                 coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
@@ -57,6 +70,10 @@ public class BagActivity extends BaseActivity {
                 saveBagButton.setEnabled(true);
             }
         }
+    }
+
+    public void updateActivity() {
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -71,7 +88,7 @@ public class BagActivity extends BaseActivity {
                 int selectedCurrencyIndex = (Integer) bundle.get("selCurIndex");
                 buyCurrency = currencies.get(selectedCurrencyIndex);
                 Debug.print(TAG,"onActivityResult","selectedCurrency: " + buyCurrency, 3);
-                currencyButton.setText(buyCurrency.getName());
+                bagNameTextView.setText(buyCurrency.toString());
 
                 saveBagButton.setEnabled(true);
             }
