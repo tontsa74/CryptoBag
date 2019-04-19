@@ -13,7 +13,7 @@ public class Currency implements Serializable {
     private String symbol;
     private Bag bag;
 
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.ZERO;
 
     private String imageUrl;
     byte[] icon;
@@ -111,7 +111,7 @@ public class Currency implements Serializable {
     public String toString() {
         return name + " - " + getSymbol() + ", price: " + getPrice()
 //                + "\n"
-                + getBagString()
+//                + getBagString()
                 + super.toString()
                 ;
     }

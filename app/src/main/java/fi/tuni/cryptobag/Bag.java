@@ -2,6 +2,7 @@ package fi.tuni.cryptobag;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Bag implements Serializable {
     private Currency currency;
@@ -71,18 +72,47 @@ public class Bag implements Serializable {
         }
     }
 
-    public String getProfit() {
-        return (getCoinSellPrice().subtract(getCoinBuyPrice())).multiply(getSellAmount()).toString();
+    public BigDecimal getProfit() {
+        BigDecimal result = (getCoinSellPrice().subtract(getCoinBuyPrice()))
+                .multiply(getSellAmount());
+        return result;
     }
 
-    public String getEstimated() {
-        BigDecimal result = (getCurrency().getPrice().subtract(getCoinBuyPrice())).multiply(getBuyAmount().subtract(getSellAmount()));
-        return result.toString();
+    public BigDecimal getEstimated() {
+        BigDecimal result = (getCurrency().getPrice().subtract(getCoinBuyPrice()))
+                            .multiply(getBuyAmount().subtract(getSellAmount()));
+        return result;
+    }
+
+    public BigDecimal getHoldValue() {
+        BigDecimal result = getHold().multiply(getCurrency().getPrice());
+        return result;
+    }
+
+    public BigDecimal getSoldValue() {
+        BigDecimal result = getSellAmount().multiply(getCoinSellPrice());
+        return result;
+    }
+
+    public BigDecimal getHold() {
+        BigDecimal result = getBuyAmount().subtract(getSellAmount());
+        return result;
+    }
+
+    public BigDecimal getInvested() {
+        BigDecimal result = getBuyAmount().multiply(getCoinBuyPrice());
+        return result;
+    }
+
+    public BigDecimal getTotal() {
+        BigDecimal result = getSoldValue().add(getHoldValue().subtract(getInvested()));
+        return result;
     }
 
     @Override
     public String toString() {
-        return "Amount: " + getBuyAmount() + " Profit: " + getProfit() + " Price: " + getCoinSellPrice()
+        return "Bag: "
+//                "Amount: " + getBuyAmount().toString() + " Profit: " + getProfit().toString() + " Price: " + getCoinSellPrice().toString()
 //                + "\n"
                 + super.toString()
                 ;

@@ -1,47 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:shrinkColumns="*">
 
-    <ImageView
-        android:id="@+id/iconImageView"
-        android:layout_width="66px"
-        android:layout_height="66px"
-        android:layout_marginLeft="4px"
-        android:layout_marginRight="10px"
-        android:layout_marginTop="4px"
-        android:src="@drawable/bag"
-        android:layout_margin="10sp" >
-    </ImageView>
+    <TableRow>
+        <ImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="25sp"
+            android:layout_height="25sp"
+            android:src="@drawable/bag"
+            android:layout_margin="4sp" >
+        </ImageView>
 
-    <TextView
-        android:id="@+id/currencyItemTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="name"
-        android:textSize="22sp"
-        android:layout_margin="10sp"/>
+        <TextView
+            android:id="@+id/currencyItemTextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:textSize="22sp"
+            android:layout_margin="4sp"/>
 
-    <TextView
-        android:id="@+id/profitItemTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="profit"
-        android:layout_margin="10sp"/>
+        <TextView
+            android:id="@+id/profitItemTextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd"
+            android:text="profit"
+            android:layout_margin="4sp"/>
 
-    <TextView
-        android:id="@+id/priceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="price"
-        android:layout_margin="10sp"/>
+        <TextView
+            android:id="@+id/holdValueTextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd"
+            android:text="hold"
+            android:layout_margin="4sp"/>
 
-    <TextView
-        android:id="@+id/estimatedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="estimated"
-        android:layout_margin="10sp"/>
+        <TextView
+            android:id="@+id/totalTextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd"
+            android:text="total"
+            android:layout_margin="4sp"/>
+
+    </TableRow>
 
 
-</LinearLayout>
+
+
+</TableLayout>

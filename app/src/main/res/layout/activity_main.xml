@@ -8,28 +8,139 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="right"
         android:text="Powered by CoinGecko API"
-        android:textAlignment="viewEnd"/>
+        android:layout_marginRight="10sp"/>
 
-    <Button
+
+
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="add bag"
-        android:onClick="addCurrency"/>
+        android:shrinkColumns="*">
 
-    <TextView
-        android:id="@+id/totalProfit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="24sp"/>
+        <TableRow>
+
+            <Space
+                android:id="@+id/iconImageView"
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                android:src="@drawable/bag"
+                android:layout_margin="4sp" >
+            </Space>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Coin"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Profit"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Hold"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Total"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"
+                android:lines="1"/>
+
+        </TableRow>
+
+        <TableRow>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Coins"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <Space
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                android:src="@drawable/bag"
+                android:layout_margin="4sp" >
+            </Space>
+
+            <TextView
+                android:id="@+id/totalProfit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Profit"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <TextView
+                android:id="@+id/totalHoldValue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Hold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <TextView
+                android:id="@+id/totalTotal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Total"
+                android:textSize="22sp"
+                android:layout_margin="4sp"
+                android:lines="1"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+
 
     <ListView
         android:id="@+id/selectedCurrenciesListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
     </ListView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add"
+        android:onClick="addCurrency"/>
 
 </LinearLayout>

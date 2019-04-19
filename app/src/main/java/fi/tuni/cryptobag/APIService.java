@@ -27,6 +27,7 @@ import static fi.tuni.cryptobag.BaseActivity.MEDIUM_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.fetchCount;
 
 import static fi.tuni.cryptobag.BaseActivity.initCurrencies;
+import static fi.tuni.cryptobag.BaseActivity.selectedCurrencies;
 
 public class APIService extends Service {
     private static final String TAG = "tsilve.APIService";
@@ -191,7 +192,7 @@ public class APIService extends Service {
                         prioritizeFetchTasks();
                     } else {
                         Thread.sleep(10000);
-                        lowToFetch.addAll(initCurrencies);
+                        lowToFetch.addAll(selectedCurrencies);
                         prioritizeFetchTasks();
                     }
                 }

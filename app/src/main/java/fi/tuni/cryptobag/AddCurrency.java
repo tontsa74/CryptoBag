@@ -90,7 +90,7 @@ public class AddCurrency extends BaseActivity {
                 Currency currency = (Currency) getItem(position);// selectedCurrenciesListView.getItemAtPosition(position);
                 TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
                 TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
-                TextView priceTextView = (TextView) rowView.findViewById(R.id.priceTextView);
+                //TextView priceTextView = (TextView) rowView.findViewById(R.id.priceTextView);
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.iconImageView);
                 if(currency.getIcon() != null) {
                     //Bitmap bitmap = currency.getBitmap();
