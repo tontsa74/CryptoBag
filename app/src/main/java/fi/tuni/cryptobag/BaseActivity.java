@@ -17,7 +17,6 @@ import java.util.List;
 public class BaseActivity extends AppCompatActivity {
     protected final String TAG = "tsilve." + this.getClass().getName();
 
-    ServiceConnection connectionToService;
     static boolean isBounded = false;
     static APIService apiService;
 
@@ -32,33 +31,6 @@ public class BaseActivity extends AppCompatActivity {
     static final int LOW_PRIORITY = 3;
 
     static int fetchCount;
-
-/*    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        connectionToService = new ApiServiceConnection();
-    }
-
-    @Override
-    protected void onStart() {
-        Debug.print(TAG, "onStart()", "onStart", 1);
-        super.onStart();
-        Intent intent = new Intent(this, APIService.class);
-        if(!isBounded) {
-            bindService(intent, connectionToService, Context.BIND_AUTO_CREATE);
-        }
-
-    }
-
-    @Override
-    protected void onStop() {
-        Debug.print(TAG, "onStop()", "onStop", 1);
-        super.onStop();
-        if (isBounded) {
-            unbindService(connectionToService);
-            isBounded = false;
-        }
-    }*/
 
     void loadCurrenciesFile() {
 

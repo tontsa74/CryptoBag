@@ -2,7 +2,6 @@ package fi.tuni.cryptobag;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -45,7 +44,6 @@ public class AddCurrency extends BaseActivity {
         Debug.print(TAG, "AddCurrencyActivity()", "onCreate", 1);
 
         if (currencies == null || currencies.size() <= 0) {
-            Debug.print(TAG, "AddCurrencyActivity()", "currencies == null", 1);
             currencies = new ArrayList<Currency>();
             FetchDataTask process = new FetchDataTask();
             process.execute();
@@ -60,7 +58,6 @@ public class AddCurrency extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Debug.print(TAG, "addCurrencyEditText.addTextChangedListener", "onTextChanged", 3);
 
                 String search = addCurrencyEditText.getText().toString().toLowerCase().trim();
                 search(search);
@@ -74,31 +71,30 @@ public class AddCurrency extends BaseActivity {
         currenciesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Debug.print(TAG, "setOnItemClickListener", "" + currenciesListView.getItemAtPosition(position), 3);
                 selectedCurrency = (Currency) currenciesListView.getItemAtPosition(position);
-                Debug.print(TAG, "setOnItemClickListener", "selectedCurrency" + selectedCurrency, 3);
                 onBackPressed();
             }
         });
 
-        currenciesAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, searchCurrencies) {
+        currenciesAdapter = new ArrayAdapter(this, R.layout.add_list_item, searchCurrencies) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View rowView = inflater.inflate(R.layout.currency_item, parent, false);
-                Currency currency = (Currency) getItem(position);// selectedCurrenciesListView.getItemAtPosition(position);
-                TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
-                TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
-                //TextView priceTextView = (TextView) rowView.findViewById(R.id.priceTextView);
-                ImageView imageView = (ImageView) rowView.findViewById(R.id.iconImageView);
+                View rowView = inflater.inflate(R.layout.add_list_item, parent, false);
+                Currency currency = (Currency) getItem(position);
+
+                TextView nameAddListItem = (TextView) rowView.findViewById(R.id.nameAddListItem);
+                TextView symbolAddListItem = (TextView) rowView.findViewById(R.id.symbolAddListItem);
+                ImageView imageView = (ImageView) rowView.findViewById(R.id.iconAddListItem);
+
                 if(currency.getIcon() != null) {
-                    //Bitmap bitmap = currency.getBitmap();
                     imageView.setImageBitmap(currency.getBitmap());
                 }
-                currencyItemTextView.setText(currency.toString());
-                //Debug.print(TAG, "selectedCurrencyArrayAdapter",  "position: " + position + currencyItemTextView.getText(), 3);
-                return rowView;//super.getView(position, convertView, parent);
+
+                nameAddListItem.setText(currency.getName());
+                symbolAddListItem.setText(currency.getSymbol());
+                return rowView;
             }
         };
         currenciesListView.setAdapter(currenciesAdapter);
@@ -120,11 +116,6 @@ public class AddCurrency extends BaseActivity {
                 searchCurrencies.add(currency);
             }
         }
-        if(searchCurrencies.size() < 5) {
-            apiService.fetch(searchCurrencies, HIGH_PRIORITY);
-        } else {
-            apiService.fetch(searchCurrencies, LOW_PRIORITY);
-        }
 
         currenciesAdapter.notifyDataSetChanged();
     }
@@ -135,7 +126,6 @@ public class AddCurrency extends BaseActivity {
 
         Intent intent = new Intent();
         int selectedCurrencyIndex = currencies.indexOf(selectedCurrency);
-        Debug.print(TAG, "onBackPressed()", "selectedCurrency id: " + selectedCurrencyIndex, 1);
         intent.putExtra("selCurIndex", selectedCurrencyIndex);
         if (selectedCurrency != null) {
             setResult(RESULT_OK, intent);

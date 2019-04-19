@@ -147,10 +147,8 @@ public class APIService extends Service {
             running = true;
             fetchCount += fetchCurrencies.length;
             try {
-                //Debug.print(TAG, "FetchTask", "doInBackground: " + fetchCount, 2);
 
                 for (Currency c : fetchCurrencies) {
-                    //Debug.print(TAG, "FetchTask", "doInBackground: " + c, 2);
                     String str = "https://api.coingecko.com/api/v3/coins/" + c.getId();
                     URL url = new URL(str);
                     HttpURLConnection httpURLConnection2 = (HttpURLConnection) url.openConnection();
@@ -172,10 +170,7 @@ public class APIService extends Service {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
                         byte[] icon = bStream.toByteArray();
 
-
-                        //c.setIcon(icon);
                         Debug.print("tsilve","FetchCurrencyTask", c + ", price: " + price + " sizes: " + highToFetch.size() + ", " + mediumToFetch.size() + ", " + lowToFetch.size(),4);
-                        //c.setPrice(new BigDecimal(price.toString()));
 
                         intent.putExtra("currency", c);
                         intent.putExtra("price", price);
@@ -183,10 +178,9 @@ public class APIService extends Service {
                         intent.putExtra("icon", icon);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Debug.print("tsilve","FetchCurrencyTask", "exception: " + e ,4);
                     }
                     fetchCount--;
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
 
                     if(highToFetch.size()+mediumToFetch.size()+lowToFetch.size() > 0) {
                         prioritizeFetchTasks();

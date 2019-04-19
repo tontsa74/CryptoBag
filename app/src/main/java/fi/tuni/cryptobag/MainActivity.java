@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -22,6 +23,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
+    ServiceConnection connectionToService;
     private static final int REQUEST_CODE_ADD_BAG = 15;
 
     ArrayAdapter<Currency> selectedCurrencyArrayAdapter;
@@ -114,7 +116,7 @@ public class MainActivity extends BaseActivity {
                 try {
                     BigDecimal profit = bag.getProfit().setScale(2, RoundingMode.HALF_UP);
                     if(profit.doubleValue() > 0) {
-                        profitItemTextView.setTextColor(Color.GREEN);
+                        profitItemTextView.setTextColor(Color.rgb(29, 196, 112));
                     } else if(profit.doubleValue() < 0) {
                         profitItemTextView.setTextColor(Color.RED);
                     }
@@ -127,7 +129,7 @@ public class MainActivity extends BaseActivity {
                 try {
                     BigDecimal holdValue = bag.getHoldValue().setScale(2, RoundingMode.HALF_UP);
                     if (holdValue.doubleValue() > 0) {
-                        holdValueTextView.setTextColor(Color.GREEN);
+                        holdValueTextView.setTextColor(Color.rgb(29, 196, 112));
                     } else if (holdValue.doubleValue() < 0) {
                         holdValueTextView.setTextColor(Color.RED);
                     }
@@ -139,7 +141,7 @@ public class MainActivity extends BaseActivity {
                 try {
                     BigDecimal total = bag.getTotal().setScale(2, RoundingMode.HALF_UP);
                     if (total.doubleValue() > 0) {
-                        totalTextView.setTextColor(Color.GREEN);
+                        totalTextView.setTextColor(Color.rgb(29, 196, 112));
                     } else if (total.doubleValue() < 0) {
                         totalTextView.setTextColor(Color.RED);
                     }
@@ -164,7 +166,6 @@ public class MainActivity extends BaseActivity {
         super.onStart();
         Intent intent = new Intent(this, APIService.class);
         if(!isBounded) {
-            Debug.print(TAG, "onStart()", "!isBounded", 2);
             bindService(intent, connectionToService, Context.BIND_AUTO_CREATE);
         }
     }
@@ -183,19 +184,17 @@ public class MainActivity extends BaseActivity {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Debug.print(TAG, "BroadcastReceiver()", "mMessageReceiver", 1);
+        Debug.print(TAG, "BroadcastReceiver()", "mMessageReceiver", 1);
         Currency currency = (Currency) intent.getSerializableExtra("currency");
         double price = intent.getDoubleExtra("price", 0);
         String imageUrl = intent.getStringExtra("imageUrl");
         byte[] icon = intent.getByteArrayExtra("icon");
 
-        Debug.print(TAG, "BroadcastReceiver()", "currency: " + currency, 1);
-        Debug.print(TAG, "BroadcastReceiver()", "imageUrl: " + imageUrl, 1);
-
         currency.setPrice(new BigDecimal(""+price));
         currency.setImageUrl(imageUrl);
         currency.setIcon(icon);
-        selectedCurrencyArrayAdapter.notifyDataSetChanged();
+
+        updateActivity();
         }
     };
 
@@ -221,11 +220,7 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", position);
         startActivity(intent);
-        //if (isBounded) {
-            //Debug.print(TAG, "editCurrency()", "isBounded", 2);
-            //Currency[] curr = selectedCurrencies.toArray(new Currency[selectedCurrencies.size()]);
-            apiService.fetch(currency, HIGH_PRIORITY);
-        //}
+        apiService.fetch(currency, HIGH_PRIORITY);
     }
 
     public void addCurrency(View view) {
@@ -285,7 +280,6 @@ public class MainActivity extends BaseActivity {
                 profit = profit.add(bag.getProfit());
                 hold = hold.add(bag.getHoldValue());
                 total = total.add(bag.getTotal());
-                Debug.print(TAG, "updateActivity",  "total: " + total, 3);
             } catch(Exception e) {
                 Debug.print(TAG, "updateActivity",  "total ex: " + selCur + "_" + e, 3);
             }
@@ -297,6 +291,8 @@ public class MainActivity extends BaseActivity {
 
 
         selectedCurrencyArrayAdapter.notifyDataSetChanged();
-    }
 
+        saveSelectedCurrenciesFile();
+        saveCurrenciesFile();
+    }
 }
