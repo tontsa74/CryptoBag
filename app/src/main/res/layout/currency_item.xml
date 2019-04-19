@@ -23,6 +23,15 @@
             android:layout_margin="4sp"/>
 
         <TextView
+            android:id="@+id/investTextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd"
+            android:text="invest"
+            android:layout_margin="4sp"/>
+
+        <TextView
             android:id="@+id/profitItemTextView"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -41,7 +50,7 @@
             android:layout_margin="4sp"/>
 
         <TextView
-            android:id="@+id/totalTextView"
+            android:id="@+id/totalTotalTextView"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

@@ -15,12 +15,67 @@
         <TableRow>
 
             <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Coins"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <Space
                 android:id="@+id/iconImageView"
                 android:layout_width="25sp"
                 android:layout_height="25sp"
                 android:src="@drawable/bag"
                 android:layout_margin="4sp" >
             </Space>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Invest"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"
+                android:lines="1"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Profit"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Hold"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Total"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_margin="4sp"/>
+
+        </TableRow>
+
+        <TableRow>
 
             <Space
                 android:layout_width="0dp"
@@ -31,52 +86,6 @@
                 android:textSize="22sp"
                 android:layout_margin="4sp"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textAlignment="viewEnd"
-                android:text="Profit"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:layout_margin="4sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textAlignment="viewEnd"
-                android:text="Hold"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:layout_margin="4sp"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textAlignment="viewEnd"
-                android:text="Total"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:layout_margin="4sp"
-                android:lines="1"/>
-
-        </TableRow>
-
-        <TableRow>
-
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Coins"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:layout_margin="4sp"/>
-
             <Space
                 android:layout_width="25sp"
                 android:layout_height="25sp"
@@ -85,13 +94,24 @@
             </Space>
 
             <TextView
+                android:id="@+id/totalInvest"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:text="Invest"
+                android:textSize="20sp"
+                android:layout_margin="4sp"
+                android:lines="1"/>
+
+            <TextView
                 android:id="@+id/totalProfit"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
                 android:text="Profit"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:layout_margin="4sp"/>
 
             <TextView
@@ -101,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
                 android:text="Hold"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:layout_margin="4sp"/>
 
             <TextView
@@ -111,10 +131,8 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
                 android:text="Total"
-                android:textSize="22sp"
-                android:layout_margin="4sp"
-                android:lines="1"/>
-
+                android:textSize="20sp"
+                android:layout_margin="4sp"/>
         </TableRow>
 
     </TableLayout>
@@ -126,16 +144,17 @@
         android:layout_weight="1">
     </ListView>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add"
+        android:onClick="addCurrency"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="Powered by CoinGecko API"
         android:layout_marginRight="10sp"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="add"
-        android:onClick="addCurrency"/>
 
 </LinearLayout>

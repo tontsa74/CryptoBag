@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity {
 
     ArrayAdapter<Currency> selectedCurrencyArrayAdapter;
 
-    TextView totalProfit, totalHoldValue, totalTotal;
+    TextView totalProfit, totalHoldValue, totalInvest, totalTotal;
 
 
     @Override
@@ -38,6 +38,7 @@ public class MainActivity extends BaseActivity {
 
         totalProfit = (TextView) findViewById(R.id.totalProfit);
         totalHoldValue = (TextView) findViewById(R.id.totalHoldValue);
+        totalInvest = (TextView) findViewById(R.id.totalInvest);
         totalTotal = (TextView) findViewById(R.id.totalTotal);
 
         Debug.loadDebug(this);
@@ -94,27 +95,24 @@ public class MainActivity extends BaseActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.currency_item, parent, false);
-                Currency currency = (Currency) getItem(position);// selectedCurrenciesListView.getItemAtPosition(position);
+                Currency currency = (Currency) getItem(position);
                 Bag bag = currency.getBag();
 
                 TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
                 TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
-                //TextView priceTextView = (TextView) rowView.findViewById(R.id.priceTextView);
                 TextView holdValueTextView = (TextView) rowView.findViewById(R.id.holdValueTextView);
-                TextView totalTextView = (TextView) rowView.findViewById(R.id.totalTextView);
-                //TextView investItemTextView = (TextView) rowView.findViewById(R.id.investItemTextView);
+                TextView investTextView = (TextView) rowView.findViewById(R.id.investTextView);
+                TextView totalTotalTextView = (TextView) rowView.findViewById(R.id.totalTotalTextView);
 
                 ImageView imageView = (ImageView) rowView.findViewById(R.id.iconImageView);
                 if(currency.getIcon() != null) {
-                    //Bitmap bitmap = currency.getBitmap();
                     imageView.setImageBitmap(currency.getBitmap());
                 }
                 currencyItemTextView.setText(currency.getName());
 
-                //investItemTextView.setText(bag.getInvested().toString());
 
                 try {
-                    BigDecimal profit = bag.getProfit().setScale(2, RoundingMode.HALF_UP);
+                    BigDecimal profit = bag.getProfit().setScale(0, RoundingMode.HALF_UP);
                     if(profit.doubleValue() > 0) {
                         profitItemTextView.setTextColor(Color.rgb(29, 196, 112));
                     } else if(profit.doubleValue() < 0) {
@@ -127,7 +125,7 @@ public class MainActivity extends BaseActivity {
 
 
                 try {
-                    BigDecimal holdValue = bag.getHoldValue().setScale(2, RoundingMode.HALF_UP);
+                    BigDecimal holdValue = bag.getHoldValue().setScale(0, RoundingMode.HALF_UP);
                     if (holdValue.doubleValue() > 0) {
                         holdValueTextView.setTextColor(Color.rgb(29, 196, 112));
                     } else if (holdValue.doubleValue() < 0) {
@@ -139,20 +137,29 @@ public class MainActivity extends BaseActivity {
                 }
 
                 try {
-                    BigDecimal total = bag.getTotal().setScale(2, RoundingMode.HALF_UP);
+                    BigDecimal invest = bag.getInvested().setScale(0, RoundingMode.HALF_UP);
+//                    if (invest.doubleValue() > 0) {
+//                        investTextView.setTextColor(Color.rgb(29, 196, 112));
+//                    } else if (invest.doubleValue() < 0) {
+//                        investTextView.setTextColor(Color.RED);
+//                    }
+                    investTextView.setText(invest.toString());
+                } catch (Exception e) {
+                    Debug.print(TAG, "selectedCurrencyArrayAdapter", "invest e: " + e, 4);
+                }
+
+                try {
+                    BigDecimal total = bag.getTotal().setScale(0, RoundingMode.HALF_UP);
                     if (total.doubleValue() > 0) {
-                        totalTextView.setTextColor(Color.rgb(29, 196, 112));
+                        totalTotalTextView.setTextColor(Color.rgb(29, 196, 112));
                     } else if (total.doubleValue() < 0) {
-                        totalTextView.setTextColor(Color.RED);
+                        totalTotalTextView.setTextColor(Color.RED);
                     }
-                    totalTextView.setText(total.toString());
+                    totalTotalTextView.setText(total.toString());
                 } catch (Exception e) {
                     Debug.print(TAG, "selectedCurrencyArrayAdapter", "total e: " + e, 4);
                 }
-
-                //priceTextView.setText("" + currency.getPrice());
-                //Debug.print(TAG, "selectedCurrencyArrayAdapter",  "position: " + position + currencyItemTextView.getText(), 3);
-                return rowView;//super.getView(position, convertView, parent);
+                return rowView;
             }
         };
         selectedCurrenciesListView.setAdapter(selectedCurrencyArrayAdapter);
@@ -271,6 +278,7 @@ public class MainActivity extends BaseActivity {
     private void updateActivity() {
         BigDecimal profit = BigDecimal.ZERO;
         BigDecimal hold = BigDecimal.ZERO;
+        BigDecimal invest = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
 
 
@@ -279,15 +287,17 @@ public class MainActivity extends BaseActivity {
             try {
                 profit = profit.add(bag.getProfit());
                 hold = hold.add(bag.getHoldValue());
+                invest = invest.add(bag.getInvested());
                 total = total.add(bag.getTotal());
             } catch(Exception e) {
                 Debug.print(TAG, "updateActivity",  "total ex: " + selCur + "_" + e, 3);
             }
 
         }
-        totalProfit.setText(profit.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-        totalHoldValue.setText(hold.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-        totalTotal.setText(total.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        totalProfit.setText(profit.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+        totalHoldValue.setText(hold.setScale(0,BigDecimal.ROUND_HALF_UP).toString());
+        totalInvest.setText(invest.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+        totalTotal.setText(total.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 
 
         selectedCurrencyArrayAdapter.notifyDataSetChanged();

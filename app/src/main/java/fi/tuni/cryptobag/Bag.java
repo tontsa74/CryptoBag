@@ -100,7 +100,7 @@ public class Bag implements Serializable {
     }
 
     public BigDecimal getInvested() {
-        BigDecimal result = getBuyAmount().multiply(getCoinBuyPrice());
+        BigDecimal result = getHold().multiply(getCoinBuyPrice());
         return result;
     }
 
