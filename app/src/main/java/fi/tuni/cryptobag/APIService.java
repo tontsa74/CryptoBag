@@ -180,7 +180,7 @@ public class APIService extends Service {
                         e.printStackTrace();
                     }
                     fetchCount--;
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
 
                     if(highToFetch.size()+mediumToFetch.size()+lowToFetch.size() > 0) {
                         prioritizeFetchTasks();
