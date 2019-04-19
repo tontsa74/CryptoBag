@@ -8,18 +8,18 @@ public class Bag implements Serializable {
     private BigDecimal buyAmount = BigDecimal.ZERO;
     private BigDecimal sellAmount = BigDecimal.ZERO;
     private BigDecimal coinBuyPrice = BigDecimal.ZERO;
-    private BigDecimal coinCurrentPrice = BigDecimal.ZERO;
+    private BigDecimal coinSellPrice = BigDecimal.ZERO;
 
     public Bag(Currency currency) {
         setCurrency(currency);
     }
 
-    public Bag(Currency currency, BigDecimal buyAmount, BigDecimal sellAmount, BigDecimal coinBuyPrice, BigDecimal coinCurrentPrice) {
+    public Bag(Currency currency, BigDecimal buyAmount, BigDecimal sellAmount, BigDecimal coinBuyPrice, BigDecimal coinSellPrice) {
         setCurrency(currency);
         setBuyAmount(buyAmount);
         setSellAmount(sellAmount);
         setCoinBuyPrice(coinBuyPrice);
-        setCoinCurrentPrice(coinCurrentPrice);
+        setCoinSellPrice(coinSellPrice);
     }
 
     public Currency getCurrency() {
@@ -61,22 +61,23 @@ public class Bag implements Serializable {
         }
     }
 
-    public BigDecimal getCoinCurrentPrice() {
-        return coinCurrentPrice;
+    public BigDecimal getCoinSellPrice() {
+        return coinSellPrice;
     }
 
-    public void setCoinCurrentPrice(BigDecimal coinCurrentPrice) {
-        if(coinCurrentPrice.doubleValue() >= 0) {
-            this.coinCurrentPrice = coinCurrentPrice;
+    public void setCoinSellPrice(BigDecimal coinSellPrice) {
+        if(coinSellPrice.doubleValue() >= 0) {
+            this.coinSellPrice = coinSellPrice;
         }
     }
 
     public String getProfit() {
-        return (getCoinCurrentPrice().subtract(getCoinBuyPrice())).multiply(getSellAmount()).toString();
+        return (getCoinSellPrice().subtract(getCoinBuyPrice())).multiply(getSellAmount()).toString();
     }
+
     @Override
     public String toString() {
-        return "Amount: " + getBuyAmount() + " Profit: " + getProfit() + " Price: " + getCoinCurrentPrice()
+        return "Amount: " + getBuyAmount() + " Profit: " + getProfit() + " Price: " + getCoinSellPrice()
 //                + "\n"
                 + super.toString()
                 ;

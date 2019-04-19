@@ -53,7 +53,9 @@ public class Currency implements Serializable {
     }
 
     public void setPrice(BigDecimal price) {
-        this.price = price;
+        if (price.doubleValue() >= 0 ) {
+            this.price = price;
+        }
     }
 
     public Bag getBag() {

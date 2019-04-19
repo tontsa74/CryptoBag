@@ -14,7 +14,7 @@ public class BagActivity extends BaseActivity {
     Bag bag;
 
     EditText buyAmountEditText, sellAmountEditText;
-    EditText coinBuyPriceEditText, coinCurrentPriceEditText;
+    EditText coinBuyPriceEditText, coinSellPriceEditText, coinCurrentPriceEditText;
 
     Button currencyButton, saveBagButton;
     int position;
@@ -30,6 +30,7 @@ public class BagActivity extends BaseActivity {
         buyAmountEditText = (EditText) findViewById(R.id.buyAmountEditText);
         sellAmountEditText = (EditText) findViewById(R.id.sellAmountEditText);
         coinBuyPriceEditText = (EditText) findViewById(R.id.coinBuyPriceEditText);
+        coinSellPriceEditText = (EditText) findViewById(R.id.coinSellPriceEditText);
         coinCurrentPriceEditText = (EditText) findViewById(R.id.coinCurrentPriceEditText);
         currencyButton = (Button) findViewById(R.id.currencyButton);
         saveBagButton = (Button) findViewById(R.id.saveBagButton);
@@ -50,6 +51,7 @@ public class BagActivity extends BaseActivity {
                 buyAmountEditText.setText(bag.getBuyAmount().toString());
                 sellAmountEditText.setText(bag.getSellAmount().toString());
                 coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
+                coinSellPriceEditText.setText(bag.getCoinSellPrice().toString());
                 coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
 
                 saveBagButton.setEnabled(true);
@@ -102,8 +104,11 @@ public class BagActivity extends BaseActivity {
         if (!sellAmountEditText.getText().toString().isEmpty()) {
             bag.setSellAmount(new BigDecimal(sellAmountEditText.getText().toString()));
         }
+        if (!coinSellPriceEditText.getText().toString().isEmpty()) {
+            bag.setCoinSellPrice(new BigDecimal(coinSellPriceEditText.getText().toString()));
+        }
         if (!coinCurrentPriceEditText.getText().toString().isEmpty()) {
-            bag.setCoinCurrentPrice(new BigDecimal(coinCurrentPriceEditText.getText().toString()));
+            buyCurrency.setPrice(new BigDecimal(coinCurrentPriceEditText.getText().toString()));
         }
 
 

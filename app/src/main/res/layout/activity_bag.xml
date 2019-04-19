@@ -49,13 +49,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="coin price"/>
+        android:text="coin buy price"/>
 
     <EditText
         android:id="@+id/coinBuyPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="coin price"
+        android:hint="coin buy price"
         android:inputType="numberDecimal"/>
 
     <TextView
@@ -80,13 +80,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="coin price"/>
+        android:text="coin sell price"/>
 
     <EditText
-        android:id="@+id/coinCurrentPriceEditText"
+        android:id="@+id/coinSellPriceEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="coin price"
+        android:hint="coin sell price"
         android:inputType="numberDecimal"/>
 
 
@@ -97,5 +97,18 @@
         android:layout_height="wrap_content"
         android:text="Save bag"
         android:onClick="saveBag"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="coin current price"/>
+
+    <EditText
+        android:id="@+id/coinCurrentPriceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="coin current price"
+        android:inputType="numberDecimal"/>
 
 </LinearLayout>
