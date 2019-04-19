@@ -55,25 +55,26 @@ public class BagActivity extends BaseActivity {
                 bag = buyCurrency.getBag();
                 Debug.print(TAG, "onCreate()", "getIntent, bag: " + bag + ", buyCurrency: " + buyCurrency, 2);
 
-                if(buyCurrency.getIcon() != null) {
-                    bagIconView.setImageBitmap(buyCurrency.getBitmap());
-                }
-
-                bagNameTextView.setText(buyCurrency.toString());
                 currencyButton.setVisibility(View.GONE);
-                buyAmountEditText.setText(bag.getBuyAmount().toString());
-                sellAmountEditText.setText(bag.getSellAmount().toString());
-                coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
-                coinSellPriceEditText.setText(bag.getCoinSellPrice().toString());
-                coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
-
                 saveBagButton.setEnabled(true);
+
+                updateActivity();
             }
         }
     }
 
     public void updateActivity() {
 
+        if(buyCurrency.getIcon() != null) {
+            bagIconView.setImageBitmap(buyCurrency.getBitmap());
+        }
+
+        bagNameTextView.setText(buyCurrency.toString());
+        buyAmountEditText.setText(bag.getBuyAmount().toString());
+        sellAmountEditText.setText(bag.getSellAmount().toString());
+        coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
+        coinSellPriceEditText.setText(bag.getCoinSellPrice().toString());
+        coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
