@@ -25,6 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     static final String SELECTED_CURRENCIES_FILE = "selected_currencies";
     static List<Currency> currencies;
     static List<Currency> selectedCurrencies;
+    static List<Currency> initCurrencies;
 
     static final int HIGH_PRIORITY = 1;
     static final int MEDIUM_PRIORITY = 2;

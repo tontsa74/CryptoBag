@@ -1,15 +1,21 @@
 package fi.tuni.cryptobag;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +81,26 @@ public class AddCurrency extends BaseActivity {
             }
         });
 
-        currenciesAdapter = new ArrayAdapter<>(this, R.layout.currency_item, R.id.currencyItemTextView, searchCurrencies);
+        currenciesAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, searchCurrencies) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View rowView = inflater.inflate(R.layout.currency_item, parent, false);
+                Currency currency = (Currency) getItem(position);// selectedCurrenciesListView.getItemAtPosition(position);
+                TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
+                TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
+                TextView priceTextView = (TextView) rowView.findViewById(R.id.priceTextView);
+                ImageView imageView = (ImageView) rowView.findViewById(R.id.iconImageView);
+                if(currency.getIcon() != null) {
+                    //Bitmap bitmap = currency.getBitmap();
+                    imageView.setImageBitmap(currency.getBitmap());
+                }
+                currencyItemTextView.setText(currency.toString());
+                //Debug.print(TAG, "selectedCurrencyArrayAdapter",  "position: " + position + currencyItemTextView.getText(), 3);
+                return rowView;//super.getView(position, convertView, parent);
+            }
+        };
         currenciesListView.setAdapter(currenciesAdapter);
 
         search("");
@@ -97,7 +122,10 @@ public class AddCurrency extends BaseActivity {
         }
         if(searchCurrencies.size() < 5) {
             apiService.fetch(searchCurrencies, HIGH_PRIORITY);
+        } else {
+            apiService.fetch(searchCurrencies, LOW_PRIORITY);
         }
+
         currenciesAdapter.notifyDataSetChanged();
     }
 

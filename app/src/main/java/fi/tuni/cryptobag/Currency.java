@@ -1,5 +1,9 @@
 package fi.tuni.cryptobag;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -10,6 +14,9 @@ public class Currency implements Serializable {
     private Bag bag;
 
     private BigDecimal price;
+
+    private String imageUrl;
+    byte[] icon;
 
     public Currency(String id, String name, String symbol) {
         setId(id);
@@ -66,6 +73,36 @@ public class Currency implements Serializable {
 
     public void setBag(Bag bag) {
         this.bag = bag;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Bitmap getBitmap() {
+        Bitmap bmp;
+
+        byte[] byteArray = this.icon;
+        bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        return bmp;
+    }
+
+    public void setIcon(Bitmap bitmap) {
+        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+        this.icon = bStream.toByteArray();
+    }
+
+    public void setIcon(byte[] icon) {
+        this.icon = icon;
+    }
+
+    public byte[] getIcon() {
+        return icon;
     }
 
     @Override

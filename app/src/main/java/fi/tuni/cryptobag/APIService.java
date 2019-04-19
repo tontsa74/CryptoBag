@@ -2,23 +2,21 @@ package fi.tuni.cryptobag;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +26,7 @@ import static fi.tuni.cryptobag.BaseActivity.LOW_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.MEDIUM_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.fetchCount;
 
-import static fi.tuni.cryptobag.BaseActivity.selectedCurrencies;
+import static fi.tuni.cryptobag.BaseActivity.initCurrencies;
 
 public class APIService extends Service {
     private static final String TAG = "tsilve.APIService";
@@ -64,9 +62,18 @@ public class APIService extends Service {
         Debug.print(TAG, "APIService", "onCreate", 1);
         currencyToFetch = new LinkedHashSet<>();
 
-        lowToFetch = new LinkedHashSet<>();
-        mediumToFetch = new LinkedHashSet<>();
-        highToFetch = new LinkedHashSet<>();
+        if (lowToFetch == null) {
+            lowToFetch = new LinkedHashSet<>();
+        }
+        if (mediumToFetch == null) {
+            mediumToFetch = new LinkedHashSet<>();
+        }
+        if (highToFetch == null) {
+            highToFetch = new LinkedHashSet<>();
+        }
+
+
+
 
         process = new FetchTask();
         fetchCount = 0;
@@ -157,10 +164,22 @@ public class APIService extends Service {
                     try {
                         JSONObject jsonO = new JSONObject(data);
                         Double price = jsonO.getJSONObject("market_data").getJSONObject("current_price").getDouble("eur");
+                        String imageUrl = jsonO.getJSONObject("image").getString("thumb");
+                        URL tempUrl = new URL(imageUrl);
+                        Bitmap bitmap = BitmapFactory.decodeStream(tempUrl.openConnection().getInputStream());
+                        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
+                        byte[] icon = bStream.toByteArray();
+
+
+                        //c.setIcon(icon);
                         Debug.print("tsilve","FetchCurrencyTask", c + ", price: " + price + " sizes: " + highToFetch.size() + ", " + mediumToFetch.size() + ", " + lowToFetch.size(),4);
                         //c.setPrice(new BigDecimal(price.toString()));
+
                         intent.putExtra("currency", c);
                         intent.putExtra("price", price);
+                        intent.putExtra("imageUrl", imageUrl);
+                        intent.putExtra("icon", icon);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         Debug.print("tsilve","FetchCurrencyTask", "exception: " + e ,4);
@@ -172,7 +191,7 @@ public class APIService extends Service {
                         prioritizeFetchTasks();
                     } else {
                         Thread.sleep(10000);
-                        lowToFetch.addAll(selectedCurrencies);
+                        lowToFetch.addAll(initCurrencies);
                         prioritizeFetchTasks();
                     }
                 }

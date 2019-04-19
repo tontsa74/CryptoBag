@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -46,8 +47,16 @@ public class MainActivity extends BaseActivity {
         if (selectedCurrencies == null) {
             selectedCurrencies = new ArrayList<Currency>();
         }
+        if (initCurrencies == null) {
+            initCurrencies = new ArrayList<Currency>();
+        }
 
         for (int i=0; i < currencies.size(); i++) {
+            if(currencies.get(i).getIcon() != null) {
+
+            } else {
+                initCurrencies.add(currencies.get(i));
+            }
             for (Currency selCur : selectedCurrencies) {
 
                 if (selCur.getId().equals(currencies.get(i).getId())) {
@@ -94,6 +103,11 @@ public class MainActivity extends BaseActivity {
                 TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
                 TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
                 TextView priceTextView = (TextView) rowView.findViewById(R.id.priceTextView);
+                ImageView imageView = (ImageView) rowView.findViewById(R.id.iconImageView);
+                if(currency.getIcon() != null) {
+                    //Bitmap bitmap = currency.getBitmap();
+                    imageView.setImageBitmap(currency.getBitmap());
+                }
                 currencyItemTextView.setText(currency.getName());
                 Double profit = Double.parseDouble(currency.getBag().getProfit());
                 if(profit > 0) {
@@ -103,7 +117,7 @@ public class MainActivity extends BaseActivity {
                 }
                 profitItemTextView.setText(currency.getBag().getProfit());
                 priceTextView.setText("" + currency.getPrice());
-                Debug.print(TAG, "selectedCurrencyArrayAdapter",  "position: " + position + currencyItemTextView.getText(), 3);
+                //Debug.print(TAG, "selectedCurrencyArrayAdapter",  "position: " + position + currencyItemTextView.getText(), 3);
                 return rowView;//super.getView(position, convertView, parent);
             }
         };
@@ -136,13 +150,18 @@ public class MainActivity extends BaseActivity {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Currency currency = (Currency) intent.getSerializableExtra("currency");
-            double price = intent.getDoubleExtra("price", 0);
+        Currency currency = (Currency) intent.getSerializableExtra("currency");
+        double price = intent.getDoubleExtra("price", 0);
+        String imageUrl = intent.getStringExtra("imageUrl");
+        byte[] icon = intent.getByteArrayExtra("icon");
 
-            Debug.print(TAG, "BroadcastReceiver()", "currency: " + currency, 2);
-            Debug.print(TAG, "BroadcastReceiver()", "intent: " + intent, 2);
-            currency.setPrice(new BigDecimal(""+price));
-            selectedCurrencyArrayAdapter.notifyDataSetChanged();
+        Debug.print(TAG, "BroadcastReceiver()", "currency: " + currency, 1);
+        Debug.print(TAG, "BroadcastReceiver()", "imageUrl: " + imageUrl, 1);
+
+        currency.setPrice(new BigDecimal(""+price));
+        currency.setImageUrl(imageUrl);
+        currency.setIcon(icon);
+        selectedCurrencyArrayAdapter.notifyDataSetChanged();
         }
     };
 
