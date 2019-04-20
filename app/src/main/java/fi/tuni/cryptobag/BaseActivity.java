@@ -17,7 +17,6 @@ import java.util.List;
 public class BaseActivity extends AppCompatActivity {
     protected final String TAG = "tsilve." + this.getClass().getName();
 
-    static boolean isBounded = false;
 
     static final String CURRENCIES_FILE = "currencies";
     static final String SELECTED_FILE = "selected";

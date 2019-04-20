@@ -183,6 +183,7 @@ public class APIService extends Service {
                         prioritizeFetchTasks();
                     } else {
                         Thread.sleep(2000);
+                        //lowToFetch.addAll(fetchSelected);
                         prioritizeFetchTasks();
                     }
                 }

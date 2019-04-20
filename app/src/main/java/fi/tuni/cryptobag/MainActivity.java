@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class MainActivity extends BaseActivity {
     ServiceConnection connectionToService;
     APIService apiService;
+    boolean isBounded = false;
     private static final int REQUEST_CODE_ADD_BAG = 15;
 
     ArrayAdapter<Currency> selectedBagsArrayAdapter;
@@ -294,7 +295,9 @@ public class MainActivity extends BaseActivity {
             fetchSelected.add(bag.getCurrency());
         }
         apiService.fetch(fetchSelected, MEDIUM_PRIORITY);
+    }
 
+    public void fetchInit() {
         initCurrencies.clear();
         for (int i=0; i < currencies.size(); i++) {
             if(currencies.get(i).getIcon() != null) {
@@ -315,6 +318,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void updateClick(View view) {
+        fetchBags();
         updateActivity();
     }
 
