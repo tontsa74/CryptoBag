@@ -3,7 +3,6 @@ package fi.tuni.cryptobag;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,9 +12,24 @@ import java.util.List;
  * The type Currency.
  */
 public class Currency implements Serializable {
+    /**
+     * The Id.
+     */
     private String id;
+
+    /**
+     * The Name.
+     */
     private String name;
+
+    /**
+     * The Symbol.
+     */
     private String symbol;
+
+    /**
+     * The Bags.
+     */
     private List<Bag> bags;
 
     private BigDecimal price = BigDecimal.ZERO;
@@ -24,7 +38,7 @@ public class Currency implements Serializable {
     /**
      * The Icon.
      */
-    byte[] icon;
+    private byte[] icon;
 
     /**
      * Instantiates a new Currency.
@@ -33,7 +47,7 @@ public class Currency implements Serializable {
      * @param name   the name
      * @param symbol the symbol
      */
-    public Currency(String id, String name, String symbol) {
+    Currency(String id, String name, String symbol) {
         setId(id);
         setName(name);
         setSymbol(symbol);
@@ -46,7 +60,7 @@ public class Currency implements Serializable {
      *
      * @return the id
      */
-    public String getId() {
+    String getId() {
         return id;
     }
 
@@ -55,7 +69,7 @@ public class Currency implements Serializable {
      *
      * @param id the id
      */
-    public void setId(String id) {
+    private void setId(String id) {
         this.id = id;
     }
 
@@ -64,7 +78,7 @@ public class Currency implements Serializable {
      *
      * @return the name
      */
-    public String getName() {
+    String getName() {
         return name;
     }
 
@@ -82,7 +96,7 @@ public class Currency implements Serializable {
      *
      * @return the symbol
      */
-    public String getSymbol() {
+    String getSymbol() {
         return symbol;
     }
 
@@ -91,7 +105,7 @@ public class Currency implements Serializable {
      *
      * @param symbol the symbol
      */
-    public void setSymbol(String symbol) {
+    private void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
@@ -100,7 +114,7 @@ public class Currency implements Serializable {
      *
      * @return the price
      */
-    public BigDecimal getPrice() {
+    BigDecimal getPrice() {
         return price;
     }
 
@@ -109,7 +123,7 @@ public class Currency implements Serializable {
      *
      * @param price the price
      */
-    public void setPrice(BigDecimal price) {
+    void setPrice(BigDecimal price) {
         if (price.doubleValue() >= 0 ) {
             this.price = price;
         }
@@ -120,7 +134,7 @@ public class Currency implements Serializable {
      *
      * @return the bags
      */
-    public List<Bag> getBags() {
+    List<Bag> getBags() {
         return bags;
     }
 
@@ -129,7 +143,7 @@ public class Currency implements Serializable {
      *
      * @param imageUrl the image url
      */
-    public void setImageUrl(String imageUrl) {
+    void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -138,7 +152,7 @@ public class Currency implements Serializable {
      *
      * @return the bitmap
      */
-    public Bitmap getBitmap() {
+    Bitmap getBitmap() {
         Bitmap bmp;
 
         byte[] byteArray = this.icon;
@@ -151,7 +165,7 @@ public class Currency implements Serializable {
      *
      * @param icon the icon
      */
-    public void setIcon(byte[] icon) {
+    void setIcon(byte[] icon) {
         this.icon = icon;
     }
 
@@ -160,7 +174,7 @@ public class Currency implements Serializable {
      *
      * @return the byte [ ]
      */
-    public byte[] getIcon() {
+    byte[] getIcon() {
         return icon;
     }
 

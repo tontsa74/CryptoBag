@@ -5,7 +5,7 @@ import android.os.Binder;
 /**
  * The type Local binder.
  */
-public class LocalBinder extends Binder {
+class LocalBinder extends Binder {
     private static final String TAG = "tsilve.APIService";
     private APIService apiService;
 
@@ -14,7 +14,7 @@ public class LocalBinder extends Binder {
      *
      * @param apiService the api service
      */
-    public LocalBinder(APIService apiService) {
+    LocalBinder(APIService apiService) {
 
         Debug.print(TAG, "LocalBinder", "LocalBinder", 1);
         this.apiService = apiService;
@@ -25,7 +25,7 @@ public class LocalBinder extends Binder {
      *
      * @return the api service
      */
-    public APIService getApiService() {
+    APIService getApiService() {
         Debug.print(TAG, "LocalBinder", "getApiService", 1);
         return this.apiService;
     }

@@ -71,17 +71,17 @@ public class BagActivity extends BaseActivity {
 
         Debug.print(TAG, "onCreate()", "BagActivity", 1);
 
-        buyAmountEditText = (EditText) findViewById(R.id.buyAmountEditText);
-        sellAmountEditText = (EditText) findViewById(R.id.sellAmountEditText);
-        coinBuyPriceEditText = (EditText) findViewById(R.id.coinBuyPriceEditText);
-        coinSellPriceEditText = (EditText) findViewById(R.id.coinSellPriceEditText);
-        coinCurrentPriceEditText = (EditText) findViewById(R.id.coinCurrentPriceEditText);
+        buyAmountEditText = findViewById(R.id.buyAmountEditText);
+        sellAmountEditText = findViewById(R.id.sellAmountEditText);
+        coinBuyPriceEditText = findViewById(R.id.coinBuyPriceEditText);
+        coinSellPriceEditText = findViewById(R.id.coinSellPriceEditText);
+        coinCurrentPriceEditText = findViewById(R.id.coinCurrentPriceEditText);
 
-        bagNameTextView = (TextView) findViewById(R.id.bagNameTextView);
-        bagIconView = (ImageView) findViewById(R.id.bagIconView);
+        bagNameTextView = findViewById(R.id.bagNameTextView);
+        bagIconView = findViewById(R.id.bagIconView);
 
-        currencyButton = (Button) findViewById(R.id.currencyButton);
-        saveBagButton = (Button) findViewById(R.id.saveBagButton);
+        currencyButton = findViewById(R.id.currencyButton);
+        saveBagButton = findViewById(R.id.saveBagButton);
         saveBagButton.setEnabled(false);
 
         Bundle extras = getIntent().getExtras();

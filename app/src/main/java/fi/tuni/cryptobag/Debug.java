@@ -7,7 +7,7 @@ import android.widget.Toast;
 /**
  * The type Debug.
  */
-public class Debug {
+class Debug {
     private static Context HOST;
     private static int DEBUG_LEVEL;
     private static boolean DEBUG_CONSOLE;
