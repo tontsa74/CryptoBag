@@ -7,8 +7,7 @@
     tools:context=".BagActivity"
     android:orientation="vertical">
 
-    <TableRow
-        android:onClick="updateClickBagActivity">
+    <TableRow>
         <ImageView
             android:id="@+id/bagIconView"
             android:layout_width="25sp"

@@ -141,12 +141,6 @@ public class MainActivity extends BaseActivity {
                 } catch (Exception e) {
                     Debug.print(TAG, "selectedBagsArrayAdapter", "total e: " + e, 4);
                 }
-
- /*               // DEBUG
-                TextView debug = (TextView) rowView.findViewById(R.id.mainDebug);
-                debug.setText(currency.toString() + " -- " + bag.toString());
-                // DEBUG
-*/
                 return rowView;
             }
         };
