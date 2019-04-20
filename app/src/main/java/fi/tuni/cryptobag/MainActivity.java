@@ -3,7 +3,6 @@ package fi.tuni.cryptobag;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -24,15 +23,42 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends BaseActivity {
+    /**
+     * The Connection to service.
+     */
     ServiceConnection connectionToService;
+    /**
+     * The Api service.
+     */
     APIService apiService;
+    /**
+     * The Is bounded.
+     */
     boolean isBounded = false;
     private static final int REQUEST_CODE_ADD_BAG = 15;
 
+    /**
+     * The Selected bags array adapter.
+     */
     ArrayAdapter<Currency> selectedBagsArrayAdapter;
 
-    TextView totalProfit, totalHoldValue, totalInvest, totalTotal;
+    /**
+     * The Total profit.
+     */
+    TextView totalProfit, /**
+     * The Total hold value.
+     */
+    totalHoldValue, /**
+     * The Total invest.
+     */
+    totalInvest, /**
+     * The Total total.
+     */
+    totalTotal;
 
 
     @Override
@@ -202,6 +228,12 @@ public class MainActivity extends BaseActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
+    /**
+     * Edit bag.
+     *
+     * @param bag      the bag
+     * @param position the position
+     */
     public void editBag(Bag bag, int position) {
         Debug.print(TAG, "editCurrency()", "edit currency: " + bag + ", pos: " + position, 1);
         Intent intent = new Intent(this, BagActivity.class);
@@ -211,6 +243,11 @@ public class MainActivity extends BaseActivity {
         fetchBags();
     }
 
+    /**
+     * Add bag.
+     *
+     * @param view the view
+     */
     public void addBag(View view) {
         Debug.print(TAG, "MainActivity()", "addBag", 1);
         Intent intent = new Intent(this, BagActivity.class);
@@ -220,6 +257,12 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * Delete bag.
+     *
+     * @param bag      the bag
+     * @param position the position
+     */
     public void deleteBag(Bag bag, int position) {
         Debug.print(TAG, "deleteBag()", "edit bag: " + bag + ", pos: " + position, 1);
 
@@ -291,6 +334,9 @@ public class MainActivity extends BaseActivity {
         apiService.fetch(fetchSelected, MEDIUM_PRIORITY);
     }
 
+    /**
+     * Fetch init.
+     */
     public void fetchInit() {
         initCurrencies.clear();
         for (int i=0; i < currencies.size(); i++) {
@@ -311,12 +357,20 @@ public class MainActivity extends BaseActivity {
         apiService.fetch(initCurrencies, LOW_PRIORITY);
     }
 
+    /**
+     * Update click.
+     *
+     * @param view the view
+     */
     public void updateClick(View view) {
         fetchBags();
         updateActivity();
     }
 
 
+    /**
+     * The type Api service connection.
+     */
     class ApiServiceConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

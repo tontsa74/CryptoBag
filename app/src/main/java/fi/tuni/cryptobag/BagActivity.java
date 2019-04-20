@@ -10,19 +10,58 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 
+/**
+ * The type Bag activity.
+ */
 public class BagActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_CURRENCY = 20;
 
+    /**
+     * The Bag.
+     */
     Bag bag;
 
-    EditText buyAmountEditText, sellAmountEditText;
-    EditText coinBuyPriceEditText, coinSellPriceEditText, coinCurrentPriceEditText;
+    /**
+     * The Buy amount edit text.
+     */
+    EditText buyAmountEditText, /**
+     * The Sell amount edit text.
+     */
+    sellAmountEditText;
+    /**
+     * The Coin buy price edit text.
+     */
+    EditText coinBuyPriceEditText, /**
+     * The Coin sell price edit text.
+     */
+    coinSellPriceEditText, /**
+     * The Coin current price edit text.
+     */
+    coinCurrentPriceEditText;
 
+    /**
+     * The Bag name text view.
+     */
     TextView bagNameTextView;
+    /**
+     * The Bag icon view.
+     */
     ImageView bagIconView;
 
-    Button currencyButton, saveBagButton;
+    /**
+     * The Currency button.
+     */
+    Button currencyButton, /**
+     * The Save bag button.
+     */
+    saveBagButton;
+    /**
+     * The Position.
+     */
     int position;
+    /**
+     * The Buy currency.
+     */
     Currency buyCurrency;
 
     @Override
@@ -64,6 +103,9 @@ public class BagActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Update activity.
+     */
     public void updateActivity() {
 
         if(buyCurrency.getIcon() != null) {
@@ -104,6 +146,11 @@ public class BagActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    /**
+     * Save bag.
+     *
+     * @param view the view
+     */
     public void saveBag(View view) {
         Debug.print(TAG, "saveBag()",  "bag: " + bag +"buyCurrency: " + buyCurrency, 1);
 
@@ -145,6 +192,11 @@ public class BagActivity extends BaseActivity {
         finish();
     }
 
+    /**
+     * Add currency.
+     *
+     * @param view the view
+     */
     public void addCurrency(View view) {
         Debug.print(TAG, "addCurrency()", "add new currency", 1);
         Intent intent = new Intent(this, AddCurrency.class);

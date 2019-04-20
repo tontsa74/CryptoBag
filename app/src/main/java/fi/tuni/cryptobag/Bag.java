@@ -3,109 +3,200 @@ package fi.tuni.cryptobag;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Bag implements Serializable {
+/**
+ * The type Bag.
+ */
+class Bag implements Serializable {
+    /**
+     * The Currency.
+     */
     private Currency currency;
+    /**
+     * The Buy amount.
+     */
     private BigDecimal buyAmount = BigDecimal.ZERO;
+    /**
+     * The Sell amount.
+     */
     private BigDecimal sellAmount = BigDecimal.ZERO;
+    /**
+     * The Coin buy price.
+     */
     private BigDecimal coinBuyPrice = BigDecimal.ZERO;
+    /**
+     * The Coin sell price.
+     */
     private BigDecimal coinSellPrice = BigDecimal.ZERO;
 
-    public Bag(Currency currency) {
+    /**
+     * Instantiates a new Bag.
+     *
+     * @param currency the currency
+     */
+    Bag(Currency currency) {
         setCurrency(currency);
     }
 
 
-    public Currency getCurrency() {
+    /**
+     * Gets currency.
+     *
+     * @return the currency
+     */
+    Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    /**
+     * Sets currency.
+     *
+     * @param currency the currency
+     */
+    void setCurrency(Currency currency) {
         this.currency = currency;
         currency.getBags().add(this);
     }
 
-    public BigDecimal getBuyAmount() {
+    /**
+     * Gets buy amount.
+     *
+     * @return the buy amount
+     */
+    BigDecimal getBuyAmount() {
         return buyAmount;
     }
 
-    public void setBuyAmount(BigDecimal buyAmount) {
+    /**
+     * Sets buy amount.
+     *
+     * @param buyAmount the buy amount
+     */
+    void setBuyAmount(BigDecimal buyAmount) {
         if(buyAmount.doubleValue() >= 0) {
             this.buyAmount = buyAmount;
         }
     }
 
-    public BigDecimal getSellAmount() {
+    /**
+     * Gets sell amount.
+     *
+     * @return the sell amount
+     */
+    BigDecimal getSellAmount() {
         return sellAmount;
     }
 
-    public void setSellAmount(BigDecimal sellAmount) {
+    /**
+     * Sets sell amount.
+     *
+     * @param sellAmount the sell amount
+     */
+    void setSellAmount(BigDecimal sellAmount) {
         if(sellAmount.doubleValue() >= 0) {
             this.sellAmount = sellAmount;
         }
     }
 
-    public BigDecimal getCoinBuyPrice() {
+    /**
+     * Gets coin buy price.
+     *
+     * @return the coin buy price
+     */
+    BigDecimal getCoinBuyPrice() {
         return coinBuyPrice;
     }
 
-    public void setCoinBuyPrice(BigDecimal coinBuyPrice) {
+    /**
+     * Sets coin buy price.
+     *
+     * @param coinBuyPrice the coin buy price
+     */
+    void setCoinBuyPrice(BigDecimal coinBuyPrice) {
         if(coinBuyPrice.doubleValue() >= 0) {
             this.coinBuyPrice = coinBuyPrice;
         }
     }
 
-    public BigDecimal getCoinSellPrice() {
+    /**
+     * Gets coin sell price.
+     *
+     * @return the coin sell price
+     */
+    BigDecimal getCoinSellPrice() {
         return coinSellPrice;
     }
 
-    public void setCoinSellPrice(BigDecimal coinSellPrice) {
+    /**
+     * Sets coin sell price.
+     *
+     * @param coinSellPrice the coin sell price
+     */
+    void setCoinSellPrice(BigDecimal coinSellPrice) {
         if(coinSellPrice.doubleValue() >= 0) {
             this.coinSellPrice = coinSellPrice;
         }
     }
 
-    public BigDecimal getProfit() {
-        BigDecimal result = (getCoinSellPrice().subtract(getCoinBuyPrice()))
-                .multiply(getSellAmount());
-        return result;
+    /**
+     * Gets profit.
+     *
+     * @return the profit
+     */
+    BigDecimal getProfit() {
+        return (getCoinSellPrice().subtract(getCoinBuyPrice())).multiply(getSellAmount());
     }
 
-    public BigDecimal getHoldValue() {
-        BigDecimal result = getHold().multiply(getCurrency().getPrice());
-        return result;
+    /**
+     * Gets hold value.
+     *
+     * @return the hold value
+     */
+    BigDecimal getHoldValue() {
+        return getHold().multiply(getCurrency().getPrice());
     }
 
-    public BigDecimal getSoldValue() {
-        BigDecimal result = getSellAmount().multiply(getCoinSellPrice());
-        return result;
+    /**
+     * Gets sold value.
+     *
+     * @return the sold value
+     */
+    private BigDecimal getSoldValue() {
+        return getSellAmount().multiply(getCoinSellPrice());
     }
 
-    public BigDecimal getHold() {
-        BigDecimal result = getBuyAmount().subtract(getSellAmount());
-        return result;
+    /**
+     * Gets hold.
+     *
+     * @return the hold
+     */
+    private BigDecimal getHold() {
+        return getBuyAmount().subtract(getSellAmount());
     }
 
-    public BigDecimal getInvestedValue() {
-        BigDecimal result = getHold().multiply(getCoinBuyPrice());
-        return result;
+    /**
+     * Gets invested value.
+     *
+     * @return the invested value
+     */
+    BigDecimal getInvestedValue() {
+        return getHold().multiply(getCoinBuyPrice());
     }
 
-    public BigDecimal getTotalValue() {
-        BigDecimal result = (getSoldValue().add(getHoldValue())).subtract(getBuyValue());
-        return result;
+    /**
+     * Gets total value.
+     *
+     * @return the total value
+     */
+    BigDecimal getTotalValue() {
+        return (getSoldValue().add(getHoldValue())).subtract(getBuyValue());
     }
 
-    public BigDecimal getBuyValue() {
-        BigDecimal result = getBuyAmount().multiply(getCoinBuyPrice());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Bag: "
-//                "Amount: " + getBuyAmount().toString() + " Profit: " + getProfit().toString() + " Price: " + getCoinSellPrice().toString()
-//                + "\n"
-                + super.toString()
-                ;
+    /**
+     * Gets buy value.
+     *
+     * @return the buy value
+     */
+    private BigDecimal getBuyValue() {
+        return getBuyAmount().multiply(getCoinBuyPrice());
     }
 }

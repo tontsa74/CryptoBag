@@ -30,11 +30,29 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Add currency.
+ */
 public class AddCurrency extends BaseActivity {
+    /**
+     * The Add currency edit text.
+     */
     EditText addCurrencyEditText;
+    /**
+     * The Currencies list view.
+     */
     ListView currenciesListView;
+    /**
+     * The Search currencies.
+     */
     List<Currency> searchCurrencies;
+    /**
+     * The Selected currency.
+     */
     Currency selectedCurrency;
+    /**
+     * The Currencies adapter.
+     */
     ArrayAdapter currenciesAdapter;
 
     @Override
@@ -108,6 +126,11 @@ public class AddCurrency extends BaseActivity {
         saveCurrenciesFile();
     }
 
+    /**
+     * Search.
+     *
+     * @param search the search
+     */
     public void search(String search) {
         Debug.print(TAG, "search()", "currencies " + currencies.size(), 1);
         searchCurrencies.clear();
@@ -136,6 +159,9 @@ public class AddCurrency extends BaseActivity {
         super.onBackPressed();
     }
 
+    /**
+     * The type Fetch data task.
+     */
     public class FetchDataTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids) {

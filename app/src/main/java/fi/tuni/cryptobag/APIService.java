@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,21 +27,46 @@ import static fi.tuni.cryptobag.BaseActivity.LOW_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.MEDIUM_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.fetchCount;
 
-import static fi.tuni.cryptobag.BaseActivity.fetchSelected;
-
+/**
+ * The type Api service.
+ */
 public class APIService extends Service {
-    private static final String TAG = "tsilve.APIService";
+    private static final String TAG = "fi.tuni.APIService";
     private IBinder iBinder;
 
+    /**
+     * The Process.
+     */
     FetchTask process;
+    /**
+     * The Currency to fetch.
+     */
     Set<Currency> currencyToFetch;
+    /**
+     * The Running.
+     */
     boolean running;
 
+    /**
+     * The Low to fetch.
+     */
     static Set<Currency> lowToFetch;
+    /**
+     * The Medium to fetch.
+     */
     static Set<Currency> mediumToFetch;
+    /**
+     * The High to fetch.
+     */
     static Set<Currency> highToFetch;
 
+    /**
+     * The Manager.
+     */
     LocalBroadcastManager manager;
+    /**
+     * The Intent.
+     */
     Intent intent;
 
     @Override
@@ -48,15 +74,18 @@ public class APIService extends Service {
         Debug.print(TAG, "APIService", "onBind", 1);
         return iBinder;
     }
+
     @Override
     public void onDestroy() {
         Debug.print(TAG, "APIService", "onDestroy", 1);
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Debug.print(TAG, "APIService", "onStartCommand", 1);
         return START_STICKY;
     }
+
     @Override
     public void onCreate() {
         Debug.print(TAG, "APIService", "onCreate", 1);
@@ -80,6 +109,12 @@ public class APIService extends Service {
         intent = new Intent("tsilve.api");
     }
 
+    /**
+     * Fetch.
+     *
+     * @param fetchList the fetch list
+     * @param priority  the priority
+     */
     public void fetch(List<Currency> fetchList, int priority) {
         Debug.print(TAG, "APIService", "fetch, priority: " + priority, 1);
         if(priority == HIGH_PRIORITY) {
@@ -96,6 +131,12 @@ public class APIService extends Service {
 
     }
 
+    /**
+     * Fetch.
+     *
+     * @param fetchCurrency the fetch currency
+     * @param priority      the priority
+     */
     public void fetch(Currency fetchCurrency, int priority) {
         Debug.print(TAG, "APIService", "fetch, priority: " + priority, 1);
         if(priority == HIGH_PRIORITY) {
@@ -110,6 +151,9 @@ public class APIService extends Service {
         }
     }
 
+    /**
+     * Prioritize fetch tasks.
+     */
     public void prioritizeFetchTasks() {
         Debug.print(TAG, "APIService", "prioritizeFetchTasks", 1);
             if(fetchCount <= 0) {
@@ -138,6 +182,9 @@ public class APIService extends Service {
             }
     }
 
+    /**
+     * The type Fetch task.
+     */
     public class FetchTask extends AsyncTask<Currency,Void,Void> {
         @Override
         protected Void doInBackground(Currency... fetchCurrencies) {
@@ -167,8 +214,6 @@ public class APIService extends Service {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bStream);
                         byte[] icon = bStream.toByteArray();
 
-                        Debug.print("tsilve","FetchCurrencyTask", c + ", price: " + price + " sizes: " + highToFetch.size() + ", " + mediumToFetch.size() + ", " + lowToFetch.size(),4);
-
                         intent.putExtra("currency", c);
                         intent.putExtra("price", price);
                         intent.putExtra("imageUrl", imageUrl);
@@ -183,12 +228,11 @@ public class APIService extends Service {
                         prioritizeFetchTasks();
                     } else {
                         Thread.sleep(2000);
-                        //lowToFetch.addAll(fetchSelected);
                         prioritizeFetchTasks();
                     }
                 }
             } catch (Exception e) {
-                Debug.print("tsilve", "FetchCurrencyTask()", "Exception " + e, 2);
+                Debug.print(TAG, "FetchCurrencyTask()", "Exception " + e, 2);
             }
 
             return null;
