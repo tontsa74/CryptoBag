@@ -2,7 +2,6 @@ package fi.tuni.cryptobag;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class Bag implements Serializable {
     private Currency currency;
@@ -29,7 +28,9 @@ public class Bag implements Serializable {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
-        currency.setBag(this);
+
+        //currency.setBag(this);
+        currency.getBags().add(this);
     }
 
     public BigDecimal getBuyAmount() {
@@ -78,12 +79,6 @@ public class Bag implements Serializable {
         return result;
     }
 
-    public BigDecimal getEstimated() {
-        BigDecimal result = (getCurrency().getPrice().subtract(getCoinBuyPrice()))
-                            .multiply(getBuyAmount().subtract(getSellAmount()));
-        return result;
-    }
-
     public BigDecimal getHoldValue() {
         BigDecimal result = getHold().multiply(getCurrency().getPrice());
         return result;
@@ -99,13 +94,19 @@ public class Bag implements Serializable {
         return result;
     }
 
-    public BigDecimal getInvested() {
+    public BigDecimal getInvestedValue() {
         BigDecimal result = getHold().multiply(getCoinBuyPrice());
         return result;
     }
 
-    public BigDecimal getTotal() {
-        BigDecimal result = getSoldValue().add(getHoldValue().subtract(getInvested()));
+    public BigDecimal getTotalValue() {
+        BigDecimal result = (getSoldValue().add(getHoldValue())).subtract(getBuyValue());
+        System.out.println("omadebug.buy: " + getBuyValue() + " sold: " + getSoldValue() + " hold: " + getHoldValue());
+        return result;
+    }
+
+    public BigDecimal getBuyValue() {
+        BigDecimal result = getBuyAmount().multiply(getCoinBuyPrice());
         return result;
     }
 
