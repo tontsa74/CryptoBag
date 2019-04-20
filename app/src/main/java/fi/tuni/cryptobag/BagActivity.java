@@ -77,9 +77,9 @@ public class BagActivity extends BaseActivity {
         coinSellPriceEditText.setText(bag.getCoinSellPrice().toString());
         coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
 
-        // DEBUG
-        bagNameTextView.setText(buyCurrency.toString() + " -- " + bag.toString());
-        // DEBUG
+//        // DEBUG
+//        bagNameTextView.setText(buyCurrency.toString() + " -- " + bag.toString());
+//        // DEBUG
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -99,9 +99,9 @@ public class BagActivity extends BaseActivity {
                 saveBagButton.setEnabled(true);
 
 
-                // DEBUG
-                bagNameTextView.setText(buyCurrency.toString());
-                // DEBUG
+//                // DEBUG
+//                bagNameTextView.setText(buyCurrency.toString());
+//                // DEBUG
             }
         }
     }
@@ -158,5 +158,9 @@ public class BagActivity extends BaseActivity {
         Debug.print(TAG, "addCurrency()", "add new currency", 1);
         Intent intent = new Intent(this, AddCurrency.class);
         startActivityForResult(intent, REQUEST_CODE_ADD_CURRENCY);
+    }
+
+    public void updateClickBagActivity(View view) {
+
     }
 }

@@ -87,6 +87,7 @@ public class APIService extends Service {
         } else if(priority == MEDIUM_PRIORITY) {
             mediumToFetch.addAll(fetchList);
         } else if(priority == LOW_PRIORITY) {
+            lowToFetch.clear();
             lowToFetch.addAll(fetchList);
         }
         if(!running) {
@@ -178,11 +179,10 @@ public class APIService extends Service {
                     fetchCount--;
                     Thread.sleep(120);
 
-                    if(highToFetch.size()+mediumToFetch.size()+lowToFetch.size() > 0) {
+                    if(highToFetch.size()+mediumToFetch.size() > 0) {
                         prioritizeFetchTasks();
                     } else {
-                        Thread.sleep(1000);
-                        lowToFetch.addAll(fetchSelected);
+                        Thread.sleep(2000);
                         prioritizeFetchTasks();
                     }
                 }

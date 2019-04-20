@@ -1,6 +1,7 @@
 package fi.tuni.cryptobag;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
     ServiceConnection connectionToService;
+    APIService apiService;
     private static final int REQUEST_CODE_ADD_BAG = 15;
 
     ArrayAdapter<Currency> selectedBagsArrayAdapter;
@@ -55,21 +58,6 @@ public class MainActivity extends BaseActivity {
         }
         if (initCurrencies == null) {
             initCurrencies = new ArrayList<Currency>();
-        }
-
-        for (int i=0; i < currencies.size(); i++) {
-            if(currencies.get(i).getIcon() != null) {
-
-            } else {
-                initCurrencies.add(currencies.get(i));
-            }
-            for (Bag bag : selectedBags) {
-                Currency selCur = bag.getCurrency();
-
-                if (selCur.getId().equals(currencies.get(i).getId())) {
-                    currencies.set(i, selCur);
-                }
-            }
         }
 
         connectionToService = new ApiServiceConnection();
@@ -128,11 +116,7 @@ public class MainActivity extends BaseActivity {
 
                 try {
                     BigDecimal holdValue = bag.getHoldValue().setScale(0, RoundingMode.HALF_UP);
-                    if (holdValue.doubleValue() > 0) {
-                        holdValueTextView.setTextColor(Color.rgb(29, 196, 112));
-                    } else if (holdValue.doubleValue() < 0) {
-                        holdValueTextView.setTextColor(Color.RED);
-                    }
+
                     holdValueTextView.setText(holdValue.toString());
                 } catch (Exception e) {
                     Debug.print(TAG, "selectedBagsArrayAdapter", "estimated e: " + e, 4);
@@ -157,17 +141,16 @@ public class MainActivity extends BaseActivity {
                     Debug.print(TAG, "selectedBagsArrayAdapter", "total e: " + e, 4);
                 }
 
-                // DEBUG
+ /*               // DEBUG
                 TextView debug = (TextView) rowView.findViewById(R.id.mainDebug);
                 debug.setText(currency.toString() + " -- " + bag.toString());
                 // DEBUG
-
+*/
                 return rowView;
             }
         };
         selectedBagsListView.setAdapter(selectedBagsArrayAdapter);
 
-        //updateActivity();
     }
 
     @Override
@@ -213,7 +196,6 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "onResume()", "onResume", 1);
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("tsilve.api"));
-
     }
 
     @Override
@@ -240,6 +222,7 @@ public class MainActivity extends BaseActivity {
         intent.putExtra("position", -1);
         startActivityForResult(intent, REQUEST_CODE_ADD_BAG);
         fetchBags();
+
     }
 
     public void deleteBag(Bag bag, int position) {
@@ -259,6 +242,8 @@ public class MainActivity extends BaseActivity {
 
         alert.show();
 
+        updateActivity();
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -272,6 +257,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updateActivity() {
+        //fetchBags();
+
         BigDecimal profit = BigDecimal.ZERO;
         BigDecimal hold = BigDecimal.ZERO;
         BigDecimal invest = BigDecimal.ZERO;
@@ -296,7 +283,6 @@ public class MainActivity extends BaseActivity {
 
 
         selectedBagsArrayAdapter.notifyDataSetChanged();
-        //fetchBags();
 
         saveSelectedFile();
         saveCurrenciesFile();
@@ -308,5 +294,44 @@ public class MainActivity extends BaseActivity {
             fetchSelected.add(bag.getCurrency());
         }
         apiService.fetch(fetchSelected, MEDIUM_PRIORITY);
+
+        initCurrencies.clear();
+        for (int i=0; i < currencies.size(); i++) {
+            if(currencies.get(i).getIcon() != null) {
+
+            } else {
+                initCurrencies.add(currencies.get(i));
+            }
+            for (Bag bag : selectedBags) {
+                Currency selCur = bag.getCurrency();
+
+                if (selCur.getId().equals(currencies.get(i).getId())) {
+                    currencies.set(i, selCur);
+                }
+            }
+        }
+
+        apiService.fetch(initCurrencies, LOW_PRIORITY);
+    }
+
+    public void updateClick(View view) {
+        updateActivity();
+    }
+
+
+    class ApiServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Debug.print(TAG, "ApiServiceConnection", "onServiceConnected", 2);
+            LocalBinder binder = (LocalBinder) service;
+            apiService = binder.getApiService();
+            isBounded = true;
+            fetchBags();
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Debug.print(TAG, "ApiServiceConnection", "onServiceDisconnected", 2);
+            isBounded = false;
+        }
     }
 }

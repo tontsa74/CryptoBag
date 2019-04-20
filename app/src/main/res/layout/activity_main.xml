@@ -10,15 +10,16 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:shrinkColumns="*">
+        android:shrinkColumns="*"
+        android:onClick="updateClick">
 
         <TableRow>
 
-            <Space
+            <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Coins"
+                android:text=""
                 android:textStyle="bold"
                 android:textSize="22sp"
                 android:layout_margin="4sp"/>
@@ -99,7 +100,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
-                android:text="Invest"
+                android:text="Click"
                 android:textSize="20sp"
                 android:layout_margin="4sp"
                 android:lines="1"/>
@@ -110,7 +111,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
-                android:text="Profit"
+                android:text="here"
                 android:textSize="20sp"
                 android:layout_margin="4sp"/>
 
@@ -120,7 +121,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
-                android:text="Hold"
+                android:text="to"
                 android:textSize="20sp"
                 android:layout_margin="4sp"/>
 
@@ -130,7 +131,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewEnd"
-                android:text="Total"
+                android:text="update"
                 android:textSize="20sp"
                 android:layout_margin="4sp"/>
         </TableRow>

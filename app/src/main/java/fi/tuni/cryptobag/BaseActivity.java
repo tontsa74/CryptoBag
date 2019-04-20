@@ -18,7 +18,6 @@ public class BaseActivity extends AppCompatActivity {
     protected final String TAG = "tsilve." + this.getClass().getName();
 
     static boolean isBounded = false;
-    static APIService apiService;
 
     static final String CURRENCIES_FILE = "currencies";
     static final String SELECTED_FILE = "selected";
@@ -119,21 +118,6 @@ public class BaseActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    class ApiServiceConnection implements ServiceConnection {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Debug.print(TAG, "ApiServiceConnection", "onServiceConnected", 2);
-            LocalBinder binder = (LocalBinder) service;
-            apiService = binder.getApiService();
-            isBounded = true;
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Debug.print(TAG, "ApiServiceConnection", "onServiceDisconnected", 2);
-            isBounded = false;
         }
     }
 }
