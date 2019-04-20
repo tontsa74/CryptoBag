@@ -138,7 +138,7 @@
     </TableLayout>
 
     <ListView
-        android:id="@+id/selectedCurrenciesListView"
+        android:id="@+id/selectedBagsListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -148,7 +148,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="add"
-        android:onClick="addCurrency"/>
+        android:onClick="addBag"/>
 
     <TextView
         android:layout_width="wrap_content"

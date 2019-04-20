@@ -51,8 +51,11 @@ public class BagActivity extends BaseActivity {
             position = extras.getInt("position");
 
             if (position > -1) {
-                buyCurrency = selectedCurrencies.get(position);
-                bag = buyCurrency.getBag();
+                bag = selectedBags.get(position);
+                buyCurrency = bag.getCurrency();
+//                buyCurrency = selectedBags.get(position);
+//                bag = buyCurrency.getBag();
+
                 Debug.print(TAG, "onCreate()", "getIntent, bag: " + bag + ", buyCurrency: " + buyCurrency, 2);
 
                 currencyButton.setVisibility(View.GONE);
@@ -69,12 +72,16 @@ public class BagActivity extends BaseActivity {
             bagIconView.setImageBitmap(buyCurrency.getBitmap());
         }
 
-        bagNameTextView.setText(buyCurrency.toString());
+        bagNameTextView.setText(buyCurrency.getName() + " - " + buyCurrency.getSymbol());
         buyAmountEditText.setText(bag.getBuyAmount().toString());
         sellAmountEditText.setText(bag.getSellAmount().toString());
         coinBuyPriceEditText.setText(bag.getCoinBuyPrice().toString());
         coinSellPriceEditText.setText(bag.getCoinSellPrice().toString());
         coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
+
+        // DEBUG
+        bagNameTextView.setText(buyCurrency.toString() + " -- " + bag.toString());
+        // DEBUG
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -89,9 +96,14 @@ public class BagActivity extends BaseActivity {
                 int selectedCurrencyIndex = (Integer) bundle.get("selCurIndex");
                 buyCurrency = currencies.get(selectedCurrencyIndex);
                 Debug.print(TAG,"onActivityResult","selectedCurrency: " + buyCurrency, 3);
-                bagNameTextView.setText(buyCurrency.toString());
+                bagNameTextView.setText(buyCurrency.getName() + " - " + buyCurrency.getSymbol());
 
                 saveBagButton.setEnabled(true);
+
+
+                // DEBUG
+                bagNameTextView.setText(buyCurrency.toString());
+                // DEBUG
             }
         }
     }
@@ -130,15 +142,18 @@ public class BagActivity extends BaseActivity {
         }
 
 
-        buyCurrency.setBag(bag);
+        buyCurrency.getBags().add(bag);
+        //buyCurrency.setBag(bag);
 
         if (position == -1) {
-            selectedCurrencies.add(buyCurrency);
+            selectedBags.add(bag);
+            //selectedBags.add(buyCurrency);
         } else {
-            selectedCurrencies.set(position, buyCurrency);
+            selectedBags.set(position, bag);
+            //selectedBags.set(position, buyCurrency);
         }
 
-        saveSelectedCurrenciesFile();
+        saveSelectedFile();
         setResult(RESULT_OK);
 
         finish();

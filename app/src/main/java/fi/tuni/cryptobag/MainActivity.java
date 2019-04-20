@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
     ServiceConnection connectionToService;
     private static final int REQUEST_CODE_ADD_BAG = 15;
 
-    ArrayAdapter<Currency> selectedCurrencyArrayAdapter;
+    ArrayAdapter<Currency> selectedBagsArrayAdapter;
 
     TextView totalProfit, totalHoldValue, totalInvest, totalTotal;
 
@@ -45,13 +45,13 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
 
         loadCurrenciesFile();
-        loadSelectedCurrenciesFile();
+        loadSelectedFile();
 
         if (currencies == null) {
             currencies = new ArrayList<Currency>();
         }
-        if (selectedCurrencies == null) {
-            selectedCurrencies = new ArrayList<Currency>();
+        if (selectedBags == null) {
+            selectedBags = new ArrayList<Bag>();
         }
         if (initCurrencies == null) {
             initCurrencies = new ArrayList<Currency>();
@@ -63,7 +63,8 @@ public class MainActivity extends BaseActivity {
             } else {
                 initCurrencies.add(currencies.get(i));
             }
-            for (Currency selCur : selectedCurrencies) {
+            for (Bag bag : selectedBags) {
+                Currency selCur = bag.getCurrency();
 
                 if (selCur.getId().equals(currencies.get(i).getId())) {
                     currencies.set(i, selCur);
@@ -74,29 +75,38 @@ public class MainActivity extends BaseActivity {
         connectionToService = new ApiServiceConnection();
 
 
-        final ListView selectedCurrenciesListView = (ListView) findViewById(R.id.selectedCurrenciesListView);
+        final ListView selectedBagsListView = (ListView) findViewById(R.id.selectedBagsListView);
 
-        selectedCurrenciesListView.setOnItemClickListener((parent, view, position, id) -> {
+        selectedBagsListView.setOnItemClickListener((parent, view, position, id) -> {
             Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
-            Currency currency = (Currency) selectedCurrenciesListView.getItemAtPosition(position);
-            editCurrency(currency, position);
+
+            //Currency currency = (Currency) selectedBagsListView.getItemAtPosition(position);
+            Bag bag = (Bag) selectedBagsListView.getItemAtPosition(position);
+
+            //editCurrency(currency, position);
+            editBag(bag, position);
         });
 
-        selectedCurrenciesListView.setOnItemLongClickListener((parent, view, position, id) -> {
+        selectedBagsListView.setOnItemLongClickListener((parent, view, position, id) -> {
             Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
-            Currency currency = (Currency) selectedCurrenciesListView.getItemAtPosition(position);
-            deleteCurrency(currency, position);
+            //Currency currency = (Currency) selectedBagsListView.getItemAtPosition(position);
+            //deleteCurrency(currency, position);
+            Bag bag = (Bag) selectedBagsListView.getItemAtPosition(position);
+            deleteBag(bag, position);
             return true;
         });
 
-        selectedCurrencyArrayAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, selectedCurrencies) {
+        selectedBagsArrayAdapter = new ArrayAdapter(this, R.layout.currency_item, R.id.currencyItemTextView, selectedBags) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.currency_item, parent, false);
-                Currency currency = (Currency) getItem(position);
-                Bag bag = currency.getBag();
+
+                //Currency currency = (Currency) getItem(position);
+                //Bag bag = currency.getBag();
+                Bag bag = (Bag) getItem(position);
+                Currency currency = bag.getCurrency();
 
                 TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
                 TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
@@ -120,7 +130,7 @@ public class MainActivity extends BaseActivity {
                     }
                     profitItemTextView.setText(profit.toString());
                 } catch (Exception e) {
-                    Debug.print(TAG, "selectedCurrencyArrayAdapter", "profit e: " + e, 4);
+                    Debug.print(TAG, "selectedBagsArrayAdapter", "profit e: " + e, 4);
                 }
 
 
@@ -133,11 +143,11 @@ public class MainActivity extends BaseActivity {
                     }
                     holdValueTextView.setText(holdValue.toString());
                 } catch (Exception e) {
-                    Debug.print(TAG, "selectedCurrencyArrayAdapter", "estimated e: " + e, 4);
+                    Debug.print(TAG, "selectedBagsArrayAdapter", "estimated e: " + e, 4);
                 }
 
                 try {
-                    BigDecimal invest = bag.getInvested().setScale(0, RoundingMode.HALF_UP);
+                    BigDecimal invest = bag.getInvestedValue().setScale(0, RoundingMode.HALF_UP);
 //                    if (invest.doubleValue() > 0) {
 //                        investTextView.setTextColor(Color.rgb(29, 196, 112));
 //                    } else if (invest.doubleValue() < 0) {
@@ -145,11 +155,11 @@ public class MainActivity extends BaseActivity {
 //                    }
                     investTextView.setText(invest.toString());
                 } catch (Exception e) {
-                    Debug.print(TAG, "selectedCurrencyArrayAdapter", "invest e: " + e, 4);
+                    Debug.print(TAG, "selectedBagsArrayAdapter", "invest e: " + e, 4);
                 }
 
                 try {
-                    BigDecimal total = bag.getTotal().setScale(0, RoundingMode.HALF_UP);
+                    BigDecimal total = bag.getTotalValue().setScale(0, RoundingMode.HALF_UP);
                     if (total.doubleValue() > 0) {
                         totalTotalTextView.setTextColor(Color.rgb(29, 196, 112));
                     } else if (total.doubleValue() < 0) {
@@ -157,12 +167,18 @@ public class MainActivity extends BaseActivity {
                     }
                     totalTotalTextView.setText(total.toString());
                 } catch (Exception e) {
-                    Debug.print(TAG, "selectedCurrencyArrayAdapter", "total e: " + e, 4);
+                    Debug.print(TAG, "selectedBagsArrayAdapter", "total e: " + e, 4);
                 }
+
+                // DEBUG
+                TextView debug = (TextView) rowView.findViewById(R.id.mainDebug);
+                debug.setText(currency.toString() + " -- " + bag.toString());
+                // DEBUG
+
                 return rowView;
             }
         };
-        selectedCurrenciesListView.setAdapter(selectedCurrencyArrayAdapter);
+        selectedBagsListView.setAdapter(selectedBagsArrayAdapter);
 
         updateActivity();
     }
@@ -218,52 +234,95 @@ public class MainActivity extends BaseActivity {
         Debug.print(TAG, "onPause()", "onPause", 1);
         super.onPause();
         saveCurrenciesFile();
-        saveSelectedCurrenciesFile();
+        saveSelectedFile();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
-    public void editCurrency(Currency currency, int position) {
-        Debug.print(TAG, "editCurrency()", "edit currency: " + currency + ", pos: " + position, 1);
+//    public void editCurrency(Currency currency, int position) {
+//        Debug.print(TAG, "editCurrency()", "edit currency: " + currency + ", pos: " + position, 1);
+//        Intent intent = new Intent(this, BagActivity.class);
+//        intent.putExtra("position", position);
+//        startActivity(intent);
+//        apiService.fetch(currency, HIGH_PRIORITY);
+//    }
+    public void editBag(Bag bag, int position) {
+        Debug.print(TAG, "editCurrency()", "edit currency: " + bag + ", pos: " + position, 1);
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", position);
         startActivity(intent);
-        apiService.fetch(currency, HIGH_PRIORITY);
+        //apiService.fetch(currency, HIGH_PRIORITY);
+        apiService.fetch(bag.getCurrency(), HIGH_PRIORITY);
     }
 
-    public void addCurrency(View view) {
-        Debug.print(TAG, "MainActivity()", "addCurrency", 1);
+//    public void addCurrency(View view) {
+//        Debug.print(TAG, "MainActivity()", "addCurrency", 1);
+//        Intent intent = new Intent(this, BagActivity.class);
+//        intent.putExtra("position", -1);
+//        startActivityForResult(intent, REQUEST_CODE_ADD_BAG);
+//        //apiService.fetch(selectedBags, MEDIUM_PRIORITY);
+//    }
+
+    public void addBag(View view) {
+        Debug.print(TAG, "MainActivity()", "addBag", 1);
         Intent intent = new Intent(this, BagActivity.class);
         intent.putExtra("position", -1);
         startActivityForResult(intent, REQUEST_CODE_ADD_BAG);
-        apiService.fetch(selectedCurrencies, MEDIUM_PRIORITY);
+        //apiService.fetch(selectedBags, MEDIUM_PRIORITY);
+        fetchBags();
     }
 
-    public void deleteCurrency(Currency currency, int position) {
-        Debug.print(TAG, "deleteCurrency()", "edit currency: " + currency + ", pos: " + position, 1);
+//    public void deleteCurrency(Currency currency, int position) {
+//        Debug.print(TAG, "deleteCurrency()", "edit currency: " + currency + ", pos: " + position, 1);
+//
+//        AlertDialog.Builder alert = new AlertDialog.Builder(
+//                MainActivity.this);
+//
+//        alert.setTitle("Delete");
+//        alert.setMessage("Do you want delete " + currency.getName());
+//        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                selectedBags.remove(position);
+//                selectedBagsArrayAdapter.notifyDataSetChanged();
+//
+//            }
+//        });
+//        alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        alert.show();
+//
+//    }
+public void deleteBag(Bag bag, int position) {
+    Debug.print(TAG, "deleteBag()", "edit bag: " + bag + ", pos: " + position, 1);
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(
-                MainActivity.this);
+    AlertDialog.Builder alert = new AlertDialog.Builder(
+            MainActivity.this);
 
-        alert.setTitle("Delete");
-        alert.setMessage("Do you want delete " + currency.getName());
-        alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                selectedCurrencies.remove(position);
-                selectedCurrencyArrayAdapter.notifyDataSetChanged();
+    alert.setTitle("Delete");
+    alert.setMessage("Do you want delete " + bag.getCurrency().getName());
+    alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            selectedBags.remove(position);
+            selectedBagsArrayAdapter.notifyDataSetChanged();
 
-            }
-        });
-        alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        }
+    });
+    alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+    });
 
-        alert.show();
+    alert.show();
 
-    }
+}
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Debug.print(TAG, "MainActivity()", "onActivityResult", 1);
@@ -282,15 +341,15 @@ public class MainActivity extends BaseActivity {
         BigDecimal total = BigDecimal.ZERO;
 
 
-        for (Currency selCur : selectedCurrencies) {
-            Bag bag = selCur.getBag();
+        for (Bag bag : selectedBags) {
+            //Bag bag = bag.getBag();
             try {
                 profit = profit.add(bag.getProfit());
                 hold = hold.add(bag.getHoldValue());
-                invest = invest.add(bag.getInvested());
-                total = total.add(bag.getTotal());
+                invest = invest.add(bag.getInvestedValue());
+                total = total.add(bag.getTotalValue());
             } catch(Exception e) {
-                Debug.print(TAG, "updateActivity",  "total ex: " + selCur + "_" + e, 3);
+                Debug.print(TAG, "updateActivity",  "total ex: " + bag + "_" + e, 3);
             }
 
         }
@@ -300,9 +359,18 @@ public class MainActivity extends BaseActivity {
         totalTotal.setText(total.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 
 
-        selectedCurrencyArrayAdapter.notifyDataSetChanged();
+        selectedBagsArrayAdapter.notifyDataSetChanged();
+        fetchBags();
 
-        saveSelectedCurrenciesFile();
+        saveSelectedFile();
         saveCurrenciesFile();
+    }
+
+    private void fetchBags() {
+        fetchSelected = new ArrayList<>();
+        for(Bag bag : selectedBags) {
+            fetchSelected.add(bag.getCurrency());
+        }
+        //apiService.fetch(fetchSelected, MEDIUM_PRIORITY);
     }
 }

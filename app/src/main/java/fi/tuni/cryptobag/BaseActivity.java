@@ -21,10 +21,11 @@ public class BaseActivity extends AppCompatActivity {
     static APIService apiService;
 
     static final String CURRENCIES_FILE = "currencies";
-    static final String SELECTED_CURRENCIES_FILE = "selected_currencies";
+    static final String SELECTED_FILE = "selected";
     static List<Currency> currencies;
-    static List<Currency> selectedCurrencies;
+    static List<Bag> selectedBags;
     static List<Currency> initCurrencies;
+    static List<Currency> fetchSelected;
 
     static final int HIGH_PRIORITY = 1;
     static final int MEDIUM_PRIORITY = 2;
@@ -77,19 +78,19 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    void loadSelectedCurrenciesFile() {
+    void loadSelectedFile() {
 
         FileInputStream fileInputStream;
         ObjectInputStream objectInputStream = null;
         try {
-            fileInputStream = openFileInput(SELECTED_CURRENCIES_FILE);
+            fileInputStream = openFileInput(SELECTED_FILE);
             objectInputStream = new ObjectInputStream(fileInputStream);
-            selectedCurrencies = (ArrayList<Currency>) objectInputStream.readObject();
-            Debug.print(TAG, "BaseActivity", "loadSelectedCurrencies: " + selectedCurrencies.size(), 2);
+            selectedBags = (ArrayList<Bag>) objectInputStream.readObject();
+            Debug.print(TAG, "BaseActivity", "loadSelectedFile: " + selectedBags.size(), 2);
         } catch (ClassNotFoundException e) {
-            Debug.print(TAG, "add SelectedCurrencies", "serialization problem: " + e, 2);
+            Debug.print(TAG, "loadSelectedFile", "serialization problem: " + e, 2);
         } catch (IOException e) {
-            Debug.print(TAG, "add SelectedCurrencies", "No bags file: " + e, 2);
+            Debug.print(TAG, "loadSelectedFile", "No bags file: " + e, 2);
         } finally {
             try {
                 if (objectInputStream != null) {
@@ -101,17 +102,17 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    void saveSelectedCurrenciesFile() {
-        Debug.print(TAG, "BaseActivity", "saveSelectedCurrenciesFile: " + selectedCurrencies.size(), 1);
+    void saveSelectedFile() {
+        Debug.print(TAG, "BaseActivity", "saveSelectedFile: " + selectedBags.size(), 1);
         FileOutputStream fileOutputStream;
         ObjectOutputStream objectOutputStream = null;
 
         try {
-            fileOutputStream = openFileOutput(SELECTED_CURRENCIES_FILE, Activity.MODE_PRIVATE);
+            fileOutputStream = openFileOutput(SELECTED_FILE, Activity.MODE_PRIVATE);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(selectedCurrencies);
+            objectOutputStream.writeObject(selectedBags);
         } catch (IOException e) {
-            Debug.print(TAG,"save selectedCurrencies", "error: " + e,2);
+            Debug.print(TAG,"saveSelectedFile", "error: " + e,2);
         } finally {
             try {
                 objectOutputStream.close();
@@ -120,6 +121,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
     }
+
     class ApiServiceConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

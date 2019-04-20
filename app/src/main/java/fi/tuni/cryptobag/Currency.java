@@ -6,12 +6,14 @@ import android.graphics.BitmapFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Currency implements Serializable {
     private String id;
     private String name;
     private String symbol;
-    private Bag bag;
+    private List<Bag> bags;
 
     private BigDecimal price = BigDecimal.ZERO;
 
@@ -22,6 +24,8 @@ public class Currency implements Serializable {
         setId(id);
         setName(name);
         setSymbol(symbol);
+
+        bags = new ArrayList<Bag>();
     }
 
     public String getId() {
@@ -57,24 +61,33 @@ public class Currency implements Serializable {
             this.price = price;
         }
     }
+//
+//    public Bag getBag() {
+//        return bag;
+//    }
+//
+//    public String getBagString() {
+//        String result = "";
+//        try {
+//            result += bag.toString() + "\n";
+//        } catch (Exception e) {
+//            System.out.println("tsilve." + e);
+//        }
+//
+//        return result;
+//    }
+//
+//    public void setBag(Bag bag) {
+//        this.bag = bag;
+//    }
 
-    public Bag getBag() {
-        return bag;
+
+    public List<Bag> getBags() {
+        return bags;
     }
 
-    public String getBagString() {
-        String result = "";
-        try {
-            result += bag.toString() + "\n";
-        } catch (Exception e) {
-            System.out.println("tsilve." + e);
-        }
-
-        return result;
-    }
-
-    public void setBag(Bag bag) {
-        this.bag = bag;
+    public void setBags(List<Bag> bags) {
+        this.bags = bags;
     }
 
     public String getImageUrl() {
@@ -109,6 +122,14 @@ public class Currency implements Serializable {
 
     @Override
     public String toString() {
-        return getName() + "  -  " + getSymbol();
+        return  ""
+                + getName()
+//                + "  -  "
+//                + getSymbol()
+                + ", "
+                + super.toString()
+//                + ", "
+//                + getBag()
+                ;
     }
 }
