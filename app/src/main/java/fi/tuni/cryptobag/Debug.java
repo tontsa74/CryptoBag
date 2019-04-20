@@ -4,12 +4,20 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * The type Debug.
+ */
 public class Debug {
     private static Context HOST;
     private static int DEBUG_LEVEL;
     private static boolean DEBUG_CONSOLE;
     private static boolean DEBUG_TOAST;
 
+    /**
+     * Load debug.
+     *
+     * @param host the host
+     */
     static void loadDebug(Context host) {
         HOST = host;
         DEBUG_LEVEL = host.getResources().getInteger(R.integer.debug_level);
@@ -17,6 +25,14 @@ public class Debug {
         DEBUG_TOAST = host.getResources().getBoolean(R.bool.debug_toast);
     }
 
+    /**
+     * Print.
+     *
+     * @param tag        the tag
+     * @param methodName the method name
+     * @param msg        the msg
+     * @param level      the level
+     */
     static void print(String tag, String methodName, String msg, int level) {
         if (BuildConfig.DEBUG) {
             if (level <= DEBUG_LEVEL) {
