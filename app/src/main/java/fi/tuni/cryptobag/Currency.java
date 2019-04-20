@@ -25,7 +25,7 @@ public class Currency implements Serializable {
         setName(name);
         setSymbol(symbol);
 
-        bags = new ArrayList<Bag>();
+        bags = new ArrayList<>();
     }
 
     public String getId() {
@@ -61,26 +61,6 @@ public class Currency implements Serializable {
             this.price = price;
         }
     }
-//
-//    public Bag getBag() {
-//        return bag;
-//    }
-//
-//    public String getBagString() {
-//        String result = "";
-//        try {
-//            result += bag.toString() + "\n";
-//        } catch (Exception e) {
-//            System.out.println("tsilve." + e);
-//        }
-//
-//        return result;
-//    }
-//
-//    public void setBag(Bag bag) {
-//        this.bag = bag;
-//    }
-
 
     public List<Bag> getBags() {
         return bags;

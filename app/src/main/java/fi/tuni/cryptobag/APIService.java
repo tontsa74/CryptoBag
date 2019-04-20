@@ -72,9 +72,6 @@ public class APIService extends Service {
             highToFetch = new LinkedHashSet<>();
         }
 
-
-
-
         process = new FetchTask();
         fetchCount = 0;
         iBinder = new LocalBinder(this);
@@ -179,12 +176,12 @@ public class APIService extends Service {
                         e.printStackTrace();
                     }
                     fetchCount--;
-                    Thread.sleep(1000);
+                    Thread.sleep(120);
 
                     if(highToFetch.size()+mediumToFetch.size()+lowToFetch.size() > 0) {
                         prioritizeFetchTasks();
                     } else {
-                        Thread.sleep(10000);
+                        Thread.sleep(1000);
                         lowToFetch.addAll(fetchSelected);
                         prioritizeFetchTasks();
                     }

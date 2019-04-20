@@ -14,13 +14,6 @@ public class Bag implements Serializable {
         setCurrency(currency);
     }
 
-    public Bag(Currency currency, BigDecimal buyAmount, BigDecimal sellAmount, BigDecimal coinBuyPrice, BigDecimal coinSellPrice) {
-        setCurrency(currency);
-        setBuyAmount(buyAmount);
-        setSellAmount(sellAmount);
-        setCoinBuyPrice(coinBuyPrice);
-        setCoinSellPrice(coinSellPrice);
-    }
 
     public Currency getCurrency() {
         return currency;
@@ -28,8 +21,6 @@ public class Bag implements Serializable {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
-
-        //currency.setBag(this);
         currency.getBags().add(this);
     }
 
@@ -101,7 +92,6 @@ public class Bag implements Serializable {
 
     public BigDecimal getTotalValue() {
         BigDecimal result = (getSoldValue().add(getHoldValue())).subtract(getBuyValue());
-        System.out.println("omadebug.buy: " + getBuyValue() + " sold: " + getSoldValue() + " hold: " + getHoldValue());
         return result;
     }
 

@@ -53,8 +53,6 @@ public class BagActivity extends BaseActivity {
             if (position > -1) {
                 bag = selectedBags.get(position);
                 buyCurrency = bag.getCurrency();
-//                buyCurrency = selectedBags.get(position);
-//                bag = buyCurrency.getBag();
 
                 Debug.print(TAG, "onCreate()", "getIntent, bag: " + bag + ", buyCurrency: " + buyCurrency, 2);
 
@@ -143,14 +141,11 @@ public class BagActivity extends BaseActivity {
 
 
         buyCurrency.getBags().add(bag);
-        //buyCurrency.setBag(bag);
 
         if (position == -1) {
             selectedBags.add(bag);
-            //selectedBags.add(buyCurrency);
         } else {
             selectedBags.set(position, bag);
-            //selectedBags.set(position, buyCurrency);
         }
 
         saveSelectedFile();
