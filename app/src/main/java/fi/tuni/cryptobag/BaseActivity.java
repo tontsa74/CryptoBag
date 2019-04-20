@@ -1,9 +1,6 @@
 package fi.tuni.cryptobag;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 
 import java.io.FileInputStream;
@@ -14,23 +11,62 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Base activity.
+ */
 public class BaseActivity extends AppCompatActivity {
+    /**
+     * The Tag.
+     */
     protected final String TAG = "tsilve." + this.getClass().getName();
 
 
+    /**
+     * The Currencies file.
+     */
     static final String CURRENCIES_FILE = "currencies";
+    /**
+     * The Selected file.
+     */
     static final String SELECTED_FILE = "selected";
+    /**
+     * The Currencies.
+     */
     static List<Currency> currencies;
+    /**
+     * The Selected bags.
+     */
     static List<Bag> selectedBags;
+    /**
+     * The Init currencies.
+     */
     static List<Currency> initCurrencies;
+    /**
+     * The Fetch selected.
+     */
     static List<Currency> fetchSelected;
 
+    /**
+     * The High priority.
+     */
     static final int HIGH_PRIORITY = 1;
+    /**
+     * The Medium priority.
+     */
     static final int MEDIUM_PRIORITY = 2;
+    /**
+     * The Low priority.
+     */
     static final int LOW_PRIORITY = 3;
 
+    /**
+     * The Fetch count.
+     */
     static int fetchCount;
 
+    /**
+     * Load currencies file.
+     */
     void loadCurrenciesFile() {
 
         FileInputStream fileInputStream;
@@ -56,6 +92,9 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Save currencies file.
+     */
     void saveCurrenciesFile() {
         Debug.print(TAG, "BaseActivity", "saveCurrenciesFile: " + currencies.size(), 1);
         FileOutputStream fileOutputStream;
@@ -76,6 +115,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Load selected file.
+     */
     void loadSelectedFile() {
 
         FileInputStream fileInputStream;
@@ -100,6 +142,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Save selected file.
+     */
     void saveSelectedFile() {
         Debug.print(TAG, "BaseActivity", "saveSelectedFile: " + selectedBags.size(), 1);
         FileOutputStream fileOutputStream;
