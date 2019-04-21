@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * The type Bag.
+ * Bag contains one currency, amounts, prices and calculating methods for it.
  */
 class Bag implements Serializable {
     /**
-     * The Currency.
+     * Currency in bag.
      */
     private Currency currency;
     /**
