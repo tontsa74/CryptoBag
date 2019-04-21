@@ -24,21 +24,24 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 
 /**
- * The type Main activity.
+ * Main activity have list of bags and info of totals.
  */
 public class MainActivity extends BaseActivity {
     /**
      * The Connection to service.
      */
     ServiceConnection connectionToService;
+
     /**
      * The Api service.
      */
     APIService apiService;
+
     /**
      * The Is bounded.
      */
     boolean isBounded = false;
+
     private static final int REQUEST_CODE_ADD_BAG = 15;
 
     /**
@@ -47,16 +50,22 @@ public class MainActivity extends BaseActivity {
     ArrayAdapter<Currency> selectedBagsArrayAdapter;
 
     /**
-     * The Total profit.
+     * The Total profit is sell minus invested.
      */
-    TextView totalProfit, /**
-     * The Total hold value.
+    TextView totalProfit,
+
+    /**
+     * The Total hold value is value of not sold coins.
      */
-    totalHoldValue, /**
-     * The Total invest.
+    totalHoldValue,
+
+    /**
+     * The Total invest is original invested minus sold.
      */
-    totalInvest, /**
-     * The Total total.
+    totalInvest,
+
+    /**
+     * The Total is result of invest, profit and hold values.
      */
     totalTotal;
 
@@ -66,10 +75,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        totalProfit = (TextView) findViewById(R.id.totalProfit);
-        totalHoldValue = (TextView) findViewById(R.id.totalHoldValue);
-        totalInvest = (TextView) findViewById(R.id.totalInvest);
-        totalTotal = (TextView) findViewById(R.id.totalTotal);
+        totalProfit = findViewById(R.id.totalProfit);
+        totalHoldValue = findViewById(R.id.totalHoldValue);
+        totalInvest = findViewById(R.id.totalInvest);
+        totalTotal = findViewById(R.id.totalTotal);
 
         Debug.loadDebug(this);
         Debug.print(TAG, "onCreate()", "Logging my application", 1);
@@ -90,7 +99,7 @@ public class MainActivity extends BaseActivity {
         connectionToService = new ApiServiceConnection();
 
 
-        final ListView selectedBagsListView = (ListView) findViewById(R.id.selectedBagsListView);
+        final ListView selectedBagsListView = findViewById(R.id.selectedBagsListView);
 
         selectedBagsListView.setOnItemClickListener((parent, view, position, id) -> {
             Debug.print(TAG, "setOnItemClickListener",  "position_id: " + position + "_" + id, 2);
@@ -115,13 +124,13 @@ public class MainActivity extends BaseActivity {
                 Bag bag = (Bag) getItem(position);
                 Currency currency = bag.getCurrency();
 
-                TextView currencyItemTextView = (TextView) rowView.findViewById(R.id.currencyItemTextView);
-                TextView profitItemTextView = (TextView) rowView.findViewById(R.id.profitItemTextView);
-                TextView holdValueTextView = (TextView) rowView.findViewById(R.id.holdValueTextView);
-                TextView investTextView = (TextView) rowView.findViewById(R.id.investTextView);
-                TextView totalTotalTextView = (TextView) rowView.findViewById(R.id.totalTotalTextView);
+                TextView currencyItemTextView = rowView.findViewById(R.id.currencyItemTextView);
+                TextView profitItemTextView = rowView.findViewById(R.id.profitItemTextView);
+                TextView holdValueTextView = rowView.findViewById(R.id.holdValueTextView);
+                TextView investTextView = rowView.findViewById(R.id.investTextView);
+                TextView totalTotalTextView = rowView.findViewById(R.id.totalTotalTextView);
 
-                ImageView imageView = (ImageView) rowView.findViewById(R.id.iconImageView);
+                ImageView imageView = rowView.findViewById(R.id.iconImageView);
                 if(currency.getIcon() != null) {
                     imageView.setImageBitmap(currency.getBitmap());
                 }
@@ -195,6 +204,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Receiver handles fetch results.
+     */
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -229,10 +241,10 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Edit bag.
+     * Starts BagActivity for edit bag.
      *
-     * @param bag      the bag
-     * @param position the position
+     * @param bag      the bag object
+     * @param position the position in list
      */
     public void editBag(Bag bag, int position) {
         Debug.print(TAG, "editCurrency()", "edit currency: " + bag + ", pos: " + position, 1);
@@ -244,7 +256,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Add bag.
+     * Starts BagActivity for add new bag.
      *
      * @param view the view
      */
@@ -258,7 +270,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Delete bag.
+     * Open dialog for delete bag.
      *
      * @param bag      the bag
      * @param position the position
@@ -284,6 +296,9 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * Update activity after results.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Debug.print(TAG, "MainActivity()", "onActivityResult", 1);
 
@@ -294,8 +309,10 @@ public class MainActivity extends BaseActivity {
         updateActivity();
     }
 
+    /**
+     * Update activity total values and save data to file.
+     */
     private void updateActivity() {
-        //fetchBags();
 
         BigDecimal profit = BigDecimal.ZERO;
         BigDecimal hold = BigDecimal.ZERO;
@@ -326,6 +343,9 @@ public class MainActivity extends BaseActivity {
         saveCurrenciesFile();
     }
 
+    /**
+     * Send list of bags currencies to service for update fetch.
+     */
     private void fetchBags() {
         fetchSelected = new ArrayList<>();
         for(Bag bag : selectedBags) {
@@ -335,7 +355,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Fetch init.
+     * Initializes list for fetch more data.
      */
     public void fetchInit() {
         initCurrencies.clear();
@@ -358,7 +378,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Update click.
+     * Update activity with click of title.
      *
      * @param view the view
      */
@@ -369,7 +389,7 @@ public class MainActivity extends BaseActivity {
 
 
     /**
-     * The type Api service connection.
+     * Api service connection.
      */
     class ApiServiceConnection implements ServiceConnection {
         @Override
