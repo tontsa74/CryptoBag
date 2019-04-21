@@ -1,7 +1,7 @@
 package fi.tuni.cryptobag;
 
 import android.content.Context;
-import android.util.Log;
+//import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -37,7 +37,7 @@ class Debug {
         if (BuildConfig.DEBUG) {
             if (level <= DEBUG_LEVEL) {
                 if (DEBUG_CONSOLE) {
-                    Log.d(tag + ": " + methodName, msg);
+//                    Log.d(tag + ": " + methodName, msg);
                 }
                 if (DEBUG_TOAST) {
                     Context context = HOST.getApplicationContext();
