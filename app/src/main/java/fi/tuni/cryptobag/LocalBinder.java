@@ -3,7 +3,7 @@ package fi.tuni.cryptobag;
 import android.os.Binder;
 
 /**
- * The type Local binder.
+ * The type Local binder for APIService.
  */
 class LocalBinder extends Binder {
     private static final String TAG = "fi.tuni.APIService";
