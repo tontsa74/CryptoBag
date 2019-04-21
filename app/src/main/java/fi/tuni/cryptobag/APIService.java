@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +27,7 @@ import static fi.tuni.cryptobag.BaseActivity.MEDIUM_PRIORITY;
 import static fi.tuni.cryptobag.BaseActivity.fetchCount;
 
 /**
- * The type Api service.
+ * Service fetch currency data with CoinGecko API.
  */
 public class APIService extends Service {
     private static final String TAG = "fi.tuni.APIService";
@@ -48,15 +47,15 @@ public class APIService extends Service {
     boolean running;
 
     /**
-     * The Low to fetch.
+     * Low priority to fetch.
      */
     static Set<Currency> lowToFetch;
     /**
-     * The Medium to fetch.
+     * Medium priority to fetch.
      */
     static Set<Currency> mediumToFetch;
     /**
-     * The High to fetch.
+     * High priority to fetch.
      */
     static Set<Currency> highToFetch;
 
@@ -110,10 +109,10 @@ public class APIService extends Service {
     }
 
     /**
-     * Fetch.
+     * Fetch given list by priority.
      *
-     * @param fetchList the fetch list
-     * @param priority  the priority
+     * @param fetchList the fetch list of currencies
+     * @param priority  the priority to fetch
      */
     public void fetch(List<Currency> fetchList, int priority) {
         Debug.print(TAG, "APIService", "fetch, priority: " + priority, 1);
@@ -132,10 +131,10 @@ public class APIService extends Service {
     }
 
     /**
-     * Fetch.
+     * Fetch given currency by priority.
      *
      * @param fetchCurrency the fetch currency
-     * @param priority      the priority
+     * @param priority      the priority to fetch
      */
     public void fetch(Currency fetchCurrency, int priority) {
         Debug.print(TAG, "APIService", "fetch, priority: " + priority, 1);
@@ -152,7 +151,7 @@ public class APIService extends Service {
     }
 
     /**
-     * Prioritize fetch tasks.
+     * Prioritize fetch tasks handles all priorities.
      */
     public void prioritizeFetchTasks() {
         Debug.print(TAG, "APIService", "prioritizeFetchTasks", 1);
@@ -183,7 +182,7 @@ public class APIService extends Service {
     }
 
     /**
-     * The type Fetch task.
+     * Fetch currencies data by CoinGecko Api.
      */
     public class FetchTask extends AsyncTask<Currency,Void,Void> {
         @Override
