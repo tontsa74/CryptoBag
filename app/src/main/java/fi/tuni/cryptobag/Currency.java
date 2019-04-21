@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Currency.
+ * Currency contains basic information and list of bags.
  */
 public class Currency implements Serializable {
     /**
@@ -28,13 +28,20 @@ public class Currency implements Serializable {
     private String symbol;
 
     /**
-     * The Bags.
+     * List of bags containing this currency.
      */
     private List<Bag> bags;
 
+    /**
+     * Current price of currency.
+     */
     private BigDecimal price = BigDecimal.ZERO;
 
+    /**
+     * Currency icon url.
+     */
     private String imageUrl;
+
     /**
      * The Icon.
      */
@@ -148,9 +155,9 @@ public class Currency implements Serializable {
     }
 
     /**
-     * Gets bitmap.
+     * Gets bitmap of currency icon.
      *
-     * @return the bitmap
+     * @return the bitmap of currency icon
      */
     Bitmap getBitmap() {
         Bitmap bmp;
@@ -161,7 +168,7 @@ public class Currency implements Serializable {
     }
 
     /**
-     * Sets icon.
+     * Sets icon for currency.
      *
      * @param icon the icon
      */
