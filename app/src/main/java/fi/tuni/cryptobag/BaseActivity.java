@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Base activity.
+ * Base activity contains file operation methods for loading and saving data.
  */
 public class BaseActivity extends AppCompatActivity {
     /**
@@ -22,45 +22,50 @@ public class BaseActivity extends AppCompatActivity {
 
 
     /**
-     * The Currencies file.
+     * The Currencies file contains all currency objects.
      */
     static final String CURRENCIES_FILE = "currencies";
+
     /**
-     * The Selected file.
+     * The Selected file contains all bag objects.
      */
     static final String SELECTED_FILE = "selected";
+
     /**
-     * The Currencies.
+     * The Currencies contains all currency objects.
      */
     static List<Currency> currencies;
+
     /**
-     * The Selected bags.
+     * The Selected bags contains all bag objects.
      */
     static List<Bag> selectedBags;
+
     /**
-     * The Init currencies.
+     * The Init currencies contains currencies needed more data from API.
      */
     static List<Currency> initCurrencies;
+
     /**
-     * The Fetch selected.
+     * The Fetch selected contains bags currencies to fetch.
      */
     static List<Currency> fetchSelected;
 
     /**
-     * The High priority.
+     * The High priority to fetch.
      */
     static final int HIGH_PRIORITY = 1;
     /**
-     * The Medium priority.
+     * The Medium priority to fetch.
      */
     static final int MEDIUM_PRIORITY = 2;
     /**
-     * The Low priority.
+     * The Low priority to fetch.
      */
     static final int LOW_PRIORITY = 3;
 
     /**
-     * The Fetch count.
+     * Counts currencies queue for fetch.
      */
     static int fetchCount;
 
