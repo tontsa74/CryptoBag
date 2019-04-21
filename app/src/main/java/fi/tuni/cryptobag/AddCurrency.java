@@ -31,23 +31,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Add currency.
+ * Activity to search and add currency.
  */
 public class AddCurrency extends BaseActivity {
     /**
-     * The Add currency edit text.
+     * User input for search currency edit text.
      */
-    EditText addCurrencyEditText;
+    EditText searchCurrencyEditText;
     /**
      * The Currencies list view.
      */
     ListView currenciesListView;
     /**
-     * The Search currencies.
+     * Found currencies by search.
      */
     List<Currency> searchCurrencies;
     /**
-     * The Selected currency.
+     * User Selected currency.
      */
     Currency selectedCurrency;
     /**
@@ -69,15 +69,15 @@ public class AddCurrency extends BaseActivity {
 
         searchCurrencies = new ArrayList<Currency>();
 
-        addCurrencyEditText = (EditText) findViewById(R.id.addCurrencyEditText);
-        addCurrencyEditText.addTextChangedListener(new TextWatcher() {
+        searchCurrencyEditText = findViewById(R.id.searchCurrencyEditText);
+        searchCurrencyEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String search = addCurrencyEditText.getText().toString().toLowerCase().trim();
+                String search = searchCurrencyEditText.getText().toString().toLowerCase().trim();
                 search(search);
             }
 
@@ -85,7 +85,7 @@ public class AddCurrency extends BaseActivity {
             public void afterTextChanged(Editable s) { }
         });
 
-        currenciesListView = (ListView) findViewById(R.id.currenciesListView);
+        currenciesListView = findViewById(R.id.currenciesListView);
         currenciesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -102,9 +102,9 @@ public class AddCurrency extends BaseActivity {
                 View rowView = inflater.inflate(R.layout.add_list_item, parent, false);
                 Currency currency = (Currency) getItem(position);
 
-                TextView nameAddListItem = (TextView) rowView.findViewById(R.id.nameAddListItem);
-                TextView symbolAddListItem = (TextView) rowView.findViewById(R.id.symbolAddListItem);
-                ImageView imageView = (ImageView) rowView.findViewById(R.id.iconAddListItem);
+                TextView nameAddListItem = rowView.findViewById(R.id.nameAddListItem);
+                TextView symbolAddListItem = rowView.findViewById(R.id.symbolAddListItem);
+                ImageView imageView = rowView.findViewById(R.id.iconAddListItem);
 
                 if(currency.getIcon() != null) {
                     imageView.setImageBitmap(currency.getBitmap());
@@ -127,9 +127,10 @@ public class AddCurrency extends BaseActivity {
     }
 
     /**
-     * Search.
+     * Search currencies by user given string
+     * Iterates all currencies and add founded to searchCurrencies list.
      *
-     * @param search the search
+     * @param search user input search string
      */
     public void search(String search) {
         Debug.print(TAG, "search()", "currencies " + currencies.size(), 1);
@@ -160,7 +161,7 @@ public class AddCurrency extends BaseActivity {
     }
 
     /**
-     * The type Fetch data task.
+     * Fetch all available coins to currencies list.
      */
     public class FetchDataTask extends AsyncTask<Void,Void,Void> {
         @Override
