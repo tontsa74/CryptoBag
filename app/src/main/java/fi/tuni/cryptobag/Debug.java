@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- * The type Debug.
+ * Util for debug app.
  */
 class Debug {
     private static Context HOST;
@@ -14,7 +14,7 @@ class Debug {
     private static boolean DEBUG_TOAST;
 
     /**
-     * Load debug.
+     * Load debug configurations.
      *
      * @param host the host
      */
@@ -26,11 +26,11 @@ class Debug {
     }
 
     /**
-     * Print.
+     * Print message.
      *
      * @param tag        the tag
      * @param methodName the method name
-     * @param msg        the msg
+     * @param msg        the message
      * @param level      the level
      */
     static void print(String tag, String methodName, String msg, int level) {
