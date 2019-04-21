@@ -11,56 +11,68 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 
 /**
- * The type Bag activity.
+ * Bag activity handles data of bag.
  */
 public class BagActivity extends BaseActivity {
     private static final int REQUEST_CODE_ADD_CURRENCY = 20;
 
     /**
-     * The Bag.
+     * Bag of currency.
      */
     Bag bag;
 
     /**
-     * The Buy amount edit text.
+     * User input buy amount.
      */
-    EditText buyAmountEditText, /**
-     * The Sell amount edit text.
+    EditText buyAmountEditText,
+
+    /**
+     * User input sell amount.
      */
     sellAmountEditText;
+
     /**
-     * The Coin buy price edit text.
+     * User input buy price.
      */
-    EditText coinBuyPriceEditText, /**
-     * The Coin sell price edit text.
+    EditText coinBuyPriceEditText,
+
+    /**
+     * User input sell price.
      */
-    coinSellPriceEditText, /**
-     * The Coin current price edit text.
+    coinSellPriceEditText,
+
+    /**
+     * Fetched current price.
      */
     coinCurrentPriceEditText;
 
     /**
-     * The Bag name text view.
+     * Displays bag currency name and symbol.
      */
     TextView bagNameTextView;
+
     /**
-     * The Bag icon view.
+     * Bag currency icon.
      */
     ImageView bagIconView;
 
     /**
-     * The Currency button.
+     * Currency button starts AddCurrency activity for select currency.
      */
-    Button currencyButton, /**
-     * The Save bag button.
+    Button currencyButton,
+
+    /**
+     * Save bag to file and start MainActivity.
      */
     saveBagButton;
+
     /**
-     * The Position.
+     * selectedBags list position, of bag to edit.
      */
     int position;
+
     /**
-     * The Buy currency.
+     * Bag currency.
      */
     Currency buyCurrency;
 
@@ -89,6 +101,7 @@ public class BagActivity extends BaseActivity {
             Debug.print(TAG, "onCreate()", "getIntent" + position, 1);
             position = extras.getInt("position");
 
+            // if edit, position -1 means new bag
             if (position > -1) {
                 bag = selectedBags.get(position);
                 buyCurrency = bag.getCurrency();
@@ -120,6 +133,9 @@ public class BagActivity extends BaseActivity {
         coinCurrentPriceEditText.setText("" + buyCurrency.getPrice());
     }
 
+    /**
+     * Handles result from AddCurrency activity.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Debug.print(TAG, "onActivityResult()",
                     "requestCode: " + requestCode
@@ -147,7 +163,7 @@ public class BagActivity extends BaseActivity {
     }
 
     /**
-     * Save bag.
+     * Save bag, set results and finish activity.
      *
      * @param view the view
      */
@@ -193,7 +209,7 @@ public class BagActivity extends BaseActivity {
     }
 
     /**
-     * Add currency.
+     * Starts AddActivity on button click.
      *
      * @param view the view
      */
