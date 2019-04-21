@@ -6,7 +6,7 @@ import android.os.Binder;
  * The type Local binder.
  */
 class LocalBinder extends Binder {
-    private static final String TAG = "tsilve.APIService";
+    private static final String TAG = "fi.tuni.APIService";
     private APIService apiService;
 
     /**
